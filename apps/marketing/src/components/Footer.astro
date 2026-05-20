@@ -1,0 +1,23 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="border-line border-t">
+  <div class="container-page flex flex-col gap-4 py-8 text-sm md:flex-row md:items-center md:justify-between">
+    <p class="flex items-center gap-2">
+      <span class="bg-accent inline-block size-2 rounded-full" aria-hidden="true"></span>
+      <span class="font-serif text-base">Mainstay</span>
+      <span class="text-ink-mute">— made for shopkeepers.</span>
+    </p>
+
+    <p class="text-ink-mute">
+      © {year} ·
+      <a
+        href="mailto:hello@mainstayshop.studio"
+        class="decoration-line-strong hover:decoration-accent"
+      >
+        hello@mainstayshop.studio
+      </a>
+    </p>
+  </div>
+</footer>

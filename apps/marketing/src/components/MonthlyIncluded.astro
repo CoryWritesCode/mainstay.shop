@@ -1,0 +1,54 @@
+---
+// MonthlyIncluded — unpacks what the monthly hosting & care fee actually buys.
+
+const items = [
+  {
+    title: "Hosting, SSL, domain, email basics",
+    body:
+      "Your site stays up on fast, modern hosting with HTTPS. Your domain stays renewed. Email forwarding from a real address at your shop.",
+  },
+  {
+    title: "Security patches & uptime monitoring",
+    body:
+      "Vulnerability updates and uptime checks happen quietly in the background. If something breaks, I usually know before you do.",
+  },
+  {
+    title: "1 hour of content updates per month",
+    body:
+      "New hours, holiday banner, a fresh photo, a small copy change — these go in your monthly hour. Beyond that, billed at $95/hr in 15-minute increments, always quoted first.",
+  },
+  {
+    title: "Quarterly check-in & plain-English analytics",
+    body:
+      "Every three months, a short call and a one-page summary: who's visiting, what's working, what to try next. No dashboards to learn.",
+  },
+];
+---
+
+<section class="section-y bg-surface/60 border-line border-y">
+  <div class="container-page">
+    <header class="mb-10 max-w-[44ch]">
+      <p class="text-ink-mute text-sm tracking-wide uppercase mb-3">
+        Every month, every tier
+      </p>
+      <h2 class="font-serif text-[clamp(1.75rem,3.5vw,2.25rem)] leading-[1.15] tracking-[-0.01em] text-balance">
+        What your hosting &amp; care actually covers.
+      </h2>
+    </header>
+
+    <dl class="grid gap-x-10 gap-y-8 md:grid-cols-2">
+      {
+        items.map((item) => (
+          <div>
+            <dt class="font-serif text-lg leading-snug">
+              {item.title}
+            </dt>
+            <dd class="text-ink-soft mt-2 text-[1.0625rem] leading-[1.6] text-pretty">
+              {item.body}
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>

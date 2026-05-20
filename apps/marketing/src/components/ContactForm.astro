@@ -1,0 +1,154 @@
+---
+// ContactForm — 5-field form posting to Web3Forms.
+//
+// Set PUBLIC_WEB3FORMS_ACCESS_KEY in an .env file (or replace the fallback
+// below). Get a key at https://web3forms.com — free, unlimited submissions,
+// no account required.
+//
+// Fields: name, email, shop name + city, existing site URL (optional),
+// free-text "tell me about your shop".
+
+const WEB3FORMS_ACCESS_KEY =
+  import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ??
+  "REPLACE_WITH_YOUR_WEB3FORMS_KEY";
+---
+
+<section id="contact" class="section-y bg-surface">
+  <div class="container-page grid gap-x-12 gap-y-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
+    <div>
+      <p class="text-ink-mute text-sm tracking-wide uppercase mb-3">
+        Get in touch
+      </p>
+      <h2 class="font-serif text-[clamp(1.75rem,3.5vw,2.25rem)] leading-[1.15] tracking-[-0.01em] text-balance max-w-[16ch]">
+        Tell me about your shop.
+      </h2>
+      <p class="text-ink-soft mt-4 max-w-[40ch] text-[1.0625rem] leading-[1.6] text-pretty">
+        Send a few details and I'll get back to you within a day or two —
+        usually the same day. There's no obligation, no auto-responder,
+        no sales pipeline. Just me reading your note.
+      </p>
+      <p class="text-ink-soft mt-6 text-[0.9375rem]">
+        Or just email me at
+        <a
+          href="mailto:hello@mainstayshop.studio"
+          class="text-ink font-medium decoration-line-strong hover:decoration-accent"
+        >
+          hello@mainstayshop.studio
+        </a>.
+      </p>
+    </div>
+
+    <form
+      method="POST"
+      action="https://api.web3forms.com/submit"
+      class="bg-paper border-line space-y-5 rounded-[var(--radius-card)] border p-6 md:p-8"
+    >
+      <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
+      <input type="hidden" name="subject" value="New Mainstay inquiry" />
+      <input type="hidden" name="from_name" value="Mainstay website" />
+      {/* Honeypot — bots fill in invisible fields, real visitors don't. */}
+      <input
+        type="checkbox"
+        name="botcheck"
+        tabindex="-1"
+        autocomplete="off"
+        style="position:absolute;left:-9999px;width:0;height:0;opacity:0"
+        aria-hidden="true"
+      />
+
+      <div class="grid gap-5 sm:grid-cols-2">
+        <div>
+          <label for="name" class="block text-sm font-medium">
+            Your name
+          </label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            required
+            autocomplete="name"
+            class="border-line bg-paper focus:border-accent mt-1.5 block w-full rounded-[var(--radius-button)] border px-3 py-2.5 text-[1rem] leading-snug outline-none"
+          />
+        </div>
+        <div>
+          <label for="email" class="block text-sm font-medium">
+            Email
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            autocomplete="email"
+            class="border-line bg-paper focus:border-accent mt-1.5 block w-full rounded-[var(--radius-button)] border px-3 py-2.5 text-[1rem] leading-snug outline-none"
+          />
+        </div>
+      </div>
+
+      <div class="grid gap-5 sm:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+        <div>
+          <label for="shop" class="block text-sm font-medium">
+            Shop name
+          </label>
+          <input
+            id="shop"
+            name="shop"
+            type="text"
+            class="border-line bg-paper focus:border-accent mt-1.5 block w-full rounded-[var(--radius-button)] border px-3 py-2.5 text-[1rem] leading-snug outline-none"
+          />
+        </div>
+        <div>
+          <label for="city" class="block text-sm font-medium">
+            City / region
+          </label>
+          <input
+            id="city"
+            name="city"
+            type="text"
+            class="border-line bg-paper focus:border-accent mt-1.5 block w-full rounded-[var(--radius-button)] border px-3 py-2.5 text-[1rem] leading-snug outline-none"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label for="website" class="block text-sm font-medium">
+          Existing site URL
+          <span class="text-ink-mute font-normal">(if any)</span>
+        </label>
+        <input
+          id="website"
+          name="website"
+          type="url"
+          inputmode="url"
+          placeholder="https://"
+          autocomplete="url"
+          class="border-line bg-paper focus:border-accent mt-1.5 block w-full rounded-[var(--radius-button)] border px-3 py-2.5 text-[1rem] leading-snug outline-none"
+        />
+      </div>
+
+      <div>
+        <label for="message" class="block text-sm font-medium">
+          Tell me about your shop
+        </label>
+        <textarea
+          id="message"
+          name="message"
+          rows="5"
+          required
+          class="border-line bg-paper focus:border-accent mt-1.5 block w-full rounded-[var(--radius-button)] border px-3 py-2.5 text-[1rem] leading-snug outline-none"
+        ></textarea>
+        <p class="text-ink-mute mt-2 text-xs">
+          What you sell, what you're hoping for, and how soon — whatever
+          comes to mind is fine.
+        </p>
+      </div>
+
+      <button
+        type="submit"
+        class="bg-accent hover:bg-accent-deep text-paper inline-flex w-full items-center justify-center rounded-[var(--radius-button)] px-5 py-3 font-medium transition-colors sm:w-auto"
+      >
+        Send it over
+      </button>
+    </form>
+  </div>
+</section>

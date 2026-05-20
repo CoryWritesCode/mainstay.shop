@@ -1,0 +1,68 @@
+/*
+ * @mainstay/tokens — design tokens for every Mainstay surface.
+ * Consumed via Tailwind v4's @theme directive: each --token here
+ * becomes a Tailwind utility (e.g. --color-paper → bg-paper).
+ */
+
+@theme {
+  /* ── Color: warm earth palette ─────────────────────────────── */
+  --color-paper: #fbf7f1;          /* page background, off-white */
+  --color-surface: #f4ece0;        /* card / inset background */
+  --color-surface-deep: #ecdfcb;   /* second-level surface */
+  --color-ink: #1f1b16;            /* body text */
+  --color-ink-soft: #5b4f42;       /* secondary text */
+  --color-ink-mute: #8a7a68;       /* tertiary / captions */
+  --color-line: #e4d9c8;           /* hairline dividers */
+  --color-line-strong: #c9b89e;    /* emphasized dividers */
+  --color-accent: #b4533a;         /* terracotta — primary CTA */
+  --color-accent-deep: #8e3f2c;    /* accent hover / pressed */
+  --color-accent-soft: #f1d8c9;    /* accent wash / hover bg */
+  --color-leaf: #3f5d3a;           /* secondary accent — forest, used sparingly */
+
+  /* ── Typography ────────────────────────────────────────────── */
+  --font-sans: "Public Sans", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Source Serif 4", ui-serif, Georgia, "Times New Roman", serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+
+  /* Display type — for hero + tier names, generous and soft */
+  --text-display: 3.75rem;
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.02em;
+  --text-display-sm: 2.5rem;
+  --text-display-sm--line-height: 1.1;
+  --text-display-sm--letter-spacing: -0.015em;
+
+  /* Section headings */
+  --text-section: 2rem;
+  --text-section--line-height: 1.15;
+  --text-section--letter-spacing: -0.01em;
+
+  /* Body */
+  --text-lede: 1.25rem;
+  --text-lede--line-height: 1.55;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.65;
+
+  /* ── Spacing scale extensions ──────────────────────────────── */
+  --spacing-section: 6rem;          /* section vertical rhythm, desktop */
+  --spacing-section-sm: 3.5rem;     /* section vertical rhythm, mobile */
+  --spacing-gutter: 1.5rem;         /* page side gutter, mobile */
+  --spacing-gutter-lg: 2.5rem;      /* page side gutter, desktop */
+
+  /* ── Containers ────────────────────────────────────────────── */
+  --container-prose: 38rem;         /* reading width */
+  --container-narrow: 52rem;
+  --container-page: 72rem;          /* default page width */
+
+  /* ── Radius ────────────────────────────────────────────────── */
+  --radius-card: 1.25rem;
+  --radius-button: 0.625rem;
+  --radius-pill: 9999px;
+
+  /* ── Shadow — soft, paper-y, never glassy ──────────────────── */
+  --shadow-soft: 0 1px 2px rgba(31, 27, 22, 0.04),
+    0 8px 24px rgba(31, 27, 22, 0.05);
+  --shadow-lift: 0 2px 4px rgba(31, 27, 22, 0.06),
+    0 16px 40px rgba(31, 27, 22, 0.08);
+}

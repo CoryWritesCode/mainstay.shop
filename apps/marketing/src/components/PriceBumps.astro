@@ -1,0 +1,71 @@
+---
+// PriceBumps — the anti-hidden-fee section. Concrete dollar examples per factor.
+// This is the canonical implementation of Mainstay's pricing-transparency promise.
+
+interface Bump {
+  factor: string;
+  impact: string;
+}
+
+const bumps: Bump[] = [
+  {
+    factor: "Selling online (cart, inventory, checkout)",
+    impact: "typically +$2,000 setup, +$60/mo — or move up to the Shop tier",
+  },
+  {
+    factor: "Large product catalog (50+ products)",
+    impact: "typically +$500 to +$1,500 setup, depending on count and complexity",
+  },
+  {
+    factor: "Photography help (we shoot or coordinate)",
+    impact: "quoted per shoot — usually $400–$1,200 depending on scope",
+  },
+  {
+    factor: "Custom integrations (POS, accounting, newsletter, loyalty)",
+    impact: "quoted per integration — most run $500–$2,000 each",
+  },
+  {
+    factor: "Multilingual site",
+    impact: "typically +$1,000 setup, +$20/mo for each additional language",
+  },
+  {
+    factor: "Migrating a complex existing site",
+    impact: "quoted after a quick look — usually $500–$2,500 depending on what we need to bring across",
+  },
+];
+---
+
+<section class="section-y">
+  <div class="container-page">
+    <header class="mb-10 max-w-[48ch]">
+      <p class="text-accent text-sm tracking-wide uppercase mb-3">
+        No hidden fees, ever
+      </p>
+      <h2 class="font-serif text-[clamp(1.75rem,3.5vw,2.25rem)] leading-[1.15] tracking-[-0.01em] text-balance">
+        What might bump your starting price.
+      </h2>
+      <p class="text-ink-soft mt-4 text-[1.0625rem] leading-[1.6] text-pretty">
+        Tiers start where they start because most shops need them to. These are the
+        real things that move the number, with the kind of estimate I'd give you on a call.
+      </p>
+    </header>
+
+    <ul role="list" class="border-line divide-line border-y divide-y">
+      {
+        bumps.map((bump) => (
+          <li class="grid gap-x-8 gap-y-1 py-5 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-baseline">
+            <span class="font-medium text-[1.0625rem]">{bump.factor}</span>
+            <span class="text-ink-soft text-[0.9375rem] leading-snug">
+              {bump.impact}
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="text-ink-mute mt-8 max-w-[52ch] text-[0.9375rem] leading-snug">
+      Anything that isn't on this list, I'll quote in writing before doing it.
+      You'll never see a charge you haven't agreed to.
+    </p>
+  </div>
+</section>

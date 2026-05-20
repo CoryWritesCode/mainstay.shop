@@ -1,0 +1,58 @@
+---
+// HowItWorks — three plain steps. Numbers do the visual work; words do the rest.
+
+const steps = [
+  {
+    n: "01",
+    title: "Talk",
+    body:
+      "We have a short call. You tell me about your shop. I tell you what's possible and what it costs — in plain English, with real numbers.",
+  },
+  {
+    n: "02",
+    title: "Build",
+    body:
+      "I design and build your site, share progress along the way, and have you live in two to four weeks. You review it the whole time.",
+  },
+  {
+    n: "03",
+    title: "Look after",
+    body:
+      "Your monthly fee covers hosting, security, small content updates, and a quarterly check-in. Reach me by email or phone — there is no ticket queue.",
+  },
+];
+---
+
+<section class="section-y">
+  <div class="container-page">
+    <header class="mb-12 max-w-[44ch]">
+      <p class="text-ink-mute text-sm tracking-wide uppercase mb-3">
+        How it works
+      </p>
+      <h2 class="font-serif text-[clamp(1.75rem,3.5vw,2.25rem)] leading-[1.15] tracking-[-0.01em] text-balance">
+        Three steps, one human, no ticket queue.
+      </h2>
+    </header>
+
+    <ol class="grid gap-8 sm:grid-cols-2 md:grid-cols-3 md:gap-10">
+      {
+        steps.map((step) => (
+          <li class="border-line relative border-t pt-5">
+            <span
+              class="text-accent font-serif text-3xl leading-none tracking-tight"
+              aria-hidden="true"
+            >
+              {step.n}
+            </span>
+            <h3 class="mt-4 font-serif text-2xl leading-tight">
+              {step.title}
+            </h3>
+            <p class="text-ink-soft mt-3 text-[1.0625rem] leading-[1.6] text-pretty">
+              {step.body}
+            </p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

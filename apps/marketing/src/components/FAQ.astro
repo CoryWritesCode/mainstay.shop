@@ -1,0 +1,74 @@
+---
+// FAQ — short, transparency-first Q&A. Native <details> for built-in
+// accessibility and progressive enhancement.
+
+const items = [
+  {
+    q: "Will my monthly fee ever go up?",
+    a: "Only if you ask for more — moving up a tier, adding an integration, that kind of thing. I'll always tell you in writing first, with the new number, before anything changes.",
+  },
+  {
+    q: "What happens if I need a bigger one-time change?",
+    a: "I quote it in writing before I start. Hourly is $95, billed in 15-minute increments. You get the estimate, you say yes or no, then I begin.",
+  },
+  {
+    q: "What if I want to cancel?",
+    a: "30 days' notice, and I help you move out: you keep your domain, you keep your content, you get a full export of your site. There's no early-termination charge.",
+  },
+  {
+    q: "Do you take a cut of online sales?",
+    a: "No. The monthly fee is the monthly fee. Stripe (or whichever processor you use) takes its own card-processing percentage; nothing extra goes to me.",
+  },
+  {
+    q: "Who actually does the work?",
+    a: "Me — Cory. There's no agency, no offshore team. If something needs doing, I'm the one doing it (or I tell you up front that I'm bringing in a specialist, with their cost).",
+  },
+  {
+    q: "Where are you based — can you work with shops outside your city?",
+    a: "Yes. Most of the work happens remotely, with video calls and shared documents. If you'd like an in-person visit, we can usually work that out — travel is quoted separately.",
+  },
+];
+---
+
+<section class="section-y bg-surface/60 border-line border-y">
+  <div class="container-page">
+    <header class="mb-10 max-w-[44ch]">
+      <p class="text-ink-mute text-sm tracking-wide uppercase mb-3">
+        Pricing FAQ
+      </p>
+      <h2 class="font-serif text-[clamp(1.75rem,3.5vw,2.25rem)] leading-[1.15] tracking-[-0.01em] text-balance">
+        Things people ask me on the call, asked here first.
+      </h2>
+    </header>
+
+    <ul role="list" class="border-line divide-line max-w-[60ch] border-y divide-y">
+      {
+        items.map((item) => (
+          <li>
+            <details class="group py-5">
+              <summary class="flex cursor-pointer items-center justify-between gap-6 list-none font-medium text-[1.0625rem] leading-snug">
+                <span class="text-pretty">{item.q}</span>
+                <span
+                  aria-hidden="true"
+                  class="text-ink-mute shrink-0 transition-transform group-open:rotate-45 text-xl leading-none"
+                >
+                  +
+                </span>
+              </summary>
+              <p class="text-ink-soft mt-3 text-[1.0625rem] leading-[1.6] text-pretty">
+                {item.a}
+              </p>
+            </details>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  /* Strip native disclosure marker; we render our own */
+  summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

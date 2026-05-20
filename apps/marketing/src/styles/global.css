@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+/* Shared design tokens — must come after the tailwindcss import so @theme
+ * blocks merge with Tailwind's defaults. */
+@import "@mainstay/tokens/theme.css";
+@import "@mainstay/tokens/reset.css";
+
+/* Variable fonts via @fontsource — single weight axis each, kept lightweight. */
+@import "@fontsource-variable/public-sans/index.css";
+@import "@fontsource-variable/source-serif-4/index.css";
+
+/* ── App-level utilities ───────────────────────────────────────── */
+
+@utility container-page {
+  width: 100%;
+  max-width: var(--container-page);
+  margin-inline: auto;
+  padding-inline: var(--spacing-gutter);
+
+  @media (min-width: 768px) {
+    padding-inline: var(--spacing-gutter-lg);
+  }
+}
+
+@utility section-y {
+  padding-block: var(--spacing-section-sm);
+
+  @media (min-width: 768px) {
+    padding-block: var(--spacing-section);
+  }
+}
+
+/* Skip link — visually hidden until focused */
+.skip-link {
+  position: absolute;
+  inset-inline-start: 1rem;
+  inset-block-start: 1rem;
+  z-index: 100;
+  padding: 0.5rem 0.75rem;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  border-radius: var(--radius-button);
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform 150ms ease;
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}

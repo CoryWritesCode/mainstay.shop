@@ -1,0 +1,159 @@
+---
+// PricingTiers — three cards with "Starting at" pricing. Most-common pill on
+// the middle tier as a quiet signal. Each tier's "Start with" link pre-fills
+// the contact form's free-text field via a query param.
+
+interface Tier {
+  name: string;
+  setup: number;
+  monthly: number;
+  blurb: string;
+  features: string[];
+  emphasis?: boolean;
+}
+
+const tiers: Tier[] = [
+  {
+    name: "Storefront",
+    setup: 1500,
+    monthly: 69,
+    blurb: "A simple, beautiful site for shops that don't sell online (yet).",
+    features: [
+      "Up to 5 pages",
+      "Mobile-first, accessible design",
+      "Contact form, hours, location",
+      "Photo & copy guidance",
+      "Launch + 30-day tune-up",
+    ],
+  },
+  {
+    name: "Shop",
+    setup: 3500,
+    monthly: 129,
+    blurb: "Everything in Storefront, plus online ordering and inventory.",
+    features: [
+      "Product catalog (up to 50 products)",
+      "Cart & checkout (Stripe)",
+      "Inventory sync",
+      "Order notifications",
+      "Tax & shipping setup",
+    ],
+    emphasis: true,
+  },
+  {
+    name: "Bespoke",
+    setup: 7500,
+    monthly: 199,
+    blurb: "A site built around what your shop actually needs.",
+    features: [
+      "Custom design from the ground up",
+      "POS / accounting integrations",
+      "Migrations from existing sites",
+      "Unlimited products",
+      "Whatever else you need — let's talk",
+    ],
+  },
+];
+
+const fmt = (n: number) => `$${n.toLocaleString("en-US")}`;
+---
+
+<section id="pricing" class="section-y">
+  <div class="container-page">
+    <header class="mb-12 max-w-[44ch]">
+      <p class="text-ink-mute text-sm tracking-wide uppercase mb-3">Pricing</p>
+      <h2 class="font-serif text-[clamp(1.75rem,3.5vw,2.25rem)] leading-[1.15] tracking-[-0.01em] text-balance">
+        Honest prices, posted in the window.
+      </h2>
+      <p class="text-ink-soft mt-4 text-[1.0625rem] leading-[1.6] text-pretty">
+        Every shop is a little different, so each tier shows a starting price.
+        What might push it up is spelled out below — no surprises on a call,
+        no surprises on an invoice.
+      </p>
+    </header>
+
+    <ul role="list" class="grid gap-6 lg:grid-cols-3 lg:gap-8">
+      {
+        tiers.map((tier) => (
+          <li
+            class:list={[
+              "border-line bg-paper relative flex flex-col rounded-[var(--radius-card)] border p-7 md:p-8",
+              tier.emphasis && "border-accent shadow-[var(--shadow-lift)]",
+            ]}
+          >
+            {tier.emphasis && (
+              <span class="bg-accent text-paper absolute -top-3 left-7 rounded-full px-3 py-1 text-xs font-medium tracking-wide uppercase">
+                Most common
+              </span>
+            )}
+
+            <h3 class="font-serif text-3xl leading-none">{tier.name}</h3>
+
+            <p class="text-ink-soft mt-5 text-base leading-snug min-h-[3em] text-pretty">
+              {tier.blurb}
+            </p>
+
+            <div class="border-line mt-6 border-t pt-6">
+              <p class="text-ink-mute text-xs tracking-wide uppercase">
+                Starting at
+              </p>
+              <p class="mt-2 font-serif text-4xl leading-none tracking-tight">
+                {fmt(tier.setup)}
+                <span class="text-ink-soft text-base font-sans font-normal">
+                  setup
+                </span>
+              </p>
+              <p class="text-ink-soft mt-2 text-base">
+                <span class="text-ink font-medium">{fmt(tier.monthly)}</span>
+                /month hosting &amp; care
+              </p>
+            </div>
+
+            <ul class="border-line mt-6 space-y-3 border-t pt-6 text-[0.9375rem] leading-snug">
+              {tier.features.map((feat) => (
+                <li class="flex items-start gap-2.5">
+                  <span
+                    class="text-accent mt-0.5 shrink-0"
+                    aria-hidden="true"
+                  >
+                    ✓
+                  </span>
+                  <span>{feat}</span>
+                </li>
+              ))}
+            </ul>
+
+            <a
+              href="#contact"
+              data-tier={tier.name}
+              class="tier-cta border-ink hover:bg-ink hover:text-paper mt-8 inline-flex w-full items-center justify-center rounded-[var(--radius-button)] border px-4 py-2.5 text-center font-medium no-underline transition-colors"
+            >
+              Start with {tier.name}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="text-ink-soft mt-8 text-center text-sm">
+      Every tier includes the same monthly hosting &amp; care — see what that means below.
+    </p>
+  </div>
+</section>
+
+<script>
+  // Pre-fill the contact form's "Tell me about your shop" textarea with the
+  // tier the visitor clicked. Anchor still scrolls to #contact natively.
+  document.querySelectorAll<HTMLAnchorElement>(".tier-cta").forEach((link) => {
+    link.addEventListener("click", () => {
+      const tier = link.dataset.tier;
+      if (!tier) return;
+      const textarea = document.querySelector<HTMLTextAreaElement>(
+        "#contact textarea[name='message']"
+      );
+      if (textarea && !textarea.value.trim()) {
+        textarea.value = `Interested in the ${tier} tier. `;
+      }
+    });
+  });
+</script>

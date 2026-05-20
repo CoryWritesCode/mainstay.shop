@@ -1,0 +1,80 @@
+/*
+ * @mainstay/tokens/reset.css — Mainstay-flavored base layer.
+ * Builds on Tailwind's preflight; adds brand defaults (font, colors,
+ * focus ring, motion respect).
+ */
+
+@layer base {
+  :root {
+    color-scheme: light;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  html {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.65;
+    scroll-behavior: smooth;
+    scroll-padding-block-start: 1.5rem;
+  }
+
+  body {
+    min-height: 100dvh;
+  }
+
+  /* Display type uses the serif by default — opt out with .font-sans */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+  }
+
+  /* Links — quiet by default, accent on hover */
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--color-line-strong);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    transition: text-decoration-color 120ms ease;
+  }
+
+  a:hover {
+    text-decoration-color: var(--color-accent);
+  }
+
+  /* Focus — generous, brand-accent ring on every interactive */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Forms inherit type by default */
+  input,
+  textarea,
+  select,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  /* Respect users who don't want motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

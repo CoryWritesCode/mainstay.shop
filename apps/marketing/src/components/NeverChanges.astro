@@ -1,0 +1,50 @@
+---
+// NeverChanges — trust reassurances. Four short promises, set in serif.
+
+const promises = [
+  {
+    title: "Your monthly fee is your monthly fee.",
+    body: "No surprise increases. If you ever move tiers, I'll tell you in writing first.",
+  },
+  {
+    title: "No transaction fees. Ever.",
+    body: "If your shop sells online, every dollar of a sale (minus what Stripe charges) is yours.",
+  },
+  {
+    title: "You own your domain and your content.",
+    body: "Everything is registered in your name. You can take it elsewhere any time.",
+  },
+  {
+    title: "Cancel with 30 days' notice.",
+    body: "I'll help you move out — export your site, hand over your domain, the works. No drama.",
+  },
+];
+---
+
+<section class="section-y">
+  <div class="container-page">
+    <header class="mb-10 max-w-[44ch]">
+      <p class="text-ink-mute text-sm tracking-wide uppercase mb-3">
+        What never changes
+      </p>
+      <h2 class="font-serif text-[clamp(1.75rem,3.5vw,2.25rem)] leading-[1.15] tracking-[-0.01em] text-balance">
+        Four promises that stay put.
+      </h2>
+    </header>
+
+    <ul role="list" class="grid gap-8 sm:grid-cols-2 md:gap-10">
+      {
+        promises.map((p) => (
+          <li>
+            <p class="font-serif text-xl leading-snug text-balance">
+              {p.title}
+            </p>
+            <p class="text-ink-soft mt-2 text-[1.0625rem] leading-[1.6] text-pretty">
+              {p.body}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
