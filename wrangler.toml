@@ -3,7 +3,7 @@
 # field — without an unambiguous Worker config at the workspace root,
 # `wrangler deploy` errors with the monorepo detection message.
 
-name = "mainstay-marketing"
+name = "mainstay"
 compatibility_date = "2026-05-20"
 
 [assets]
