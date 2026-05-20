@@ -1,10 +1,19 @@
 ---
-// About — short personal paragraph. Placeholder copy; swap in real story.
+import { Image } from "astro:assets";
+import headshot from "../assets/cory-headshot.png";
 ---
 
 <section class="section-y">
-  <div class="container-page grid gap-x-12 gap-y-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
+  <div class="container-page grid gap-x-12 gap-y-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] md:items-start">
     <div>
+      <Image
+        src={headshot}
+        alt="Cory, the human behind Mainstay"
+        width={280}
+        height={285}
+        loading="lazy"
+        class="border-line mb-6 aspect-square w-[180px] rounded-[var(--radius-card)] border object-cover shadow-[var(--shadow-soft)] sm:w-[220px] md:w-[260px]"
+      />
       <p class="text-ink-mute text-sm tracking-wide uppercase mb-3">
         About
       </p>

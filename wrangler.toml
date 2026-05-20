@@ -1,0 +1,7 @@
+# Tells Cloudflare Wrangler which app in this workspace is the Pages deploy
+# target. Without this, Wrangler's auto-detection fails because the repo
+# root is a pnpm workspace with no app of its own.
+
+name = "mainstay-marketing"
+pages_build_output_dir = "apps/marketing/dist"
+compatibility_date = "2026-05-20"

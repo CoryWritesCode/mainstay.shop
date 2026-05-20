@@ -71,4 +71,34 @@ const items = [
   summary::-webkit-details-marker {
     display: none;
   }
+  summary {
+    list-style: none;
+  }
+
+  /* Smooth expand / collapse for <details>. Uses the modern
+   * ::details-content pseudo + interpolate-size + @starting-style.
+   * Browsers without support fall back to the native instant toggle. */
+  details {
+    interpolate-size: allow-keywords;
+  }
+
+  details::details-content {
+    overflow: hidden;
+    block-size: 0;
+    opacity: 0;
+    transition:
+      block-size 320ms cubic-bezier(0.2, 0, 0, 1),
+      opacity 220ms ease,
+      content-visibility 320ms allow-discrete;
+  }
+
+  details[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+
+    @starting-style {
+      block-size: 0;
+      opacity: 0;
+    }
+  }
 </style>
