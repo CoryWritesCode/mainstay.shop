@@ -11,7 +11,7 @@
   --color-surface-deep: #ecdfcb;   /* second-level surface */
   --color-ink: #1f1b16;            /* body text */
   --color-ink-soft: #5b4f42;       /* secondary text */
-  --color-ink-mute: #8a7a68;       /* tertiary / captions */
+  --color-ink-mute: #6f5f4a;       /* tertiary / captions — AA on paper & surface (~5.8:1) */
   --color-line: #e4d9c8;           /* hairline dividers */
   --color-line-strong: #c9b89e;    /* emphasized dividers */
   --color-accent: #b4533a;         /* terracotta — primary CTA */

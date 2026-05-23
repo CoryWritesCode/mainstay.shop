@@ -39,6 +39,7 @@ const WEB3FORMS_ACCESS_KEY =
     </div>
 
     <form
+      id="contact-form"
       method="POST"
       action="https://api.web3forms.com/submit"
       class="bg-paper border-line space-y-5 rounded-[var(--radius-card)] border p-6 md:p-8"
@@ -143,12 +144,136 @@ const WEB3FORMS_ACCESS_KEY =
         </p>
       </div>
 
+      <p
+        id="contact-error"
+        hidden
+        role="alert"
+        class="text-accent-deep border-accent bg-accent-soft/40 rounded-[var(--radius-button)] border px-3 py-2 text-sm"
+      >
+      </p>
+
       <button
         type="submit"
-        class="bg-accent hover:bg-accent-deep text-paper inline-flex w-full items-center justify-center rounded-[var(--radius-button)] px-5 py-3 font-medium transition-colors sm:w-auto"
+        class="bg-accent hover:bg-accent-deep text-paper inline-flex w-full items-center justify-center rounded-[var(--radius-button)] px-5 py-3 font-medium transition-colors disabled:opacity-60 sm:w-auto"
       >
         Send it over
       </button>
     </form>
+
+    <div
+      id="contact-success"
+      hidden
+      role="status"
+      aria-live="polite"
+      class="bg-paper border-line flex flex-col gap-4 rounded-[var(--radius-card)] border p-6 md:p-8"
+    >
+      <p class="font-serif text-2xl leading-snug text-balance">
+        Thanks — got your note.
+      </p>
+      <p class="text-ink-soft text-[1.0625rem] leading-[1.6] text-pretty">
+        I'll be in touch within a day or two, usually the same day. If you
+        don't hear back, check your spam folder — or just email me at
+        <a
+          href="mailto:hello@mainstayshop.studio"
+          class="text-ink font-medium decoration-line-strong hover:decoration-accent"
+        >
+          hello@mainstayshop.studio
+        </a>.
+      </p>
+      <button
+        type="button"
+        id="send-another"
+        class="border-ink hover:bg-ink hover:text-paper inline-flex w-fit items-center rounded-[var(--radius-button)] border px-4 py-2 text-sm font-medium transition-colors"
+      >
+        Send another message
+      </button>
+    </div>
   </div>
 </section>
+
+<script>
+  const form = document.getElementById("contact-form") as HTMLFormElement | null;
+  const successEl = document.getElementById("contact-success");
+  const errorEl = document.getElementById("contact-error");
+  const sendAnotherBtn = document.getElementById("send-another");
+
+  function showError(message: string) {
+    if (!errorEl) return;
+    errorEl.textContent = message;
+    errorEl.hidden = false;
+  }
+
+  function hideError() {
+    if (!errorEl) return;
+    errorEl.hidden = true;
+    errorEl.textContent = "";
+  }
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!form) return;
+
+    const submitBtn = form.querySelector<HTMLButtonElement>(
+      'button[type="submit"]'
+    );
+    const originalLabel = submitBtn?.textContent ?? "Send it over";
+
+    hideError();
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending…";
+    }
+
+    try {
+      const formData = new FormData(form);
+      const payload: Record<string, FormDataEntryValue> = {};
+      formData.forEach((value, key) => {
+        payload[key] = value;
+      });
+
+      const response = await fetch(form.action, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = (await response.json()) as {
+        success?: boolean;
+        message?: string;
+      };
+
+      if (response.ok && result.success) {
+        form.reset();
+        form.hidden = true;
+        if (successEl) successEl.hidden = false;
+      } else {
+        showError(
+          result.message ??
+            "Something went wrong sending your note. Please try again, or email me directly at hello@mainstayshop.studio."
+        );
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalLabel;
+        }
+      }
+    } catch {
+      showError(
+        "Couldn't reach the form service. Please try again, or email me directly at hello@mainstayshop.studio."
+      );
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
+      }
+    }
+  });
+
+  sendAnotherBtn?.addEventListener("click", () => {
+    if (!form || !successEl) return;
+    successEl.hidden = true;
+    form.hidden = false;
+    form.querySelector<HTMLInputElement>('input[name="name"]')?.focus();
+  });
+</script>
