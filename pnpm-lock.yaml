@@ -23,6 +23,9 @@ importers:
       '@fontsource-variable/cormorant-garamond':
         specifier: ^5.1.0
         version: 5.2.6
+      '@fontsource-variable/newsreader':
+        specifier: ^5.1.0
+        version: 5.2.10
       '@fontsource-variable/public-sans':
         specifier: ^5.1.0
         version: 5.2.7
@@ -461,6 +464,9 @@ packages:
 
   '@fontsource-variable/cormorant-garamond@5.2.6':
     resolution: {integrity: sha512-5vHPJWMuTbVoB6OnorCflWJ51NJZ7eQWw58tVFUE/hHphTi/z2vrKESbuMSJ3diOC5KgPm/RLv2ULur+N1NLJQ==}
+
+  '@fontsource-variable/newsreader@5.2.10':
+    resolution: {integrity: sha512-MdI2iRwrqWpMOU/2aV2BgfZ4dJNlj/XlYaY8Zb7t87mWqHskYW0XiUANkt1cyOCiEfW2VQ0bQ5vZgGPp6B2B4w==}
 
   '@fontsource-variable/public-sans@5.2.7':
     resolution: {integrity: sha512-4mvade2J3slKkvwRkS+p8T3szet/0vhWoSnuUJTVU81Uo2pRpSZY/Y8bSLRqpSwzIPxjVmRJ53oq6JKP/l/PSg==}
@@ -2503,6 +2509,8 @@ snapshots:
   '@fontsource-variable/caveat@5.2.8': {}
 
   '@fontsource-variable/cormorant-garamond@5.2.6': {}
+
+  '@fontsource-variable/newsreader@5.2.10': {}
 
   '@fontsource-variable/public-sans@5.2.7': {}
 

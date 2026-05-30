@@ -1,0 +1,999 @@
+---
+// Fox + Mulberry — bespoke demo for cold-pitch outreach.
+//
+// Aesthetic: "Farmhouse press." Editorial magazine (Kinfolk, Cereal,
+// Apartamento) for a plant-based weekend bakery. Newsreader italic
+// display + Public Sans body. No handwritten accents (intentional
+// differentiator from Studio D's salon parlor); editorial small-caps
+// italic does the same warmth in a magazine register.
+//
+// Palette: layered earth — warm eggshell paper, flour cream sections,
+// MULBERRY as the brand color, SAGE as the plant-based ethos accent,
+// warm WHEAT for fine details. Three colors doing real work, plus the
+// dark mulberry inverted closing.
+//
+// Voice: unhurried, ethos-forward, lowercase-leaning where it feels
+// right. "Sourdough from a farmhouse kitchen. Plant-based, locally
+// sourced when we can find it. Weekends only — on purpose."
+
+import { getEntry } from "astro:content";
+import { Image } from "astro:assets";
+import "@fontsource-variable/newsreader";
+import DemoShell from "../../components/demo/DemoShell.astro";
+import DemoDisclosure from "../../components/demo/DemoDisclosure.astro";
+
+const demo = await getEntry("demos", "fox-and-mulberry");
+if (!demo) throw new Error("Demo content for fox-and-mulberry not found.");
+const d = demo.data;
+const telHref = `tel:+1${d.phone.replace(/\D/g, "")}`;
+
+// The menu — three categories, like the back of a small magazine. Items
+// are illustrative; "what's actually on the shelf changes each weekend."
+type MenuItem = { name: string; price: string };
+type MenuSection = { label: string; items: MenuItem[] };
+
+const menu: MenuSection[] = [
+  {
+    label: "Bread",
+    items: [
+      { name: "Country sourdough", price: "8" },
+      { name: "Seeded rye", price: "10" },
+      { name: "Focaccia, by the half", price: "7" },
+      { name: "Olive & rosemary boule", price: "9" },
+    ],
+  },
+  {
+    label: "Pastry",
+    items: [
+      { name: "Brown-butter scones", price: "4.50" },
+      { name: "Miso–chocolate cookies", price: "4" },
+      { name: "Seasonal galette, by the slice", price: "7" },
+      { name: "Loaf cake of the week", price: "5" },
+    ],
+  },
+  {
+    label: "The Market",
+    items: [
+      { name: "Local jam, by the jar", price: "11" },
+      { name: "Cultured plant butter", price: "12" },
+      { name: "Seasonal preserve", price: "14" },
+      { name: "Stone-ground flour, bag", price: "9" },
+    ],
+  },
+];
+
+// The weekend rhythm — three day columns, mulberry numbers, italic notes.
+const weekend = [
+  {
+    day: "Friday",
+    short: "Fri",
+    hours: "8a – 2p",
+    note: "Loaves out of the oven by nine. Mornings are quiet and the coffee is on.",
+  },
+  {
+    day: "Saturday",
+    short: "Sat",
+    hours: "8a – 2p",
+    note: "The full market is up — pastries, preserves, whatever the garden gave us this week.",
+  },
+  {
+    day: "Sunday",
+    short: "Sun",
+    hours: "12p – 4p",
+    note: "Slower light, smaller crowds. Bring a book; we'll bring you a slice.",
+  },
+];
+
+const ethos = [
+  "plant-based, always",
+  "local when we can find it",
+  "weekends, on purpose",
+];
+---
+
+<DemoShell
+  title="Fox + Mulberry — Baltimore, Ohio"
+  description="A real website for Fox + Mulberry, made by Mainstay."
+  bodyBackground="#F4ECDA"
+>
+  <div class="fox-mulberry">
+    <DemoDisclosure name={d.name} facebook={d.facebook} ctaLabel="Make it real">
+      <p slot="message" class="fm-disclosure-text">
+        <span class="fm-disclosure-strong">Hi, I'm Cory.</span> I made this for
+        you — a website for Fox + Mulberry, the way I'd build it for a
+        bakery this lovely. I'm not affiliated. Take a look around, and if
+        you like what you see,{" "}
+        <a href="https://mainstayshop.studio/#contact" class="fm-disclosure-link">
+          let's make it real.
+        </a>
+      </p>
+    </DemoDisclosure>
+
+    <main id="main">
+      <!-- 1 ▸ Hero ─────────────────────────────────────────────────────── -->
+      <section class="fm-hero">
+        <div class="fm-container">
+          <div class="fm-hero-grid">
+            <div class="fm-hero-text">
+              <p class="fm-eyebrow">
+                Baltimore, Ohio · 114 W Mulberry St
+              </p>
+              <h1 class="fm-wordmark">
+                <span class="fm-wordmark-italic">Fox</span>
+                <span class="fm-wordmark-plus" aria-hidden="true">+</span>
+                <span class="fm-wordmark-italic">Mulberry</span>
+              </h1>
+              <p class="fm-tagline">
+                Sourdough from a farmhouse kitchen.
+              </p>
+              <p class="fm-subline">
+                Plant-based, locally sourced when we can find it. Weekends
+                only — on purpose.
+              </p>
+              <div class="fm-actions">
+                <a class="fm-button-primary" href="#order">
+                  This weekend's bread <span aria-hidden="true">→</span>
+                </a>
+                <a class="fm-link-quiet" href="#menu">The menu</a>
+              </div>
+              <p class="fm-meta">
+                Fri &amp; Sat 8a – 2p · Sun 12p – 4p ·{" "}
+                <a href={telHref} class="fm-meta-link">{d.phone}</a>
+              </p>
+            </div>
+
+            <figure class="fm-hero-figure">
+              <Image
+                src="https://images.unsplash.com/photo-1765227036124-f90781f04dd8"
+                alt="A rustic loaf of sourdough bread on a wooden board."
+                width={1200}
+                height={1500}
+                inferSize={false}
+                loading="eager"
+                class="fm-hero-img"
+              />
+              <figcaption class="fm-img-caption">
+                Sample photo by{" "}
+                <a href="https://unsplash.com/@flyshoot" rel="noopener noreferrer" target="_blank">
+                  Ryan Fleischer
+                </a>{" "}
+                on Unsplash. Your loaves would live here.
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2 ▸ A note from the kitchen ──────────────────────────────────── -->
+      <section class="fm-note">
+        <div class="fm-container fm-narrow">
+          <p class="fm-section-label">
+            <span aria-hidden="true">❋</span> a note from the kitchen
+          </p>
+          <blockquote class="fm-note-body">
+            <p>
+              We bake on weekends. <em>Sourdough</em> from a farmhouse
+              kitchen, the kind of bread that wants a few hours to rise and
+              a few minutes to settle. Plant-based, always; locally sourced
+              when the season agrees with us. Stop in. We saved a slice for
+              you.
+            </p>
+          </blockquote>
+        </div>
+      </section>
+
+      <!-- 3 ▸ What we make (editorial menu) ────────────────────────────── -->
+      <section class="fm-menu" id="menu">
+        <div class="fm-container">
+          <header class="fm-menu-header">
+            <p class="fm-section-label">
+              <span aria-hidden="true">❋</span> what we make
+            </p>
+            <h2 class="fm-display fm-h2"><em>The menu, this week.</em></h2>
+            <p class="fm-menu-note">
+              What's actually on the shelf changes with the weekend. This is
+              the shape of it.
+            </p>
+          </header>
+
+          <div class="fm-menu-grid">
+            {menu.map((section) => (
+              <article class="fm-menu-section">
+                <h3 class="fm-menu-section-label">
+                  <em>{section.label}</em>
+                </h3>
+                <ol class="fm-menu-list">
+                  {section.items.map((item) => (
+                    <li class="fm-menu-row">
+                      <span class="fm-menu-name">{item.name}</span>
+                      <span class="fm-menu-leader" aria-hidden="true"></span>
+                      <span class="fm-menu-price">{item.price}</span>
+                    </li>
+                  ))}
+                </ol>
+              </article>
+            ))}
+          </div>
+
+          <p class="fm-menu-footer" aria-hidden="true">❋</p>
+        </div>
+      </section>
+
+      <!-- 4 ▸ This weekend ─────────────────────────────────────────────── -->
+      <section class="fm-weekend">
+        <div class="fm-container">
+          <header class="fm-weekend-header">
+            <p class="fm-section-label fm-section-label-pale">
+              <span aria-hidden="true">❋</span> the rhythm
+            </p>
+            <h2 class="fm-display fm-h2 fm-h2-pale">
+              <em>This weekend.</em>
+            </h2>
+          </header>
+
+          <ol class="fm-weekend-grid">
+            {weekend.map((d) => (
+              <li class="fm-weekend-day">
+                <p class="fm-weekend-short" aria-hidden="true">— {d.short} —</p>
+                <h3 class="fm-display fm-weekend-name">{d.day}</h3>
+                <p class="fm-weekend-hours">{d.hours}</p>
+                <p class="fm-weekend-note">{d.note}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <!-- 5 ▸ The ethos ────────────────────────────────────────────────── -->
+      <section class="fm-ethos">
+        <div class="fm-container">
+          <p class="fm-ethos-line">
+            {ethos.map((line, i) => (
+              <>
+                <em class="fm-ethos-item">{line}</em>
+                {i < ethos.length - 1 && (
+                  <span class="fm-ethos-mark" aria-hidden="true">❋</span>
+                )}
+              </>
+            ))}
+          </p>
+        </div>
+      </section>
+
+      <!-- 6 ▸ Order online ─────────────────────────────────────────────── -->
+      <section class="fm-order" id="order">
+        <div class="fm-container">
+          <div class="fm-order-grid">
+            <figure class="fm-order-figure">
+              <Image
+                src="https://images.unsplash.com/photo-1635341814289-55cf1490024c"
+                alt="Hands sprinkling flour over a freshly-baked loaf."
+                width={1200}
+                height={1500}
+                inferSize={false}
+                loading="lazy"
+                class="fm-order-img"
+              />
+              <figcaption class="fm-img-caption">
+                Sample photo by{" "}
+                <a href="https://unsplash.com/@tetianapadurets" rel="noopener noreferrer" target="_blank">
+                  Tetiana Padurets
+                </a>{" "}on Unsplash.
+              </figcaption>
+            </figure>
+            <div class="fm-order-text">
+              <p class="fm-section-label">
+                <span aria-hidden="true">❋</span> order online
+              </p>
+              <h2 class="fm-display fm-h2"><em>Hold a loaf for Saturday.</em></h2>
+              <p class="fm-order-body">
+                Our online list updates through the weekend, so what you see is
+                what's actually coming out of the oven. Pick what you'd like,
+                we'll have it set aside, and you'll know exactly what time to
+                come in.
+              </p>
+              <a
+                class="fm-button-primary"
+                href={d.cta.href}
+                rel="noopener noreferrer"
+              >
+                See what's baking this weekend
+                <span aria-hidden="true">→</span>
+              </a>
+              <p class="fm-order-note">
+                <em>
+                  (For now, this links to our current Square store. In the
+                  real version it'd live here on the site, with the same
+                  pretty pictures.)
+                </em>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7 ▸ Find us ──────────────────────────────────────────────────── -->
+      <section class="fm-find">
+        <div class="fm-container">
+          <div class="fm-find-grid">
+            <div class="fm-find-col">
+              <p class="fm-section-label">
+                <span aria-hidden="true">❋</span> hours
+              </p>
+              <dl class="fm-hours">
+                {(d.hours ?? []).map((row) => (
+                  <div class="fm-hours-row">
+                    <dt>{row.label}</dt>
+                    <dd>{row.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+            <div class="fm-find-col">
+              <p class="fm-section-label">
+                <span aria-hidden="true">❋</span> find us
+              </p>
+              <p class="fm-display fm-find-street"><em>{d.location.street}</em></p>
+              <p class="fm-find-city">{d.location.city}, {d.location.state}</p>
+              <p class="fm-find-phone">
+                <a href={telHref}>{d.phone}</a>
+              </p>
+              {d.email && (
+                <p class="fm-find-email">
+                  <a href={`mailto:${d.email}`}>{d.email}</a>
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8 ▸ Mainstay closing — dark mulberry finale ──────────────────── -->
+      <section class="fm-close">
+        <div class="fm-container fm-narrow">
+          <p class="fm-section-label fm-section-label-dark">
+            <span aria-hidden="true">❋</span> from one main street to another
+          </p>
+          <h2 class="fm-display fm-h2 fm-h2-dark"><em>I made this for you.</em></h2>
+          <p class="fm-close-body">
+            I'm Cory. I run Mainstay — a one-person web shop building real
+            websites for local businesses. The Square store you already have
+            does the heavy lifting; what's missing is a page that does
+            justice to the rest of it: the farmhouse kitchen, the
+            plant-based ethos, the weekend-only rhythm, the small things
+            that make Fox + Mulberry <em>this</em> bakery and not another.
+          </p>
+          <p class="fm-close-body">
+            If you'd like a real one — with online ordering still in place,
+            just better surrounded — I'd love to build it. It would feel
+            like the bread.
+          </p>
+          <div class="fm-close-actions">
+            <a class="fm-button-cream" href="https://mainstayshop.studio/#contact">
+              Let's talk <span aria-hidden="true">→</span>
+            </a>
+            <a class="fm-link-cream" href="https://mainstayshop.studio/">
+              See how Mainstay works
+            </a>
+          </div>
+          <p class="fm-close-sign">
+            — Cory ·{" "}
+            <a href="mailto:hello@mainstayshop.studio">hello@mainstayshop.studio</a>
+          </p>
+        </div>
+      </section>
+    </main>
+  </div>
+</DemoShell>
+
+<style is:global>
+  /* ── Fox + Mulberry — bespoke editorial palette + typography ─────── */
+  /* Layered earth: warm eggshell paper carries the body; flour-cream
+   * sections separate the menu and the closing's prelude; MULBERRY is
+   * the brand color (used confidently in headlines, accents, and the
+   * dark closing); SAGE is the ethos accent (plant-based plant tones);
+   * WHEAT is the fine-detail metallic. Editorial italics throughout. */
+  .fox-mulberry {
+    --fm-paper:         #f4ecda;
+    --fm-cream:         #ebe0c6;
+    --fm-cream-deep:    #d8c79f;
+    --fm-wheat:         #b89b58;
+    --fm-wheat-soft:    #d6bf8e;
+    --fm-sage:          #586d52;
+    --fm-sage-deep:     #3f4f3c;
+    --fm-sage-soft:     #c7d2b6;
+    --fm-mulberry:      #5a2a40;
+    --fm-mulberry-deep: #3a1a2a;
+    --fm-mulberry-soft: #8f4c68;
+    --fm-ink:           #241b12;
+    --fm-ink-soft:      #4f3f2e;
+    --fm-ink-mute:      #6f5c45;
+    --fm-line:          #d6c6a0;
+
+    --fm-display: "Newsreader Variable", "Newsreader",
+      "Source Serif 4 Variable", Georgia, serif;
+    --fm-body: "Public Sans Variable", "Public Sans", system-ui,
+      -apple-system, sans-serif;
+
+    color: var(--fm-ink);
+    font-family: var(--fm-body);
+  }
+
+  /* ── Disclosure overrides (scoped to fox-mulberry wrapper) ───────── */
+  .fox-mulberry .fm-disclosure-text {
+    color: var(--fm-ink-soft);
+    text-wrap: pretty;
+  }
+  .fox-mulberry .fm-disclosure-strong {
+    color: var(--fm-ink);
+    font-weight: 500;
+  }
+  .fox-mulberry .fm-disclosure-link {
+    color: var(--fm-mulberry);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: var(--fm-line);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+  }
+  .fox-mulberry .fm-disclosure-link:hover {
+    text-decoration-color: var(--fm-mulberry);
+  }
+
+  /* ── Containers ──────────────────────────────────────────────────── */
+  .fm-container {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .fm-container { padding-inline: 3rem; }
+  }
+  .fm-narrow { max-width: 48rem; }
+
+  /* ── Typography building blocks ──────────────────────────────────── */
+  .fm-display {
+    font-family: var(--fm-display);
+    font-weight: 400;
+    letter-spacing: -0.005em;
+    color: var(--fm-ink);
+  }
+  .fm-h2 {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    line-height: 1.05;
+    margin: 0;
+  }
+  .fm-h2-pale { color: var(--fm-paper); }
+  .fm-h2-dark { color: var(--fm-paper); }
+
+  .fm-eyebrow {
+    font-family: var(--fm-body);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--fm-mulberry);
+    margin: 0;
+  }
+
+  .fm-section-label {
+    font-family: var(--fm-display);
+    font-style: italic;
+    font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+    color: var(--fm-mulberry);
+    margin: 0 0 0.75rem 0;
+    letter-spacing: 0.02em;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+  }
+  .fm-section-label span[aria-hidden] {
+    color: var(--fm-wheat);
+    font-style: normal;
+    font-size: 0.9em;
+  }
+  .fm-section-label-pale { color: var(--fm-cream); }
+  .fm-section-label-pale span[aria-hidden] { color: var(--fm-wheat-soft); }
+  .fm-section-label-dark { color: var(--fm-wheat-soft); }
+  .fm-section-label-dark span[aria-hidden] { color: var(--fm-wheat); }
+
+  /* ── Buttons & links ─────────────────────────────────────────────── */
+  .fm-button-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    background: var(--fm-mulberry);
+    color: var(--fm-paper);
+    padding: 0.85rem 1.5rem;
+    border-radius: 2px;
+    font-family: var(--fm-body);
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background-color 160ms ease;
+  }
+  .fm-button-primary:hover { background: var(--fm-mulberry-deep); }
+  .fm-button-primary:focus-visible {
+    outline: 2px solid var(--fm-mulberry);
+    outline-offset: 3px;
+  }
+
+  .fm-button-cream {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    background: var(--fm-paper);
+    color: var(--fm-mulberry-deep);
+    padding: 0.85rem 1.5rem;
+    border-radius: 2px;
+    font-family: var(--fm-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background-color 160ms ease, color 160ms ease;
+  }
+  .fm-button-cream:hover {
+    background: var(--fm-wheat-soft);
+    color: var(--fm-mulberry-deep);
+  }
+  .fm-button-cream:focus-visible {
+    outline: 2px solid var(--fm-paper);
+    outline-offset: 3px;
+  }
+
+  .fm-link-quiet {
+    color: var(--fm-ink-soft);
+    font-family: var(--fm-display);
+    font-style: italic;
+    font-size: 1.1rem;
+    text-decoration: underline;
+    text-decoration-color: var(--fm-line);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+    transition: text-decoration-color 160ms ease;
+  }
+  .fm-link-quiet:hover { text-decoration-color: var(--fm-mulberry); }
+
+  .fm-link-cream {
+    color: color-mix(in srgb, var(--fm-paper) 80%, var(--fm-mulberry-deep));
+    font-family: var(--fm-display);
+    font-style: italic;
+    font-size: 1.1rem;
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--fm-paper) 30%, transparent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+    transition: text-decoration-color 160ms ease, color 160ms ease;
+  }
+  .fm-link-cream:hover {
+    color: var(--fm-paper);
+    text-decoration-color: var(--fm-wheat-soft);
+  }
+
+  .fm-meta-link {
+    color: var(--fm-ink);
+    text-decoration: underline;
+    text-decoration-color: var(--fm-line);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+  .fm-meta-link:hover { text-decoration-color: var(--fm-mulberry); }
+
+  /* ── Section 1: Hero ─────────────────────────────────────────────── */
+  .fm-hero { padding-block: clamp(3rem, 8vw, 6rem); }
+  .fm-hero-grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: end;
+  }
+  @media (min-width: 900px) {
+    .fm-hero-grid {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      align-items: center;
+    }
+  }
+  .fm-wordmark {
+    font-family: var(--fm-display);
+    font-size: clamp(3.5rem, 9vw, 6.5rem);
+    line-height: 0.95;
+    margin: 1.5rem 0 0;
+    color: var(--fm-mulberry);
+    letter-spacing: -0.015em;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    column-gap: 0.3em;
+    row-gap: 0.05em;
+  }
+  .fm-wordmark-italic { font-style: italic; font-weight: 400; }
+  .fm-wordmark-plus {
+    font-style: normal;
+    color: var(--fm-sage);
+    font-weight: 300;
+    font-size: 0.85em;
+    transform: translateY(-0.05em);
+  }
+  .fm-tagline {
+    font-family: var(--fm-display);
+    font-style: italic;
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    line-height: 1.25;
+    color: var(--fm-ink);
+    margin: 1.5rem 0 0;
+    max-width: 22ch;
+  }
+  .fm-subline {
+    font-size: 1rem;
+    color: var(--fm-ink-soft);
+    margin: 1rem 0 0;
+    max-width: 38ch;
+    line-height: 1.6;
+  }
+  .fm-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+    margin: 2rem 0 0;
+    flex-wrap: wrap;
+  }
+  .fm-meta {
+    font-size: 0.85rem;
+    color: var(--fm-ink-mute);
+    margin: 2.5rem 0 0;
+    letter-spacing: 0.01em;
+  }
+  .fm-hero-figure { margin: 0; }
+  .fm-hero-img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 2px;
+    filter: sepia(0.04) contrast(1.02);
+  }
+  .fm-img-caption {
+    margin: 0.75rem 0 0;
+    font-size: 0.75rem;
+    color: var(--fm-ink-mute);
+    font-family: var(--fm-display);
+    font-style: italic;
+  }
+  .fm-img-caption a {
+    color: var(--fm-ink-soft);
+    text-decoration: underline;
+    text-decoration-color: var(--fm-line);
+  }
+
+  /* ── Section 2: Note from the kitchen ────────────────────────────── */
+  .fm-note {
+    padding-block: clamp(4rem, 9vw, 7rem);
+    border-block: 1px solid var(--fm-line);
+    background: var(--fm-cream);
+  }
+  .fm-note-body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .fm-note-body p {
+    font-family: var(--fm-display);
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    line-height: 1.35;
+    color: var(--fm-ink);
+    margin: 0;
+    text-wrap: pretty;
+    font-weight: 300;
+  }
+  .fm-note-body em {
+    font-style: italic;
+    color: var(--fm-mulberry);
+  }
+
+  /* ── Section 3: The menu ─────────────────────────────────────────── */
+  .fm-menu { padding-block: clamp(4rem, 9vw, 7rem); }
+  .fm-menu-header {
+    margin-block-end: clamp(2.5rem, 5vw, 4rem);
+    max-width: 44rem;
+  }
+  .fm-menu-note {
+    color: var(--fm-ink-soft);
+    margin: 1.25rem 0 0;
+    font-family: var(--fm-display);
+    font-style: italic;
+    font-size: 1.125rem;
+    line-height: 1.5;
+    max-width: 40ch;
+  }
+  .fm-menu-grid {
+    display: grid;
+    gap: clamp(2.5rem, 5vw, 4rem);
+  }
+  @media (min-width: 800px) {
+    .fm-menu-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  .fm-menu-section {
+    border-top: 2px solid var(--fm-mulberry);
+    padding-block-start: 1.25rem;
+  }
+  .fm-menu-section-label {
+    font-family: var(--fm-display);
+    font-size: 1.15rem;
+    color: var(--fm-mulberry);
+    margin: 0 0 1.25rem 0;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .fm-menu-section-label em { font-style: italic; font-weight: 400; }
+  .fm-menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .fm-menu-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-size: 1rem;
+  }
+  .fm-menu-name {
+    color: var(--fm-ink);
+    font-family: var(--fm-display);
+    font-size: 1.15rem;
+    line-height: 1.3;
+  }
+  .fm-menu-leader {
+    align-self: end;
+    border-bottom: 1px dotted var(--fm-line);
+    height: 0.5em;
+    margin-block-end: 0.4em;
+  }
+  .fm-menu-price {
+    font-family: var(--fm-display);
+    font-style: italic;
+    color: var(--fm-mulberry);
+    font-size: 1.125rem;
+  }
+  .fm-menu-footer {
+    text-align: center;
+    color: var(--fm-wheat);
+    font-size: 1.25rem;
+    margin: clamp(2.5rem, 5vw, 4rem) 0 0;
+    letter-spacing: 0.5em;
+  }
+
+  /* ── Section 4: This weekend ─────────────────────────────────────── */
+  .fm-weekend {
+    padding-block: clamp(4rem, 9vw, 7rem);
+    background: var(--fm-sage);
+    color: var(--fm-paper);
+  }
+  .fm-weekend-header {
+    margin-block-end: clamp(2.5rem, 5vw, 4rem);
+    max-width: 44rem;
+  }
+  .fm-weekend-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: clamp(2rem, 4vw, 3rem);
+  }
+  @media (min-width: 800px) {
+    .fm-weekend-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  .fm-weekend-day {
+    position: relative;
+    border-top: 1px solid color-mix(in srgb, var(--fm-paper) 35%, transparent);
+    padding-block-start: 1.5rem;
+  }
+  .fm-weekend-short {
+    font-family: var(--fm-display);
+    font-style: italic;
+    color: var(--fm-wheat-soft);
+    font-size: 1rem;
+    margin: 0;
+    letter-spacing: 0.04em;
+  }
+  .fm-weekend-name {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    line-height: 1;
+    margin: 0.5rem 0 0;
+    color: var(--fm-paper);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .fm-weekend-hours {
+    font-family: var(--fm-display);
+    font-size: 1.5rem;
+    color: var(--fm-wheat-soft);
+    margin: 0.5rem 0 0;
+    font-style: italic;
+  }
+  .fm-weekend-note {
+    color: color-mix(in srgb, var(--fm-paper) 88%, var(--fm-sage-deep));
+    font-size: 1rem;
+    line-height: 1.55;
+    margin: 1.25rem 0 0;
+    max-width: 32ch;
+  }
+
+  /* ── Section 5: The ethos ────────────────────────────────────────── */
+  .fm-ethos {
+    padding-block: clamp(3rem, 6vw, 4.5rem);
+    background: var(--fm-paper);
+    border-bottom: 1px solid var(--fm-line);
+    text-align: center;
+  }
+  .fm-ethos-line {
+    margin: 0;
+    font-family: var(--fm-display);
+    font-size: clamp(1.125rem, 2vw, 1.5rem);
+    line-height: 1.4;
+    color: var(--fm-ink);
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    gap: 1rem 1.25rem;
+  }
+  .fm-ethos-item {
+    font-style: italic;
+    color: var(--fm-sage-deep);
+  }
+  .fm-ethos-mark {
+    color: var(--fm-wheat);
+    font-style: normal;
+    font-size: 0.85em;
+  }
+
+  /* ── Section 6: Order online ─────────────────────────────────────── */
+  .fm-order {
+    padding-block: clamp(4rem, 9vw, 7rem);
+    background: var(--fm-cream);
+  }
+  .fm-order-grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .fm-order-grid {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    }
+  }
+  .fm-order-figure { margin: 0; }
+  .fm-order-img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 2px;
+    filter: sepia(0.04) contrast(1.02);
+  }
+  .fm-order-body {
+    font-family: var(--fm-display);
+    font-size: clamp(1.125rem, 1.9vw, 1.4rem);
+    line-height: 1.5;
+    color: var(--fm-ink-soft);
+    margin: 1.25rem 0 0;
+    text-wrap: pretty;
+    max-width: 44ch;
+  }
+  .fm-order-text > .fm-button-primary { margin-block-start: 2rem; }
+  .fm-order-note {
+    margin: 1.25rem 0 0;
+    font-size: 0.85rem;
+    color: var(--fm-ink-mute);
+    max-width: 44ch;
+    line-height: 1.55;
+  }
+
+  /* ── Section 7: Find us ──────────────────────────────────────────── */
+  .fm-find {
+    padding-block: clamp(4rem, 9vw, 7rem);
+  }
+  .fm-find-grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+  @media (min-width: 720px) {
+    .fm-find-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  }
+  .fm-hours {
+    margin: 1rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .fm-hours-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    font-family: var(--fm-display);
+    font-size: 1.15rem;
+    border-bottom: 1px dotted var(--fm-line);
+    padding-block-end: 0.5rem;
+  }
+  .fm-hours-row:last-child { border-bottom: 0; }
+  .fm-hours-row dt {
+    color: var(--fm-ink);
+    font-style: italic;
+  }
+  .fm-hours-row dd {
+    color: var(--fm-mulberry);
+    margin: 0;
+    font-style: italic;
+  }
+  .fm-find-street {
+    font-size: clamp(2rem, 3.5vw, 2.5rem);
+    margin: 0.75rem 0 0;
+    line-height: 1.1;
+  }
+  .fm-find-city {
+    color: var(--fm-ink-soft);
+    font-family: var(--fm-display);
+    font-style: italic;
+    font-size: 1.25rem;
+    margin: 0.25rem 0 0;
+  }
+  .fm-find-phone, .fm-find-email { margin: 0.5rem 0 0; }
+  .fm-find-phone a, .fm-find-email a {
+    color: var(--fm-ink);
+    text-decoration: underline;
+    text-decoration-color: var(--fm-mulberry);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+  }
+
+  /* ── Section 8: Mainstay closing — dark mulberry finale ──────────── */
+  .fm-close {
+    padding-block: clamp(5rem, 10vw, 8rem);
+    background: var(--fm-mulberry-deep);
+    color: var(--fm-paper);
+    border-top: 3px solid var(--fm-wheat);
+  }
+  .fm-close-body {
+    font-family: var(--fm-display);
+    font-size: clamp(1.125rem, 1.9vw, 1.4rem);
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--fm-paper) 92%, var(--fm-mulberry-deep));
+    margin: 1.25rem 0 0;
+    text-wrap: pretty;
+  }
+  .fm-close-body em {
+    font-style: italic;
+    color: var(--fm-wheat-soft);
+  }
+  .fm-close-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.75rem;
+    margin: 2rem 0 0;
+    align-items: center;
+  }
+  .fm-close-sign {
+    margin: 2rem 0 0;
+    padding-block-start: 1.5rem;
+    border-top: 1px dotted color-mix(in srgb, var(--fm-paper) 25%, transparent);
+    font-family: var(--fm-display);
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--fm-wheat-soft);
+  }
+  .fm-close-sign a {
+    color: var(--fm-wheat-soft);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--fm-paper) 35%, transparent);
+  }
+  .fm-close-sign a:hover {
+    text-decoration-color: var(--fm-wheat-soft);
+  }
+</style>
