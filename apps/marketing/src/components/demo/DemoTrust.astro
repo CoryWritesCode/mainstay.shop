@@ -1,0 +1,40 @@
+---
+// DemoTrust — "Since {year}" stat block for trade businesses where
+// longevity is the headline.
+
+interface Props {
+  since: number;
+}
+
+const { since } = Astro.props;
+const years = new Date().getFullYear() - since;
+---
+
+<section class="section-y">
+  <div class="container-page">
+    <div
+      class="border-line rounded-[var(--radius-card)] border p-8 md:p-12 grid gap-x-12 gap-y-6 md:grid-cols-[auto_minmax(0,1fr)] md:items-center"
+      style="background-color: color-mix(in srgb, var(--demo-accent-soft) 40%, var(--color-paper))"
+    >
+      <div>
+        <p
+          class="text-sm tracking-wide uppercase mb-2"
+          style="color: var(--demo-accent)"
+        >
+          Family-run since
+        </p>
+        <p class="font-serif text-[clamp(3.5rem,7vw,5rem)] leading-none">
+          {since}
+        </p>
+      </div>
+      <div class="max-w-[44ch]">
+        <p class="text-[1.125rem] leading-[1.55] text-pretty">
+          That's <strong class="font-medium">{years} years</strong> of sizing,
+          installing, and servicing water softeners for homes around Fairfield
+          County. Two owners, one phone number, and a workshop full of parts
+          for things they don't make anymore.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

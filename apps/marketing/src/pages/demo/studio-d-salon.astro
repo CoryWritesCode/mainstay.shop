@@ -1,0 +1,1233 @@
+---
+// Studio D Salon — bespoke demo for cold-pitch outreach.
+//
+// Brand context: Booth-rental salon in Baltimore, Ohio. Owner brands
+// herself as the primary stylist and rents chairs to independent
+// professionals (esthetician, nail tech). Owner's voice (from FB):
+// "a beautiful, welcoming space that feels like home."
+//
+// The pitch underneath this design: one consistent site for all three
+// professionals turns Studio D from a fragmented set of Square pages
+// into a polished single presence — which makes booth rent worth more.
+//
+// Aesthetic: "Main Street parlor" meets "welcoming-home." Logo-led,
+// blush + warm charcoal + brass palette pulled directly from the
+// owner's existing logo. Cormorant Garamond display + Public Sans body
+// + Caveat handwriting. Layered surfaces, asymmetric layout.
+
+import { getEntry } from "astro:content";
+import { Image } from "astro:assets";
+import "@fontsource-variable/cormorant-garamond";
+import "@fontsource-variable/caveat";
+import DemoShell from "../../components/demo/DemoShell.astro";
+import DemoDisclosure from "../../components/demo/DemoDisclosure.astro";
+import studioLogo from "../../assets/demos/studio-d-salon/logo.png";
+
+const demo = await getEntry("demos", "studio-d-salon");
+if (!demo) throw new Error("Demo content for studio-d-salon not found.");
+const d = demo.data;
+const telHref = `tel:+1${d.phone.replace(/\D/g, "")}`;
+
+// The chairs: each independent professional in the studio. Owner is
+// presented as one of three — the salon's identity is the umbrella.
+// Names are intentional placeholders, not the real renters.
+type Chair = {
+  monogram: string;
+  name: string;
+  role: string;
+  bio: string;
+  services: Array<{ name: string; price: string }>;
+  bookLabel: string;
+  bookHref: string;
+  anchor: string;
+};
+
+const chairs: Chair[] = [
+  {
+    monogram: "H",
+    name: "Heather",
+    role: "owner · hair",
+    bio: "Sixteen years behind the chair, two kids at home, one strong opinion about your bangs. Cuts, color, and the wedding-week pampering.",
+    services: [
+      { name: "Cut & style", price: "from $50" },
+      { name: "Color & refresh", price: "from $130" },
+      { name: "The works (cut + color + treatment)", price: "from $185" },
+      { name: "Bridal & event styling", price: "from $95" },
+    ],
+    bookLabel: "Book with Heather",
+    bookHref: "#book",
+    anchor: "hair",
+  },
+  {
+    monogram: "M",
+    name: "Maggie",
+    role: "esthetician · brows & waxing",
+    bio: "Waxing, brow shaping, lash tints, and the kind of attention to detail that has people booking out two weeks ahead.",
+    services: [
+      { name: "Brow shaping", price: "$20" },
+      { name: "Lip wax", price: "$12" },
+      { name: "Full-face wax", price: "$45" },
+      { name: "Lash tint", price: "$35" },
+    ],
+    bookLabel: "Book with Maggie",
+    bookHref: "#book",
+    anchor: "brows",
+  },
+  {
+    monogram: "R",
+    name: "Robin",
+    role: "nail tech · gel & manicures",
+    bio: "Careful, classic manicures and gel sets that hold up for the full two weeks. Walk-ins welcome when the chair is free.",
+    services: [
+      { name: "Classic manicure", price: "$35" },
+      { name: "Gel manicure", price: "$50" },
+      { name: "Gel removal + rebuild", price: "$65" },
+      { name: "Polish change", price: "$20" },
+    ],
+    bookLabel: "Book with Robin",
+    bookHref: "#book",
+    anchor: "nails",
+  },
+];
+
+// Appointment book — today + four following days. Closed Sundays.
+const today = new Date();
+const dayShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const days = Array.from({ length: 5 }, (_, offset) => {
+  const date = new Date(today);
+  date.setDate(today.getDate() + offset);
+  return {
+    label: dayShort[date.getDay()],
+    dateNum: date.getDate(),
+    closed: date.getDay() === 0,
+    isToday: offset === 0,
+  };
+});
+
+const todaySlots = [
+  { time: "10:30", state: "booked" as const },
+  { time: "11:15", state: "available" as const },
+  { time: "12:00", state: "booked" as const },
+  { time: "1:30", state: "available" as const },
+  { time: "2:00", state: "selected" as const },
+  { time: "3:15", state: "available" as const },
+  { time: "4:45", state: "booked" as const },
+  { time: "5:30", state: "available" as const },
+  { time: "6:15", state: "available" as const },
+];
+---
+
+<DemoShell
+  title="Studio D Salon — Baltimore, Ohio"
+  description="A real website for Studio D Salon, made by Mainstay."
+  bodyBackground="#F6EFE4"
+>
+  <div class="studio-d">
+    <DemoDisclosure name={d.name} facebook={d.facebook} ctaLabel="Make it real">
+      <p slot="message" class="sd-disclosure-text">
+        <span class="sd-disclosure-strong">Hi, I'm Cory.</span> I made this for
+        you — a website for Studio D, the way I'd actually build it for a
+        salon. Have a look around, and if it feels right,{" "}
+        <a href="https://mainstayshop.studio/#contact" class="sd-disclosure-link">
+          let's talk about making it yours.
+        </a>
+      </p>
+    </DemoDisclosure>
+
+    <main id="main">
+      <!-- 1 ▸ Hero ─────────────────────────────────────────────────────── -->
+      <section class="sd-hero">
+        <div class="sd-container">
+          <div class="sd-hero-grid">
+            <div class="sd-hero-text">
+              <p class="sd-eyebrow">
+                <span aria-hidden="true" class="sd-eyebrow-mark">❋</span>
+                Baltimore, Ohio · on Market Street
+              </p>
+
+              <Image
+                src={studioLogo}
+                alt="Studio D Salon"
+                width={280}
+                height={280}
+                loading="eager"
+                class="sd-logo"
+              />
+
+              <h1 class="sd-display sd-h1">
+                A welcoming hour off Market Street.
+              </h1>
+              <p class="sd-tagline">
+                Hair, brows, and nails under one roof — and a place that
+                feels a little like home.
+              </p>
+              <div class="sd-actions">
+                <a class="sd-button-primary" href="#book">
+                  Book a chair <span aria-hidden="true">→</span>
+                </a>
+                <a class="sd-link-quiet" href="#chairs">Meet the chairs</a>
+              </div>
+              <p class="sd-meta">
+                934 W Market St · Baltimore, OH ·{" "}
+                <a href={telHref} class="sd-meta-link">{d.phone}</a>
+              </p>
+            </div>
+
+            <figure class="sd-hero-figure">
+              <Image
+                src="https://images.unsplash.com/photo-1706629503720-13cad35ce2e5"
+                alt="A warm hair salon interior with chairs and mirrors."
+                width={1100}
+                height={1400}
+                inferSize={false}
+                loading="eager"
+                class="sd-hero-img"
+              />
+              <figcaption class="sd-img-caption">
+                Sample photo by{" "}
+                <a href="https://unsplash.com/@tilemerchant" rel="noopener noreferrer" target="_blank">
+                  Tile Merchant Ireland
+                </a>{" "}
+                on Unsplash. Yours would live here.
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2 ▸ A letter from Studio D ───────────────────────────────────── -->
+      <section class="sd-letter">
+        <div class="sd-container sd-narrow">
+          <p class="sd-script-label">a note before you sit down —</p>
+          <p class="sd-letter-body">
+            We've been quietly making people feel like themselves on Market
+            Street for a while now. Cut, color, the in-between trims, the
+            wedding-week pampering, the <em>"I need to feel like me again"</em>
+            visits. Studio D isn't trying to be a chain or a destination
+            spa — it's a welcoming little space with great people, the kind
+            that feels a bit like home. Bring your hair, your brows, your
+            nails, or all three. We'd love it if you came in.
+          </p>
+          <p class="sd-letter-sign" aria-hidden="true">
+            ~ the chairs at Studio&nbsp;D
+          </p>
+        </div>
+      </section>
+
+      <!-- 3 ▸ The Chairs ───────────────────────────────────────────────── -->
+      <section class="sd-chairs" id="chairs">
+        <div class="sd-container">
+          <header class="sd-chairs-header">
+            <p class="sd-script-label">three chairs, one studio —</p>
+            <h2 class="sd-display sd-h2">The Chairs.</h2>
+            <p class="sd-chairs-intro">
+              Studio D is home to a small group of professionals — each
+              independently great at what they do, all under one roof.
+              Pricing's on the chair below. Booking too.
+            </p>
+            <nav class="sd-chairs-nav" aria-label="Jump to a chair">
+              <a href="#chair-hair">Hair</a>
+              <span aria-hidden="true">·</span>
+              <a href="#chair-brows">Brows &amp; waxing</a>
+              <span aria-hidden="true">·</span>
+              <a href="#chair-nails">Nails</a>
+            </nav>
+          </header>
+
+          <ol class="sd-chairs-list">
+            {chairs.map((chair, i) => (
+              <li
+                class="sd-chair"
+                id={`chair-${chair.anchor}`}
+              >
+                <div class="sd-chair-mark-wrap" aria-hidden="true">
+                  <span class="sd-chair-monogram sd-display">{chair.monogram}</span>
+                  <span class="sd-chair-rule"></span>
+                  <span class="sd-chair-num">
+                    {i === 0 ? "i." : i === 1 ? "ii." : "iii."}
+                  </span>
+                </div>
+
+                <h3 class="sd-display sd-chair-name">{chair.name}</h3>
+                <p class="sd-chair-role">{chair.role}</p>
+
+                <p class="sd-chair-bio">{chair.bio}</p>
+
+                <ol class="sd-chair-services">
+                  {chair.services.map((s) => (
+                    <li class="sd-chair-service">
+                      <span class="sd-chair-service-name">{s.name}</span>
+                      <span class="sd-chair-service-dots" aria-hidden="true"></span>
+                      <span class="sd-chair-service-price">{s.price}</span>
+                    </li>
+                  ))}
+                </ol>
+
+                <a class="sd-button-chair" href={chair.bookHref}>
+                  {chair.bookLabel} <span aria-hidden="true">→</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+
+          <p class="sd-chair-footnote">
+            <em>Placeholder names — yours would go here.</em>
+          </p>
+        </div>
+      </section>
+
+      <!-- 4 ▸ The Appointment Book ─────────────────────────────────────── -->
+      <section class="sd-book" id="book">
+        <div class="sd-container">
+          <header class="sd-book-header">
+            <p class="sd-script-label">turn the page —</p>
+            <h2 class="sd-display sd-h2">The Appointment Book.</h2>
+            <p class="sd-book-intro">
+              A glimpse of what booking with Heather could look like — pick
+              a time, the chair holds it, and we both move on with the day.
+              Brows and nails take their own bookings (see The Chairs
+              above). Demo only — none of these slots are real.
+            </p>
+          </header>
+
+          <div
+            class="sd-book-panel"
+            aria-label="Booking mockup"
+            role="region"
+            aria-describedby="sd-book-disclaimer"
+          >
+            <p class="sd-book-with" aria-hidden="true">
+              <span class="sd-script-inline">booking with</span>
+              <span class="sd-book-with-name">Heather · hair</span>
+            </p>
+
+            <ol class="sd-book-days">
+              {days.map((day) => (
+                <li class={`sd-book-day ${day.isToday ? "is-today" : ""} ${day.closed ? "is-closed" : ""}`}>
+                  {day.isToday && (
+                    <p class="sd-book-today" aria-hidden="true">today</p>
+                  )}
+                  <p class="sd-book-day-label">{day.label}</p>
+                  <p class="sd-book-day-num">{day.dateNum}</p>
+                  {day.closed && <p class="sd-book-closed">closed</p>}
+                </li>
+              ))}
+            </ol>
+
+            <div class="sd-book-slots-wrap">
+              <p class="sd-book-slots-label">
+                Available times —{" "}
+                <span class="sd-script-inline">today</span>
+              </p>
+              <ul class="sd-book-slots" role="list">
+                {todaySlots.map((slot) => (
+                  <li>
+                    <button
+                      type="button"
+                      class={`sd-slot sd-slot-${slot.state}`}
+                      disabled={slot.state === "booked"}
+                      aria-pressed={slot.state === "selected" ? "true" : "false"}
+                      aria-label={
+                        slot.state === "booked"
+                          ? `${slot.time} (booked)`
+                          : `Book ${slot.time}`
+                      }
+                    >
+                      <span class="sd-slot-dot" aria-hidden="true"></span>
+                      <span class="sd-slot-time">{slot.time}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div class="sd-book-confirm">
+              <div class="sd-book-confirm-detail">
+                <p class="sd-script-inline">selected</p>
+                <p class="sd-book-confirm-time">
+                  Today, 2:00 PM · Cut and style with Heather
+                </p>
+              </div>
+              <button type="button" class="sd-button-brass">
+                Hold this chair <span aria-hidden="true">→</span>
+              </button>
+            </div>
+
+            <p id="sd-book-disclaimer" class="sd-book-disclaimer">
+              <strong>Demo only.</strong> No real bookings happen here — this
+              is what online booking could feel like on Studio D's site.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5 ▸ Find Us ──────────────────────────────────────────────────── -->
+      <section class="sd-find">
+        <div class="sd-container">
+          <div class="sd-find-card">
+            <div class="sd-find-col">
+              <p class="sd-eyebrow">Hours</p>
+              <dl class="sd-hours">
+                {(d.hours ?? []).map((row) => (
+                  <div class="sd-hours-row">
+                    <dt>{row.label}</dt>
+                    <dd>{row.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+            <div class="sd-find-divider" aria-hidden="true">❋</div>
+            <div class="sd-find-col">
+              <p class="sd-eyebrow">Find us</p>
+              <p class="sd-display sd-find-street">{d.location.street}</p>
+              <p class="sd-find-city">{d.location.city}, {d.location.state}</p>
+              <p class="sd-find-phone">
+                <a href={telHref}>{d.phone}</a>
+              </p>
+              <p class="sd-find-walkins">
+                Walk-ins welcome between appointments — call ahead and we'll
+                save you a chair.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6 ▸ Mainstay closing ─────────────────────────────────────────── -->
+      <section class="sd-close">
+        <div class="sd-container sd-narrow">
+          <p class="sd-script-label">from one Main Street to another —</p>
+          <h2 class="sd-display sd-h2">I made this for you.</h2>
+          <p class="sd-close-body">
+            I'm Cory. I run Mainstay — a one-person web shop building real
+            websites for local businesses. If this feels like Studio D, I'd
+            love to make it yours. The buttons would work. The hours would
+            update from your phone. The photos would be of <em>your</em>
+            salon, and the chairs would be your actual chairs.
+          </p>
+          <p class="sd-close-body">
+            Everyone in the studio — hair, brows, nails — would live in
+            one place, with a feel that matches what you've built. That
+            consistency tends to make the chair worth a little more to
+            rent, which has a way of paying for the whole site. (Just
+            something to think about.)
+          </p>
+          <div class="sd-close-actions">
+            <a class="sd-button-primary" href="https://mainstayshop.studio/#contact">
+              Let's talk <span aria-hidden="true">→</span>
+            </a>
+            <a class="sd-link-quiet" href="https://mainstayshop.studio/">
+              See how Mainstay works
+            </a>
+          </div>
+          <p class="sd-close-sign">
+            — Cory ·{" "}
+            <a href="mailto:hello@mainstayshop.studio">hello@mainstayshop.studio</a>
+          </p>
+        </div>
+      </section>
+    </main>
+  </div>
+</DemoShell>
+
+<style is:global>
+  /* ── Studio D Salon — bespoke palette + typography ───────────────── */
+  /* Palette pulled directly from the salon's existing logo:
+   *   blush #f4d5d9 background + warm-charcoal #3d2227 wordmark.
+   * Brass is a quiet third — used only on fine details (rules, dots,
+   * the brass-plate confirm button) so it reads as intentional. */
+  .studio-d {
+    /* Warm vintage-paper palette. Cream is shifted toward wheat/eggshell
+     * (golden warmth) rather than rose warmth — so when it covers the
+     * whole page, it reads as "warm paper" not "pink." Brass becomes
+     * the warm accent; blush only earns its place in the logo and in
+     * small functional moments (slot hover, "today" pill). */
+    --studio-paper:        #f6efe4;
+    --studio-blush:        #e8d4cf;
+    --studio-surface:      #efe6d6;
+    --studio-surface-deep: #d6c7b1;
+    --studio-ink:          #2a1d18;
+    --studio-ink-soft:     #5a4438;
+    --studio-ink-mute:     #74604f;
+    --studio-accent:       #3d2620;
+    --studio-accent-deep:  #1f130f;
+    --studio-accent-soft:  #ebd0cb;
+    --studio-brass:        #a88b5e;
+    --studio-brass-soft:   #d9c4a0;
+    --studio-line:         #d6cab6;
+
+    --studio-display: "Cormorant Garamond Variable", "Cormorant Garamond",
+      "Source Serif 4 Variable", Georgia, serif;
+    --studio-body: "Public Sans Variable", "Public Sans", system-ui,
+      -apple-system, sans-serif;
+    --studio-hand: "Caveat Variable", "Caveat", "Brush Script MT", cursive;
+
+    color: var(--studio-ink);
+    font-family: var(--studio-body);
+  }
+
+  /* ── Disclosure overrides (scoped to studio-d wrapper) ───────────── */
+  .studio-d .sd-disclosure-text {
+    color: var(--studio-ink-soft);
+    text-wrap: pretty;
+  }
+  .studio-d .sd-disclosure-strong {
+    color: var(--studio-ink);
+    font-weight: 500;
+  }
+  .studio-d .sd-disclosure-link {
+    color: var(--studio-accent);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: var(--studio-line);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+  }
+  .studio-d .sd-disclosure-link:hover {
+    text-decoration-color: var(--studio-accent);
+  }
+
+  /* ── Containers ──────────────────────────────────────────────────── */
+  .sd-container {
+    width: 100%;
+    max-width: 76rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .sd-container { padding-inline: 3rem; }
+  }
+  .sd-narrow { max-width: 44rem; }
+
+  /* ── Typography building blocks ──────────────────────────────────── */
+  .sd-display {
+    font-family: var(--studio-display);
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    color: var(--studio-ink);
+  }
+  .sd-italic { font-style: italic; font-weight: 400; }
+
+  .sd-h1 {
+    font-size: clamp(2.5rem, 6.5vw, 4.25rem);
+    line-height: 1;
+    margin: 1.5rem 0 0;
+    max-width: 16ch;
+    font-style: italic;
+    font-weight: 400;
+  }
+  .sd-h2 {
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    line-height: 1.05;
+    margin: 0;
+  }
+
+  .sd-eyebrow {
+    font-family: var(--studio-body);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--studio-accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0;
+  }
+  .sd-eyebrow-mark {
+    color: var(--studio-brass);
+    font-size: 1.1em;
+    line-height: 1;
+  }
+
+  .sd-script-label {
+    font-family: var(--studio-hand);
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    color: var(--studio-accent);
+    line-height: 1;
+    margin: 0 0 0.5rem 0;
+  }
+  .sd-script-inline {
+    font-family: var(--studio-hand);
+    color: var(--studio-accent);
+    font-size: 1.15em;
+  }
+
+  /* ── Buttons & links ─────────────────────────────────────────────── */
+  .sd-button-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--studio-accent);
+    color: var(--studio-paper);
+    padding: 0.85rem 1.25rem;
+    border-radius: 999px;
+    font-family: var(--studio-body);
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background-color 160ms ease;
+  }
+  .sd-button-primary:hover { background: var(--studio-accent-deep); }
+  .sd-button-primary:focus-visible {
+    outline: 2px solid var(--studio-accent);
+    outline-offset: 3px;
+  }
+
+  .sd-button-chair {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    color: var(--studio-accent);
+    padding: 0.7rem 1rem;
+    border: 1px solid var(--studio-accent);
+    border-radius: 999px;
+    font-family: var(--studio-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    transition: background-color 160ms ease, color 160ms ease;
+    align-self: flex-start;
+  }
+  .sd-button-chair:hover {
+    background: var(--studio-accent);
+    color: var(--studio-paper);
+  }
+  .sd-button-chair:focus-visible {
+    outline: 2px solid var(--studio-accent);
+    outline-offset: 3px;
+  }
+
+  .sd-button-brass {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--studio-brass);
+    color: var(--studio-ink);
+    padding: 0.75rem 1.1rem;
+    border: 1px solid color-mix(in srgb, var(--studio-brass) 70%, black);
+    border-radius: 4px;
+    font-family: var(--studio-body);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow:
+      0 1px 0 color-mix(in srgb, var(--studio-brass-soft) 80%, white) inset,
+      0 1px 2px color-mix(in srgb, var(--studio-ink) 25%, transparent);
+    transition: filter 160ms ease, transform 80ms ease;
+  }
+  .sd-button-brass:hover { filter: brightness(0.95); }
+  .sd-button-brass:active { transform: translateY(1px); }
+  .sd-button-brass:focus-visible {
+    outline: 2px solid var(--studio-brass);
+    outline-offset: 3px;
+  }
+
+  .sd-link-quiet {
+    color: var(--studio-ink-soft);
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: var(--studio-line);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+    transition: text-decoration-color 160ms ease;
+  }
+  .sd-link-quiet:hover { text-decoration-color: var(--studio-accent); }
+
+  .sd-meta-link {
+    color: var(--studio-ink);
+    text-decoration: underline;
+    text-decoration-color: var(--studio-line);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+  .sd-meta-link:hover { text-decoration-color: var(--studio-accent); }
+
+  /* ── Section 1: Hero ─────────────────────────────────────────────── */
+  .sd-hero { padding-block: clamp(3rem, 8vw, 6rem); }
+  .sd-hero-grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: end;
+  }
+  @media (min-width: 900px) {
+    .sd-hero-grid {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      align-items: center;
+    }
+  }
+  .sd-logo {
+    display: block;
+    width: clamp(180px, 28vw, 260px);
+    height: auto;
+    margin: 2rem 0 0;
+    border-radius: 6px;
+    box-shadow:
+      0 1px 0 color-mix(in srgb, var(--studio-brass-soft) 60%, white) inset,
+      0 4px 0 var(--studio-surface-deep),
+      0 10px 28px color-mix(in srgb, var(--studio-ink) 12%, transparent);
+  }
+  .sd-tagline {
+    font-family: var(--studio-display);
+    font-size: clamp(1.125rem, 2vw, 1.5rem);
+    line-height: 1.4;
+    color: var(--studio-ink-soft);
+    margin: 1.25rem 0 0;
+    max-width: 32ch;
+  }
+  .sd-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin: 2rem 0 0;
+    flex-wrap: wrap;
+  }
+  .sd-meta {
+    font-size: 0.85rem;
+    color: var(--studio-ink-mute);
+    margin: 2.5rem 0 0;
+    letter-spacing: 0.01em;
+  }
+  .sd-hero-figure { margin: 0; }
+  .sd-hero-img {
+    width: 100%;
+    aspect-ratio: 11 / 14;
+    object-fit: cover;
+    border-radius: 2px;
+    border: 1px solid var(--studio-brass-soft);
+    padding: 6px;
+    background: var(--studio-paper);
+    box-shadow:
+      0 1px 0 var(--studio-brass-soft) inset,
+      6px 8px 0 var(--studio-surface-deep),
+      6px 8px 28px color-mix(in srgb, var(--studio-ink) 14%, transparent);
+  }
+  .sd-img-caption {
+    margin: 0.75rem 0 0;
+    font-size: 0.75rem;
+    color: var(--studio-ink-mute);
+    font-style: italic;
+  }
+  .sd-img-caption a {
+    color: var(--studio-ink-soft);
+    text-decoration: underline;
+    text-decoration-color: var(--studio-line);
+  }
+
+  /* ── Section 2: Letter ───────────────────────────────────────────── */
+  .sd-letter {
+    padding-block: clamp(3rem, 7vw, 5rem);
+    border-block: 1px solid var(--studio-brass-soft);
+    background: var(--studio-paper);
+  }
+  .sd-letter-body {
+    font-family: var(--studio-display);
+    font-size: clamp(1.25rem, 2vw, 1.6rem);
+    line-height: 1.45;
+    color: var(--studio-ink);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .sd-letter-body em {
+    font-style: italic;
+    color: var(--studio-accent);
+  }
+  .sd-letter-sign {
+    font-family: var(--studio-hand);
+    font-size: 1.5rem;
+    color: var(--studio-accent);
+    margin: 1.5rem 0 0;
+  }
+
+  /* ── Section 3: The Chairs ───────────────────────────────────────── */
+  .sd-chairs {
+    padding-block: clamp(4rem, 9vw, 7rem);
+  }
+  .sd-chairs-header { margin-block-end: clamp(2.5rem, 5vw, 4rem); max-width: 44rem; }
+  .sd-chairs-intro {
+    color: var(--studio-ink-soft);
+    margin: 1.25rem 0 0;
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 42ch;
+  }
+  .sd-chairs-nav {
+    margin: 1.5rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    font-family: var(--studio-display);
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--studio-ink-soft);
+  }
+  .sd-chairs-nav a {
+    color: var(--studio-accent);
+    text-decoration: underline;
+    text-decoration-color: var(--studio-line);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+  .sd-chairs-nav a:hover { text-decoration-color: var(--studio-accent); }
+  .sd-chairs-nav span { color: var(--studio-brass); }
+
+  .sd-chairs-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: clamp(1.5rem, 3vw, 2rem);
+  }
+  @media (min-width: 800px) {
+    .sd-chairs-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  .sd-chair {
+    background: var(--studio-paper);
+    border: 1px solid var(--studio-line);
+    border-top: 3px solid var(--studio-brass);
+    border-radius: 2px;
+    padding: clamp(1.75rem, 3vw, 2.25rem);
+    display: flex;
+    flex-direction: column;
+    box-shadow:
+      0 2px 0 var(--studio-surface-deep),
+      0 12px 28px color-mix(in srgb, var(--studio-ink) 8%, transparent);
+    scroll-margin-top: 6rem;
+  }
+  .sd-chair-mark-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-block-end: 0.75rem;
+  }
+  .sd-chair-monogram {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-style: italic;
+    color: var(--studio-brass);
+    line-height: 1;
+  }
+  .sd-chair-rule {
+    flex-grow: 1;
+    height: 1px;
+    background: var(--studio-brass);
+    align-self: end;
+    margin-block-end: 0.6em;
+  }
+  .sd-chair-num {
+    font-family: var(--studio-display);
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--studio-brass);
+    align-self: end;
+    margin-block-end: 0.45em;
+  }
+  .sd-chair-name {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    margin: 0;
+    line-height: 1;
+  }
+  .sd-chair-role {
+    font-family: var(--studio-hand);
+    color: var(--studio-accent);
+    font-size: 1.25rem;
+    margin: 0.35rem 0 0;
+  }
+  .sd-chair-bio {
+    color: var(--studio-ink-soft);
+    margin: 1.25rem 0 0;
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  .sd-chair-services {
+    list-style: none;
+    padding: 1.25rem 0 0;
+    margin: 1.5rem 0 0;
+    border-top: 1px dotted var(--studio-line);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex-grow: 1;
+  }
+  .sd-chair-service {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+  }
+  .sd-chair-service-name {
+    color: var(--studio-ink);
+    font-weight: 500;
+  }
+  .sd-chair-service-dots {
+    align-self: end;
+    border-bottom: 1px dotted var(--studio-line);
+    height: 0.5em;
+    margin-block-end: 0.35em;
+  }
+  .sd-chair-service-price {
+    font-family: var(--studio-display);
+    font-style: italic;
+    color: var(--studio-accent);
+    font-size: 1rem;
+  }
+
+  .sd-chair > .sd-button-chair { margin-block-start: 1.5rem; }
+
+  .sd-chair-footnote {
+    color: var(--studio-ink-mute);
+    font-size: 0.85rem;
+    margin: 2rem 0 0;
+    text-align: center;
+    font-style: italic;
+  }
+
+  /* ── Section 4: The Appointment Book ─────────────────────────────── */
+  .sd-book {
+    padding-block: clamp(4rem, 9vw, 7rem);
+    background: var(--studio-paper);
+    border-block: 1px solid var(--studio-brass-soft);
+  }
+  .sd-book-header {
+    margin-block-end: clamp(2rem, 4vw, 3rem);
+    max-width: 40rem;
+  }
+  .sd-book-intro {
+    color: var(--studio-ink-soft);
+    margin: 1rem 0 0;
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 44ch;
+  }
+
+  .sd-book-panel {
+    background: var(--studio-paper);
+    border: 1px solid var(--studio-line);
+    border-top: 3px solid var(--studio-brass);
+    border-radius: 4px;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    box-shadow:
+      0 2px 0 var(--studio-surface-deep),
+      0 14px 36px color-mix(in srgb, var(--studio-ink) 10%, transparent);
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 1.75rem,
+      color-mix(in srgb, var(--studio-line) 28%, transparent) 1.75rem,
+      color-mix(in srgb, var(--studio-line) 28%, transparent) calc(1.75rem + 1px)
+    );
+  }
+
+  .sd-book-with {
+    display: flex;
+    align-items: baseline;
+    gap: 0.65rem;
+    margin: 0 0 1.5rem;
+    padding-block-end: 1rem;
+    border-bottom: 1px dotted var(--studio-line);
+  }
+  .sd-book-with-name {
+    font-family: var(--studio-display);
+    font-size: 1.4rem;
+    color: var(--studio-ink);
+  }
+
+  .sd-book-days {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.75rem;
+    border-bottom: 1px solid var(--studio-line);
+    padding-bottom: 1.5rem;
+  }
+  .sd-book-day {
+    position: relative;
+    text-align: center;
+    padding: 0.75rem 0.25rem;
+    border-radius: 2px;
+  }
+  .sd-book-day.is-today {
+    background: var(--studio-accent-soft);
+    box-shadow: 0 0 0 1px var(--studio-accent) inset;
+  }
+  .sd-book-day.is-closed { opacity: 0.55; }
+  .sd-book-day-label {
+    font-family: var(--studio-body);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--studio-ink-soft);
+    margin: 0;
+  }
+  .sd-book-day-num {
+    font-family: var(--studio-display);
+    font-size: clamp(1.875rem, 4vw, 2.5rem);
+    font-weight: 500;
+    line-height: 1;
+    margin: 0.25rem 0 0;
+    color: var(--studio-ink);
+  }
+  .sd-book-today {
+    font-family: var(--studio-hand);
+    font-size: 1rem;
+    color: var(--studio-accent);
+    margin: 0;
+    position: absolute;
+    top: -0.6rem;
+    left: 50%;
+    transform: translateX(-50%) rotate(-4deg);
+  }
+  .sd-book-closed {
+    font-family: var(--studio-hand);
+    font-size: 0.95rem;
+    color: var(--studio-ink-mute);
+    margin: 0.25rem 0 0;
+  }
+
+  .sd-book-slots-label {
+    font-size: 0.95rem;
+    color: var(--studio-ink-soft);
+    margin: 0 0 1rem;
+  }
+  .sd-book-slots {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+  }
+  .sd-slot {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    border: 0;
+    padding: 0.4rem 0.5rem;
+    font-family: var(--studio-body);
+    font-size: 1rem;
+    color: var(--studio-ink);
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 120ms ease, color 120ms ease;
+  }
+  .sd-slot-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--studio-brass);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--studio-brass) 70%, black);
+    flex-shrink: 0;
+  }
+  .sd-slot:hover { background: var(--studio-accent-soft); }
+  .sd-slot:focus-visible {
+    outline: 2px solid var(--studio-accent);
+    outline-offset: 2px;
+  }
+  .sd-slot-booked {
+    color: var(--studio-ink-mute);
+    text-decoration: line-through;
+    text-decoration-color: var(--studio-ink-mute);
+    text-decoration-thickness: 1px;
+    font-style: italic;
+    cursor: not-allowed;
+  }
+  .sd-slot-booked:hover { background: transparent; }
+  .sd-slot-booked .sd-slot-dot {
+    background: transparent;
+    box-shadow: 0 0 0 1px var(--studio-ink-mute);
+  }
+  .sd-slot-selected {
+    background: var(--studio-accent);
+    color: var(--studio-paper);
+    font-weight: 500;
+    padding-inline: 0.75rem;
+  }
+  .sd-slot-selected .sd-slot-dot {
+    background: var(--studio-paper);
+    box-shadow: none;
+  }
+  .sd-slot-selected:hover { background: var(--studio-accent-deep); }
+
+  .sd-book-confirm {
+    margin: 2rem 0 0;
+    padding-block-start: 1.5rem;
+    border-top: 1px dotted var(--studio-line);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  @media (min-width: 600px) {
+    .sd-book-confirm {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+  .sd-book-confirm-detail p { margin: 0; }
+  .sd-book-confirm-time {
+    font-family: var(--studio-display);
+    font-size: 1.25rem;
+    color: var(--studio-ink);
+    margin: 0.2rem 0 0;
+  }
+  .sd-book-disclaimer {
+    margin: 1.25rem 0 0;
+    font-size: 0.75rem;
+    color: var(--studio-ink-mute);
+    border-top: 1px dotted var(--studio-line);
+    padding-block-start: 1rem;
+  }
+  .sd-book-disclaimer strong {
+    color: var(--studio-ink);
+    font-weight: 600;
+  }
+
+  /* ── Section 5: Find Us ──────────────────────────────────────────── */
+  .sd-find { padding-block: clamp(4rem, 9vw, 7rem); }
+  .sd-find-card {
+    background: var(--studio-paper);
+    border: 1px solid var(--studio-brass-soft);
+    border-radius: 2px;
+    padding: clamp(2rem, 4vw, 3rem);
+    display: grid;
+    gap: clamp(1.5rem, 3vw, 2rem);
+    box-shadow:
+      0 1px 0 var(--studio-brass-soft) inset,
+      0 2px 24px color-mix(in srgb, var(--studio-ink) 8%, transparent);
+  }
+  @media (min-width: 720px) {
+    .sd-find-card {
+      grid-template-columns: 1fr auto 1fr;
+      align-items: start;
+    }
+  }
+  .sd-find-divider {
+    color: var(--studio-brass);
+    font-size: 1.5rem;
+    text-align: center;
+    padding-block: 1rem;
+  }
+  .sd-hours {
+    margin: 1rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .sd-hours-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    font-size: 0.95rem;
+    border-bottom: 1px dotted var(--studio-line);
+    padding-block-end: 0.5rem;
+  }
+  .sd-hours-row:last-child { border-bottom: 0; }
+  .sd-hours-row dt { font-weight: 500; color: var(--studio-ink); }
+  .sd-hours-row dd { color: var(--studio-ink-soft); margin: 0; }
+  .sd-find-street {
+    font-size: 1.5rem;
+    margin: 0.75rem 0 0;
+  }
+  .sd-find-city {
+    color: var(--studio-ink-soft);
+    margin: 0.25rem 0 0;
+  }
+  .sd-find-phone { margin: 0.75rem 0 0; }
+  .sd-find-phone a {
+    color: var(--studio-ink);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: var(--studio-brass);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+  }
+  .sd-find-walkins {
+    margin: 1rem 0 0;
+    font-size: 0.9rem;
+    color: var(--studio-ink-soft);
+    font-style: italic;
+    line-height: 1.55;
+  }
+
+  /* ── Section 6: Mainstay closing — the dramatic inverted finale ──── */
+  /* Dark warm-charcoal ground. Cream text. Brass CTAs. This is the
+   * "Cory speaks now" moment — visually distinct from the salon's own
+   * warm sections so the booth-rental pitch lands with its own voice. */
+  .sd-close {
+    padding-block: clamp(5rem, 10vw, 8rem);
+    border-top: 3px solid var(--studio-brass);
+    background: var(--studio-ink);
+    color: var(--studio-paper);
+  }
+  .sd-close .sd-script-label {
+    color: var(--studio-brass-soft);
+  }
+  .sd-close .sd-h2 {
+    color: var(--studio-paper);
+  }
+  .sd-close-body {
+    font-family: var(--studio-display);
+    font-size: clamp(1.125rem, 1.9vw, 1.375rem);
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--studio-paper) 92%, var(--studio-ink));
+    margin: 1.25rem 0 0;
+    text-wrap: pretty;
+  }
+  .sd-close-body em {
+    font-style: italic;
+    color: var(--studio-brass-soft);
+  }
+  .sd-close-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin: 2rem 0 0;
+    align-items: center;
+  }
+  /* On dark: primary becomes a brass plate; secondary becomes a cream link. */
+  .sd-close .sd-button-primary {
+    background: var(--studio-brass);
+    color: var(--studio-ink);
+  }
+  .sd-close .sd-button-primary:hover {
+    background: color-mix(in srgb, var(--studio-brass) 86%, white);
+  }
+  .sd-close .sd-button-primary:focus-visible {
+    outline-color: var(--studio-brass-soft);
+  }
+  .sd-close .sd-link-quiet {
+    color: color-mix(in srgb, var(--studio-paper) 80%, var(--studio-ink));
+    text-decoration-color: var(--studio-brass);
+  }
+  .sd-close .sd-link-quiet:hover {
+    color: var(--studio-paper);
+    text-decoration-color: var(--studio-brass-soft);
+  }
+  .sd-close-sign {
+    margin: 2rem 0 0;
+    font-family: var(--studio-hand);
+    font-size: 1.35rem;
+    color: var(--studio-brass-soft);
+    padding-block-start: 1.5rem;
+    border-top: 1px dotted color-mix(in srgb, var(--studio-paper) 25%, transparent);
+  }
+  .sd-close-sign a {
+    color: var(--studio-brass-soft);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--studio-paper) 35%, transparent);
+  }
+  .sd-close-sign a:hover {
+    text-decoration-color: var(--studio-brass-soft);
+  }
+</style>

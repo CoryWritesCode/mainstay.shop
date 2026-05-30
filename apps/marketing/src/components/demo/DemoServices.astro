@@ -1,0 +1,50 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  demo: CollectionEntry<"demos">["data"];
+}
+
+const { demo } = Astro.props;
+
+const headingByArchetype: Record<string, { eyebrow: string; title: string }> = {
+  salon: { eyebrow: "Services", title: "What we do at the chair." },
+  bakery: { eyebrow: "What we make", title: "From the farmhouse kitchen." },
+  food: { eyebrow: "What we serve", title: "Off the menu." },
+  trade: { eyebrow: "Services", title: "How we help." },
+};
+const heading =
+  headingByArchetype[demo.archetype] ??
+  { eyebrow: "Services", title: "What we offer." };
+
+// Prefer services; fall back to featured_items.
+const items = demo.services ?? demo.featured_items ?? [];
+---
+
+{items.length > 0 && (
+  <section class="section-y">
+    <div class="container-page">
+      <header class="mb-10 max-w-[44ch]">
+        <p class="text-ink-mute text-sm tracking-wide uppercase mb-3">
+          {heading.eyebrow}
+        </p>
+        <h2 class="font-serif text-[clamp(1.75rem,3.5vw,2.25rem)] leading-[1.15] tracking-[-0.01em] text-balance">
+          {heading.title}
+        </h2>
+      </header>
+
+      <ul role="list" class="grid gap-x-10 gap-y-5 sm:grid-cols-2 md:grid-cols-3">
+        {items.map((item) => (
+          <li class="flex items-start gap-3 text-[1.0625rem] leading-snug">
+            <span
+              aria-hidden="true"
+              class="mt-2.5 inline-block size-1.5 shrink-0 rounded-full"
+              style="background-color: var(--demo-accent)"
+            ></span>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+)}

@@ -1,0 +1,90 @@
+---
+// DemoDisclosure — the "I made this for you" honesty signal at the top
+// of every demo. Sticky, hides on scroll-down, reappears on scroll-up.
+//
+// Default copy is generic and addresses the recipient in second person.
+// Pages can override the message body via the named slot for bespoke
+// voice while keeping the shared chrome and scroll behavior.
+
+interface Props {
+  name: string;
+  facebook: string;
+  /** Optional tone for the CTA pill. Defaults to "Let's talk." */
+  ctaLabel?: string;
+}
+
+const { name, facebook, ctaLabel = "Let's talk" } = Astro.props;
+const hasCustomMessage = Astro.slots.has("message");
+---
+
+<aside
+  data-demo-disclosure
+  role="note"
+  aria-label="Demo notice"
+  class="border-line bg-paper/95 sticky top-0 z-50 border-b backdrop-blur-md transition-transform duration-300 will-change-transform"
+>
+  <div class="container-page flex flex-col gap-2 py-3 text-sm leading-snug md:flex-row md:items-center md:justify-between md:gap-6">
+    {hasCustomMessage ? (
+      <slot name="message" />
+    ) : (
+      <p class="text-ink-soft text-pretty">
+        <span class="text-ink font-medium">Hi, I'm Cory.</span>{" "}
+        I made this for you — a real website for{" "}
+        <span class="font-medium">{name}</span>, the way I'd actually build
+        it. I'm not affiliated with you yet; this is me knocking on the
+        door.{" "}
+        <a
+          href={facebook}
+          rel="noopener noreferrer"
+          target="_blank"
+          class="text-ink decoration-line-strong hover:decoration-accent font-medium"
+        >
+          Your real page is here.
+        </a>
+      </p>
+    )}
+    <a
+      href="https://mainstayshop.studio/#contact"
+      class="bg-ink hover:bg-accent-deep text-paper inline-flex shrink-0 items-center justify-center rounded-[var(--radius-button)] px-3 py-1.5 text-xs font-medium tracking-wide uppercase no-underline transition-colors"
+    >
+      {ctaLabel}
+    </a>
+  </div>
+</aside>
+
+<script>
+  // Hide the disclosure banner when scrolling down; show on scroll-up.
+  // Always visible near the top. Throttled via requestAnimationFrame.
+  const banner = document.querySelector<HTMLElement>("[data-demo-disclosure]");
+  if (banner) {
+    const HIDE_CLASS = "-translate-y-full";
+    const TOP_THRESHOLD = 80;
+    const SCROLL_DELTA = 6;
+    let lastY = window.scrollY;
+    let ticking = false;
+
+    const update = () => {
+      const y = window.scrollY;
+      if (y < TOP_THRESHOLD) {
+        banner.classList.remove(HIDE_CLASS);
+      } else if (y > lastY + SCROLL_DELTA) {
+        banner.classList.add(HIDE_CLASS);
+      } else if (y < lastY - SCROLL_DELTA) {
+        banner.classList.remove(HIDE_CLASS);
+      }
+      lastY = y;
+      ticking = false;
+    };
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (!ticking) {
+          requestAnimationFrame(update);
+          ticking = true;
+        }
+      },
+      { passive: true }
+    );
+  }
+</script>

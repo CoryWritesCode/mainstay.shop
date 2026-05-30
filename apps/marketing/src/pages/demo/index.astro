@@ -1,0 +1,100 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const demos = await getCollection("demos");
+
+// Stable ordering for the gallery (alphabetical by business name).
+demos.sort((a, b) => a.data.name.localeCompare(b.data.name));
+
+const archetypeLabel: Record<string, string> = {
+  salon: "Salon",
+  bakery: "Bakery",
+  food: "Restaurant",
+  trade: "Trade & service",
+};
+---
+
+<BaseLayout
+  title="Sample storefronts — Mainstay"
+  description="A small gallery of sample websites Mainstay built on spec for local shops."
+  noindex
+>
+  <section class="section-y">
+    <div class="container-page">
+      <p class="text-ink-mute text-sm tracking-wide uppercase mb-3">
+        Samples
+      </p>
+      <h1 class="font-serif text-[clamp(2.25rem,5vw,3rem)] leading-[1.1] tracking-[-0.02em] text-balance max-w-[22ch]">
+        A few storefronts I built on spec.
+      </h1>
+      <p class="text-ink-soft mt-6 max-w-[52ch] text-[clamp(1.0625rem,1.6vw,1.25rem)] leading-[1.55] text-pretty">
+        These are samples — not real customer sites yet. Every one was made
+        to show a particular shop what their site could look like if we
+        worked together. If you're one of the shops below, or you know them,
+        I'd love to make a real one.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-y border-line border-t">
+    <div class="container-page">
+      <ul role="list" class="grid gap-6 sm:grid-cols-2 lg:gap-8">
+        {
+          demos.map((demo) => {
+            const d = demo.data;
+            const cardStyle = [
+              `--demo-accent: ${d.accent.primary}`,
+              `--demo-accent-deep: ${d.accent.deep}`,
+              `--demo-accent-soft: ${d.accent.soft}`,
+            ].join("; ");
+            return (
+              <li>
+                <a
+                  href={`/demo/${demo.id}/`}
+                  style={cardStyle}
+                  class="border-line bg-paper hover:shadow-[var(--shadow-lift)] group block h-full rounded-[var(--radius-card)] border p-6 no-underline transition-shadow md:p-8"
+                >
+                  <div
+                    class="-mx-6 -mt-6 mb-6 h-16 rounded-t-[var(--radius-card)] md:-mx-8 md:-mt-8"
+                    style="background-color: var(--demo-accent-soft)"
+                    aria-hidden="true"
+                  ></div>
+                  <p
+                    class="text-xs tracking-wide uppercase mb-3"
+                    style="color: var(--demo-accent)"
+                  >
+                    {archetypeLabel[d.archetype] ?? d.archetype} · {d.location.city}, {d.location.state}
+                  </p>
+                  <h2 class="font-serif text-2xl leading-tight tracking-tight text-balance">
+                    {d.name}
+                  </h2>
+                  <p class="text-ink-soft mt-3 text-[1rem] leading-[1.55] text-pretty">
+                    {d.hero_tagline}
+                  </p>
+                  <p
+                    class="mt-6 inline-flex items-center gap-1.5 text-sm font-medium"
+                    style="color: var(--demo-accent)"
+                  >
+                    See the sample
+                    <span
+                      aria-hidden="true"
+                      class="transition-transform group-hover:translate-x-1"
+                    >
+                      →
+                    </span>
+                  </p>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+
+      <p class="text-ink-mute mt-12 max-w-[44ch] text-sm">
+        These pages aren't indexed by search engines and aren't linked from
+        the main Mainstay site. Share the direct URL with whoever you'd like.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

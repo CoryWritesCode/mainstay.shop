@@ -1,0 +1,22 @@
+---
+import { getCollection } from "astro:content";
+import DemoLayout from "../../components/demo/DemoLayout.astro";
+
+export async function getStaticPaths() {
+  // Slugs that have a bespoke, hand-crafted page elsewhere in src/pages/demo/.
+  // Excluded here so the dynamic route doesn't double-render them.
+  const bespokeSlugs = new Set(["studio-d-salon"]);
+
+  const demos = await getCollection("demos");
+  return demos
+    .filter((demo) => !bespokeSlugs.has(demo.id))
+    .map((demo) => ({
+      params: { slug: demo.id },
+      props: { demo },
+    }));
+}
+
+const { demo } = Astro.props;
+---
+
+<DemoLayout demo={demo} />

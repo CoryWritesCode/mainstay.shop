@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+# Sample demo storefronts are private — shared by direct link only.
+Disallow: /demo/
+Disallow: /demo

@@ -1,0 +1,51 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  demo: CollectionEntry<"demos">["data"];
+}
+
+const { demo } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="border-line border-t">
+  <div class="container-page section-y">
+    <div
+      class="border-line rounded-[var(--radius-card)] border p-7 md:p-10"
+      style="background-color: color-mix(in srgb, var(--demo-accent-soft) 35%, var(--color-paper))"
+    >
+      <p class="text-ink-mute text-sm tracking-wide uppercase mb-3">
+        About this page
+      </p>
+      <p class="font-serif text-[clamp(1.5rem,3vw,1.875rem)] leading-snug text-balance max-w-[44ch]">
+        This is a sample I made for {demo.name}. The shop is real; the website
+        isn't theirs yet.
+      </p>
+      <p class="text-ink-soft mt-5 max-w-[52ch] text-[1.0625rem] leading-[1.6] text-pretty">
+        I'm Cory — I run Mainstay, a one-person web shop building real
+        websites for local businesses. If you're {demo.name}, or you know
+        them, I'd love to make a real one.
+      </p>
+      <div class="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3 text-[0.9375rem]">
+        <a
+          href="https://mainstayshop.studio/#contact"
+          class="bg-ink hover:bg-accent-deep text-paper inline-flex items-center gap-2 rounded-[var(--radius-button)] px-4 py-2.5 font-medium no-underline transition-colors"
+        >
+          Get in touch
+          <span aria-hidden="true">→</span>
+        </a>
+        <a
+          href="https://mainstayshop.studio/"
+          class="text-ink-soft hover:text-ink decoration-line-strong font-medium"
+        >
+          See what Mainstay does
+        </a>
+      </div>
+    </div>
+
+    <p class="text-ink-mute mt-8 text-center text-xs">
+      Mainstay · sample for {demo.name} · © {year}
+    </p>
+  </div>
+</footer>

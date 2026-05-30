@@ -1,0 +1,43 @@
+{
+  "name": "Fox + Mulberry",
+  "archetype": "bakery",
+  "facebook": "https://www.facebook.com/foxandmulberry",
+  "location": {
+    "street": "114 W Mulberry St",
+    "city": "Baltimore",
+    "state": "OH"
+  },
+  "phone": "(740) 400-4278",
+  "email": "foxandmulberry@gmail.com",
+  "hours": [
+    { "label": "Fri", "value": "8a – 2p" },
+    { "label": "Sat", "value": "8a – 2p" },
+    { "label": "Sun", "value": "12p – 4p" },
+    { "label": "Mon – Thu", "value": "Closed" }
+  ],
+  "hero_tagline": "Sourdough from the farmhouse kitchen. Plant-based, locally sourced, weekends only.",
+  "about": "Fox + Mulberry is a small plant-based bakery and community market on Mulberry Street. The loaves come straight from a farmhouse kitchen, the ingredients are local whenever we can find them, and the weekend rhythm is on purpose — slow food, neighborhood pace.",
+  "featured_items": [
+    "Sourdough loaves",
+    "Seasonal pastries",
+    "Community market",
+    "Online ordering"
+  ],
+  "accent": {
+    "primary": "#7c2a40",
+    "deep": "#5a1b2d",
+    "soft": "#f4ddd8"
+  },
+  "show_scheduler": false,
+  "cta": {
+    "label": "Get a site like this",
+    "href": "https://mainstayshop.studio/#contact"
+  },
+  "hero_image": {
+    "url": "https://images.unsplash.com/photo-1765227036124-f90781f04dd8",
+    "alt": "A rustic loaf of sourdough bread on a wooden board.",
+    "credit_name": "Ryan Fleischer",
+    "credit_url": "https://unsplash.com/@flyshoot"
+  },
+  "visual_note": "Eggshell + flour + mulberry-deep · editorial serif · warm crumb/loaf photography."
+}

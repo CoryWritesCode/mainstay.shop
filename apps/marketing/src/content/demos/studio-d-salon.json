@@ -1,0 +1,43 @@
+{
+  "name": "Studio D Salon",
+  "archetype": "salon",
+  "facebook": "https://www.facebook.com/studiodsalonbaltimore",
+  "location": {
+    "street": "934 W Market St",
+    "city": "Baltimore",
+    "state": "OH"
+  },
+  "phone": "(614) 746-1266",
+  "hours": [
+    { "label": "Mon – Thu", "value": "10a – 8p" },
+    { "label": "Fri", "value": "10a – 6p" },
+    { "label": "Sat", "value": "10a – 2p" },
+    { "label": "Sun", "value": "Closed" }
+  ],
+  "hero_tagline": "Hair, nails, and a little time for yourself — right on Market Street.",
+  "about": "Studio D is a full-service salon in the heart of Baltimore — the kind of place where you settle in for a couple of hours and walk out feeling like the week starts fresh. Cut, color, nails, and waxing — six days a week.",
+  "services": [
+    "Cut & style",
+    "Color",
+    "Nails",
+    "Facial waxing",
+    "Spray tan (UV-free)"
+  ],
+  "accent": {
+    "primary": "#7a3d5e",
+    "deep": "#5a2843",
+    "soft": "#ecd9df"
+  },
+  "show_scheduler": true,
+  "cta": {
+    "label": "Get a site like this",
+    "href": "https://mainstayshop.studio/#contact"
+  },
+  "hero_image": {
+    "url": "https://images.unsplash.com/photo-1706629503720-13cad35ce2e5",
+    "alt": "A warm hair salon interior with chairs and mirrors.",
+    "credit_name": "Tile Merchant Ireland",
+    "credit_url": "https://unsplash.com/@tilemerchant"
+  },
+  "visual_note": "Cream + soft blush + deep aubergine accent; serif headline; soft mirror-light photography."
+}

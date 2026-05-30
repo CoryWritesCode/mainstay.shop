@@ -1,0 +1,130 @@
+---
+// DemoScheduler — a static mockup of an online booking widget. No
+// real backend; clicking a slot does nothing. The point is to show a
+// salon owner what their site COULD look like with online booking.
+
+const today = new Date();
+const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+// Build the next 5 days starting today.
+const days = Array.from({ length: 5 }, (_, offset) => {
+  const date = new Date(today);
+  date.setDate(today.getDate() + offset);
+  return {
+    label: offset === 0 ? "Today" : dayNames[date.getDay()],
+    dateNum: date.getDate(),
+    fullLabel: date.toLocaleDateString("en-US", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+    }),
+  };
+});
+
+// Mocked slot availability — varied so the demo looks lived-in.
+const allSlots = [
+  "10:00",
+  "10:30",
+  "11:00",
+  "12:00",
+  "1:00",
+  "2:00",
+  "3:30",
+  "4:00",
+  "5:30",
+  "6:00",
+];
+// Per-day "booked" indices, varied so it looks real.
+const bookedByDay: number[][] = [
+  [0, 1, 4, 7, 9],
+  [2, 5],
+  [0, 3, 4, 6, 8],
+  [1, 2, 7],
+  [0, 5, 6, 9],
+];
+---
+
+<section class="section-y">
+  <div class="container-page">
+    <header class="mb-10 max-w-[48ch]">
+      <p class="text-ink-mute text-sm tracking-wide uppercase mb-3">
+        Book your appointment
+      </p>
+      <h2 class="font-serif text-[clamp(1.75rem,3.5vw,2.25rem)] leading-[1.15] tracking-[-0.01em] text-balance">
+        Pick a time that works for you.
+      </h2>
+      <p class="text-ink-soft mt-4 text-[1.0625rem] leading-[1.6] text-pretty">
+        A snapshot of what online booking could look like on your site. Pick a
+        day, pick a time, the rest happens automatically.
+      </p>
+    </header>
+
+    <div
+      class="border-line bg-paper rounded-[var(--radius-card)] border p-5 md:p-7"
+      role="region"
+      aria-label="Booking mockup"
+      aria-describedby="scheduler-demo-note"
+    >
+      <ol class="grid gap-3 sm:grid-cols-5" role="tablist">
+        {days.map((day, i) => (
+          <li>
+            <button
+              type="button"
+              class:list={[
+                "border-line w-full rounded-[var(--radius-button)] border px-3 py-2 text-center transition-colors",
+                i === 0 && "border-[var(--demo-accent)] bg-[var(--demo-accent-soft)]",
+              ]}
+              aria-pressed={i === 0 ? "true" : "false"}
+            >
+              <span class="text-ink-mute block text-xs tracking-wide uppercase">
+                {day.label}
+              </span>
+              <span class="font-serif text-2xl leading-none">
+                {day.dateNum}
+              </span>
+            </button>
+          </li>
+        ))}
+      </ol>
+
+      <div class="border-line mt-6 border-t pt-6">
+        <p class="text-ink-mute mb-4 text-xs tracking-wide uppercase">
+          {days[0]?.fullLabel} — available times
+        </p>
+        <ul role="list" class="flex flex-wrap gap-2">
+          {allSlots.map((time, i) => {
+            const booked = bookedByDay[0]?.includes(i);
+            return (
+              <li>
+                <button
+                  type="button"
+                  disabled={booked}
+                  aria-label={
+                    booked ? `${time} booked` : `Book ${time} appointment`
+                  }
+                  class:list={[
+                    "rounded-[var(--radius-button)] border px-3 py-1.5 text-sm font-medium transition-colors",
+                    booked
+                      ? "border-line text-ink-mute line-through opacity-60"
+                      : "border-[var(--demo-accent)] hover:bg-[var(--demo-accent)] hover:text-paper",
+                  ]}
+                >
+                  {time}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+
+      <p
+        id="scheduler-demo-note"
+        class="border-line text-ink-mute mt-6 border-t pt-4 text-xs"
+      >
+        <strong class="text-ink font-medium">Demo only.</strong> This is what
+        online booking could look like on your site — the buttons don't
+        actually book yet.
+      </p>
+    </div>
+  </div>
+</section>

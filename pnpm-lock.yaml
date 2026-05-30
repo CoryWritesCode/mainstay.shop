@@ -17,6 +17,12 @@ importers:
 
   apps/marketing:
     dependencies:
+      '@fontsource-variable/caveat':
+        specifier: ^5.1.0
+        version: 5.2.8
+      '@fontsource-variable/cormorant-garamond':
+        specifier: ^5.1.0
+        version: 5.2.6
       '@fontsource-variable/public-sans':
         specifier: ^5.1.0
         version: 5.2.7
@@ -449,6 +455,12 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@fontsource-variable/caveat@5.2.8':
+    resolution: {integrity: sha512-Iv+G8xn0pKG7RtanBmYGMjIfkO819N13LXZBwmRVcgfJvJwKVom/v3KT9pwANXTSoUbPeRp228twRDK7hcabLw==}
+
+  '@fontsource-variable/cormorant-garamond@5.2.6':
+    resolution: {integrity: sha512-5vHPJWMuTbVoB6OnorCflWJ51NJZ7eQWw58tVFUE/hHphTi/z2vrKESbuMSJ3diOC5KgPm/RLv2ULur+N1NLJQ==}
 
   '@fontsource-variable/public-sans@5.2.7':
     resolution: {integrity: sha512-4mvade2J3slKkvwRkS+p8T3szet/0vhWoSnuUJTVU81Uo2pRpSZY/Y8bSLRqpSwzIPxjVmRJ53oq6JKP/l/PSg==}
@@ -2487,6 +2499,10 @@ snapshots:
 
   '@esbuild/win32-x64@0.27.7':
     optional: true
+
+  '@fontsource-variable/caveat@5.2.8': {}
+
+  '@fontsource-variable/cormorant-garamond@5.2.6': {}
 
   '@fontsource-variable/public-sans@5.2.7': {}
 

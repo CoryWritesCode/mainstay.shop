@@ -1,0 +1,50 @@
+---
+// DemoShell — minimal shared <head> + body shell for bespoke demo pages.
+// Owns the noindex meta, the favicon link, the title/description, and the
+// skip-link. Each bespoke demo page wraps its content in this shell and is
+// otherwise free to do whatever it likes visually.
+//
+// Demos that use the dynamic [slug].astro route get their head from
+// DemoLayout.astro instead.
+
+import "../../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  /** Optional body background color override (e.g. a brand-specific paper). */
+  bodyBackground?: string;
+  /** Optional inline body style for setting CSS custom properties. */
+  bodyStyle?: string;
+}
+
+const { title, description, bodyBackground, bodyStyle } = Astro.props;
+
+const computedBodyStyle = [
+  bodyBackground ? `background-color: ${bodyBackground}` : null,
+  bodyStyle ?? null,
+]
+  .filter(Boolean)
+  .join("; ");
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content={bodyBackground ?? "#FBF7F1"} />
+  </head>
+  <body
+    class="text-ink antialiased"
+    style={computedBodyStyle.length > 0 ? computedBodyStyle : undefined}
+  >
+    <a class="skip-link" href="#main">Skip to content</a>
+    <slot />
+  </body>
+</html>

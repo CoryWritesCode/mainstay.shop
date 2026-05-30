@@ -1,0 +1,90 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+
+interface Props {
+  demo: CollectionEntry<"demos">["data"];
+}
+
+const { demo } = Astro.props;
+const telHref = `tel:+1${demo.phone.replace(/\D/g, "")}`;
+---
+
+<section class="section-y">
+  <div class="container-page grid gap-x-12 gap-y-10 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:items-center">
+    <div>
+      <p
+        class="mb-8 flex items-center gap-3 font-sans text-sm tracking-wide uppercase"
+        style="color: var(--demo-accent)"
+      >
+        <span
+          class="inline-block size-2 rounded-full"
+          style="background-color: var(--demo-accent)"
+          aria-hidden="true"
+        ></span>
+        {demo.location.city}, {demo.location.state}
+      </p>
+
+      <h1 class="font-serif text-[clamp(2.5rem,6vw,4rem)] leading-[1.05] tracking-[-0.02em] text-balance max-w-[18ch]">
+        {demo.name}
+      </h1>
+
+      <p class="text-ink-soft mt-6 max-w-[42ch] text-[clamp(1.125rem,1.7vw,1.375rem)] leading-[1.5] text-pretty">
+        {demo.hero_tagline}
+      </p>
+
+      <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
+        <a
+          href={demo.cta.href}
+          class="text-paper inline-flex items-center gap-2 rounded-[var(--radius-button)] px-5 py-3 font-medium no-underline transition-colors"
+          style="background-color: var(--demo-accent)"
+        >
+          {demo.cta.label}
+          <span aria-hidden="true">→</span>
+        </a>
+        <a
+          href="#about"
+          class="text-ink-soft hover:text-ink decoration-line-strong font-medium"
+        >
+          Learn more
+        </a>
+      </div>
+
+      <p class="text-ink-mute mt-10 text-sm">
+        {demo.location.street} · {demo.location.city}, {demo.location.state} ·{" "}
+        <a
+          href={telHref}
+          class="decoration-line-strong hover:decoration-[var(--demo-accent)]"
+        >
+          {demo.phone}
+        </a>
+      </p>
+    </div>
+
+    {demo.hero_image && (
+      <figure class="relative">
+        <Image
+          src={demo.hero_image.url}
+          alt={demo.hero_image.alt}
+          width={1200}
+          height={1500}
+          inferSize={false}
+          loading="eager"
+          class="border-line aspect-[4/5] w-full rounded-[var(--radius-card)] border object-cover shadow-[var(--shadow-lift)]"
+        />
+        <figcaption class="text-ink-mute mt-3 text-xs">
+          Sample photo by{" "}
+          <a
+            href={demo.hero_image.credit_url}
+            rel="noopener noreferrer"
+            target="_blank"
+            class="decoration-line-strong hover:decoration-[var(--demo-accent)]"
+          >
+            {demo.hero_image.credit_name}
+          </a>{" "}
+          on Unsplash. Real photos of your shop would go here.
+        </figcaption>
+      </figure>
+    )}
+  </div>
+</section>

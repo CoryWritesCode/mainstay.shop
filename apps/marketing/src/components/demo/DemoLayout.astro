@@ -1,0 +1,57 @@
+---
+import type { CollectionEntry } from "astro:content";
+import "../../styles/global.css";
+import DemoDisclosure from "./DemoDisclosure.astro";
+import DemoHero from "./DemoHero.astro";
+import DemoAbout from "./DemoAbout.astro";
+import DemoServices from "./DemoServices.astro";
+import DemoHours from "./DemoHours.astro";
+import DemoScheduler from "./DemoScheduler.astro";
+import DemoTrust from "./DemoTrust.astro";
+import DemoFooter from "./DemoFooter.astro";
+
+interface Props {
+  demo: CollectionEntry<"demos">;
+}
+
+const { demo } = Astro.props;
+const d = demo.data;
+
+const accentStyle = [
+  `--demo-accent: ${d.accent.primary}`,
+  `--demo-accent-deep: ${d.accent.deep}`,
+  `--demo-accent-soft: ${d.accent.soft}`,
+].join("; ");
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{d.name} — Mainstay demo</title>
+    <meta
+      name="description"
+      content={`A sample website Mainstay built on spec for ${d.name} in ${d.location.city}, ${d.location.state}.`}
+    />
+    <meta name="theme-color" content="#FBF7F1" />
+  </head>
+  <body class="bg-paper text-ink antialiased" style={accentStyle}>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <DemoDisclosure name={d.name} facebook={d.facebook} />
+    <main id="main">
+      <DemoHero demo={d} />
+      <DemoAbout demo={d} />
+      <DemoServices demo={d} />
+      {d.show_scheduler && <DemoScheduler />}
+      {d.archetype === "trade" && d.since !== undefined && (
+        <DemoTrust since={d.since} />
+      )}
+      <DemoHours demo={d} />
+    </main>
+    <DemoFooter demo={d} />
+  </body>
+</html>

@@ -10,6 +10,8 @@
     "typecheck": "astro check"
   },
   "dependencies": {
+    "@fontsource-variable/caveat": "^5.1.0",
+    "@fontsource-variable/cormorant-garamond": "^5.1.0",
     "@fontsource-variable/public-sans": "^5.1.0",
     "@fontsource-variable/source-serif-4": "^5.1.0",
     "@mainstay/tokens": "workspace:*",

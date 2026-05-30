@@ -1,0 +1,41 @@
+{
+  "name": "Saltworks Water Conditioning",
+  "archetype": "trade",
+  "facebook": "https://www.facebook.com/pages/Saltworks-Water-Conditioning/148261651883746",
+  "location": {
+    "street": "518 N Main St",
+    "city": "Baltimore",
+    "state": "OH"
+  },
+  "phone": "(740) 862-9686",
+  "hours": [
+    { "label": "Service calls", "value": "By appointment, weekdays" },
+    { "label": "Office", "value": "Call anytime" }
+  ],
+  "hero_tagline": "Softening Baltimore's water since 1971.",
+  "about": "Saltworks is a family-run water conditioning company that's been keeping homes around Fairfield County in cleaner water for over five decades. We size, install, and service softeners — and we still pick up the phone.",
+  "services": [
+    "Water softener installation",
+    "Service & repair",
+    "Salt delivery",
+    "Water testing"
+  ],
+  "accent": {
+    "primary": "#1e3a55",
+    "deep": "#12243a",
+    "soft": "#dee6f0"
+  },
+  "show_scheduler": false,
+  "since": 1971,
+  "cta": {
+    "label": "Get a site like this",
+    "href": "https://mainstayshop.studio/#contact"
+  },
+  "hero_image": {
+    "url": "https://images.unsplash.com/photo-1768853099411-b0405e07c73d",
+    "alt": "A clear glass pitcher of water on a kitchen countertop.",
+    "credit_name": "Jim Luo",
+    "credit_url": "https://unsplash.com/@jimluo"
+  },
+  "visual_note": "Cream + deep navy + copper trust-accent · sturdy humanist sans · trade photography (hands, equipment, in-the-truck)."
+}

@@ -1,0 +1,42 @@
+{
+  "name": "Papito's Kitchen",
+  "archetype": "food",
+  "facebook": "https://www.facebook.com/papitos.kitchen.oh",
+  "location": {
+    "street": "101 N Basil St",
+    "city": "Baltimore",
+    "state": "OH"
+  },
+  "phone": "(740) 400-5026",
+  "hours": [
+    { "label": "Sun – Mon", "value": "Closed" },
+    { "label": "Tue – Wed", "value": "11a – 8p" },
+    { "label": "Thu", "value": "12p – 8p" },
+    { "label": "Fri – Sat", "value": "12p – 9p" }
+  ],
+  "hero_tagline": "The kind of seafood you'd road-trip for — already in Baltimore.",
+  "about": "Papito's Kitchen serves fresh seafood with a Gulf-Coast lean from a corner in Baltimore, Ohio. Cod, catfish, walleye, calamari, the occasional crawfish boil — platters built for showing up with friends and staying a while.",
+  "featured_items": [
+    "Fresh catch platters",
+    "Seafood boils",
+    "Sandwiches",
+    "Sides & small plates"
+  ],
+  "accent": {
+    "primary": "#1f4a5c",
+    "deep": "#15333f",
+    "soft": "#d8e5ea"
+  },
+  "show_scheduler": false,
+  "cta": {
+    "label": "Get a site like this",
+    "href": "https://mainstayshop.studio/#contact"
+  },
+  "hero_image": {
+    "url": "https://images.unsplash.com/photo-1632389879997-330b17bf1923",
+    "alt": "A white plate of fresh seafood with several varieties.",
+    "credit_name": "Alessandro Rossi",
+    "credit_url": "https://unsplash.com/@allered"
+  },
+  "visual_note": "Cream + deep marine + mustard sunset accent · confident serif · platter-led photography."
+}

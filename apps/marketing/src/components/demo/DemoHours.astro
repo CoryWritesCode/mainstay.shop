@@ -1,0 +1,62 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  demo: CollectionEntry<"demos">["data"];
+}
+
+const { demo } = Astro.props;
+const hours = demo.hours ?? [];
+const telHref = `tel:+1${demo.phone.replace(/\D/g, "")}`;
+---
+
+<section class="section-y bg-surface/60 border-line border-y">
+  <div class="container-page grid gap-x-12 gap-y-8 md:grid-cols-2">
+    <div>
+      <p class="text-ink-mute text-sm tracking-wide uppercase mb-3">
+        Hours
+      </p>
+      {hours.length > 0 ? (
+        <dl class="border-line divide-line border-y divide-y max-w-[28rem]">
+          {hours.map((row) => (
+            <div class="flex items-baseline justify-between gap-6 py-3">
+              <dt class="font-medium">{row.label}</dt>
+              <dd class="text-ink-soft">{row.value}</dd>
+            </div>
+          ))}
+        </dl>
+      ) : (
+        <p class="text-ink-soft text-[1.0625rem] max-w-[36ch]">
+          See <a href={demo.facebook} rel="noopener noreferrer" target="_blank" class="font-medium">Facebook</a> for current hours.
+        </p>
+      )}
+    </div>
+
+    <div>
+      <p class="text-ink-mute text-sm tracking-wide uppercase mb-3">
+        Find us
+      </p>
+      <p class="font-serif text-2xl leading-snug">
+        {demo.location.street}
+      </p>
+      <p class="text-ink-soft mt-1 text-[1.0625rem]">
+        {demo.location.city}, {demo.location.state}
+      </p>
+      <p class="mt-4 text-[1.0625rem]">
+        <a
+          href={telHref}
+          class="font-medium decoration-line-strong hover:decoration-[var(--demo-accent)]"
+        >
+          {demo.phone}
+        </a>
+      </p>
+      {demo.email && (
+        <p class="text-ink-soft mt-1 text-[1.0625rem]">
+          <a href={`mailto:${demo.email}`} class="decoration-line-strong hover:decoration-[var(--demo-accent)]">
+            {demo.email}
+          </a>
+        </p>
+      )}
+    </div>
+  </div>
+</section>

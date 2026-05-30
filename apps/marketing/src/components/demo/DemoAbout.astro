@@ -1,0 +1,38 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  demo: CollectionEntry<"demos">["data"];
+}
+
+const { demo } = Astro.props;
+
+const eyebrowByArchetype: Record<string, string> = {
+  salon: "About the salon",
+  bakery: "About the bakery",
+  food: "About the kitchen",
+  trade: "About us",
+};
+const eyebrow = eyebrowByArchetype[demo.archetype] ?? "About";
+---
+
+<section
+  id="about"
+  class="section-y border-line border-y"
+  style="background-color: color-mix(in srgb, var(--demo-accent-soft) 40%, var(--color-paper))"
+>
+  <div class="container-page grid gap-x-12 gap-y-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
+    <div>
+      <p class="text-ink-mute text-sm tracking-wide uppercase mb-3">
+        {eyebrow}
+      </p>
+      <h2 class="font-serif text-[clamp(1.75rem,3.5vw,2.25rem)] leading-[1.15] tracking-[-0.01em] text-balance max-w-[14ch]">
+        {demo.name}
+      </h2>
+    </div>
+
+    <div class="max-w-[52ch] text-[1.0625rem] leading-[1.65] text-ink-soft text-pretty">
+      <p>{demo.about}</p>
+    </div>
+  </div>
+</section>
