@@ -15,6 +15,7 @@
     "@fontsource-variable/fraunces": "^5.1.0",
     "@fontsource-variable/newsreader": "^5.1.0",
     "@fontsource-variable/public-sans": "^5.1.0",
+    "@fontsource-variable/roboto-slab": "^5.1.0",
     "@fontsource-variable/source-serif-4": "^5.1.0",
     "@mainstay/tokens": "workspace:*",
     "@tailwindcss/vite": "^4.0.0",

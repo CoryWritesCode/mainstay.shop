@@ -32,6 +32,9 @@ importers:
       '@fontsource-variable/public-sans':
         specifier: ^5.1.0
         version: 5.2.7
+      '@fontsource-variable/roboto-slab':
+        specifier: ^5.1.0
+        version: 5.2.8
       '@fontsource-variable/source-serif-4':
         specifier: ^5.1.0
         version: 5.2.9
@@ -476,6 +479,9 @@ packages:
 
   '@fontsource-variable/public-sans@5.2.7':
     resolution: {integrity: sha512-4mvade2J3slKkvwRkS+p8T3szet/0vhWoSnuUJTVU81Uo2pRpSZY/Y8bSLRqpSwzIPxjVmRJ53oq6JKP/l/PSg==}
+
+  '@fontsource-variable/roboto-slab@5.2.8':
+    resolution: {integrity: sha512-cdvOSwocP50xS01gXqnGxw7uFcCZQgn1IDlqiAmNuZP4uEVScYAKMDC+aWsbP1grn9QdMJ2frhcuVBNXniBVGA==}
 
   '@fontsource-variable/source-serif-4@5.2.9':
     resolution: {integrity: sha512-PPcxjLFk/fS0WHg79pDM2YNvz61kC+oYZ5cWZZyCS0DHpJncmuYOuiZAsvj4tDxlWPBEvxxcRLQQNmSaRbPkqw==}
@@ -2521,6 +2527,8 @@ snapshots:
   '@fontsource-variable/newsreader@5.2.10': {}
 
   '@fontsource-variable/public-sans@5.2.7': {}
+
+  '@fontsource-variable/roboto-slab@5.2.8': {}
 
   '@fontsource-variable/source-serif-4@5.2.9': {}
 

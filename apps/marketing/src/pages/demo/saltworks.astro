@@ -1,0 +1,1196 @@
+---
+// Saltworks Water Conditioning — bespoke demo for cold-pitch outreach.
+//
+// Aesthetic: "Heirloom trade." Counterweight to the three demos
+// before this one — Saltworks isn't selling beauty (Studio D),
+// editorial atmosphere (Fox + Mulberry), or restaurant character
+// (Papito's). They're selling fifty-five years of trust to homeowners
+// who need a softener that works. The site has to land in a totally
+// different register: confident, plain, engineered.
+//
+// Roboto Slab (variable, sturdy slab serif — no italic in headlines)
+// for display. Public Sans for body. Caveat handwriting appears in
+// exactly one place: the work-order form mockup, where it represents
+// a real technician's penmanship.
+//
+// Palette: warm cream parchment, deep ink-navy, weathered copper. No
+// SaaS-blue gradients. The navy is matte and slightly desaturated;
+// the copper is aged. Trust over polish.
+
+import { getEntry } from "astro:content";
+import { Image } from "astro:assets";
+import "@fontsource-variable/roboto-slab";
+import "@fontsource-variable/caveat";
+import DemoShell from "../../components/demo/DemoShell.astro";
+import DemoDisclosure from "../../components/demo/DemoDisclosure.astro";
+
+const demo = await getEntry("demos", "saltworks");
+if (!demo) throw new Error("Demo content for saltworks not found.");
+const d = demo.data;
+const telHref = `tel:+1${d.phone.replace(/\D/g, "")}`;
+
+// Trust signals — three under-hero columns. Hard facts, not slogans.
+const trust = [
+  {
+    stat: "55",
+    statSub: "years",
+    label: "On Main Street since 1971",
+    note: "Same family. Same workshop.",
+  },
+  {
+    stat: "A+",
+    statSub: "BBB",
+    label: "Accredited business",
+    note: "Better Business Bureau, since '16.",
+  },
+  {
+    stat: "1",
+    statSub: "ring",
+    label: "We pick up the phone",
+    note: "Most calls go straight to a person.",
+  },
+];
+
+// Services — plain spoken, navy-headlined.
+const services = [
+  {
+    title: "Sizing & installation",
+    note: "We come out, look at your water and your plumbing, and quote a softener that fits — no upsell.",
+  },
+  {
+    title: "Service & repair",
+    note: "Most softeners last twenty years if you treat them right. We service what we sold and what we didn't.",
+  },
+  {
+    title: "Salt delivery",
+    note: "Standing order or one-and-done. We carry pellet, solar, and potassium. Save your back.",
+  },
+  {
+    title: "Water testing",
+    note: "Hardness, iron, pH, sulfur. Bring a sample or have us out — either way, no charge.",
+  },
+];
+
+// The timeline — milestones from 1971 to today. Placeholder events that
+// honor the kind of story a 55-year family trade business actually has.
+const timeline = [
+  { year: "1971", title: "Opened on N Main Street", note: "Two softeners in the truck and a phone line at home." },
+  { year: "1985", title: "Second generation behind the counter", note: "The shop stayed in the family. So did the truck." },
+  { year: "1998", title: "First commercial install", note: "The bottling plant out on Route 256 — still on our service list." },
+  { year: "2008", title: "Moved into the bigger workshop", note: "Same block, more room for parts and a coffee pot." },
+  { year: "2016", title: "BBB accredited, A+ rating", note: "We were doing the work the same way the day before." },
+  { year: "Today", title: "Same hands, same phone", note: "If you call, the person on the line has been here a while." },
+];
+---
+
+<DemoShell
+  title="Saltworks Water Conditioning — Baltimore, Ohio"
+  description="A real website for Saltworks Water Conditioning, made by Mainstay."
+  bodyBackground="#F4EDE0"
+>
+  <div class="saltworks">
+    <DemoDisclosure name={d.name} facebook={d.facebook} ctaLabel="Make it real">
+      <p slot="message" class="sw-disclosure-text">
+        <span class="sw-disclosure-strong">Hi, I'm Cory.</span> I made this for
+        you — a website for Saltworks, the way I'd build it for a trade
+        business with fifty-five years of work behind it. I'm not affiliated.
+        Have a look, and if it makes sense,{" "}
+        <a href="https://mainstayshop.studio/#contact" class="sw-disclosure-link">
+          let's make it real.
+        </a>
+      </p>
+    </DemoDisclosure>
+
+    <main id="main">
+      <!-- 1 ▸ Hero ─────────────────────────────────────────────────────── -->
+      <section class="sw-hero">
+        <div class="sw-container">
+          <div class="sw-hero-grid">
+            <div class="sw-hero-text">
+              <p class="sw-eyebrow">
+                Baltimore, Ohio · on N Main Street
+              </p>
+              <div class="sw-wordmark-block">
+                <h1 class="sw-wordmark">Saltworks</h1>
+                <p class="sw-wordmark-sub">Water Conditioning Co.</p>
+                <p class="sw-wordmark-est">est. 1971</p>
+              </div>
+              <p class="sw-tagline">
+                Softening Baltimore's water since 1971.
+              </p>
+              <p class="sw-subline">
+                Sizing, installation, and service for water softeners.
+                Salt delivery. Water testing. Same family, same workshop —
+                fifty-five years next month.
+              </p>
+              <div class="sw-actions">
+                <a class="sw-button-primary" href={telHref}>
+                  Call for a quote <span aria-hidden="true">→</span>
+                </a>
+                <a class="sw-link-quiet" href="#services">What we do</a>
+              </div>
+              <p class="sw-meta">
+                518 N Main St · Baltimore, OH ·{" "}
+                <a href={telHref} class="sw-meta-link">{d.phone}</a>
+              </p>
+            </div>
+
+            <figure class="sw-hero-figure">
+              <Image
+                src="https://images.unsplash.com/photo-1768853099411-b0405e07c73d"
+                alt="A clear glass pitcher of water on a kitchen countertop."
+                width={1100}
+                height={1400}
+                inferSize={false}
+                loading="eager"
+                class="sw-hero-img"
+              />
+              <figcaption class="sw-img-caption">
+                Sample photo by{" "}
+                <a href="https://unsplash.com/@jimluo" rel="noopener noreferrer" target="_blank">
+                  Jim Luo
+                </a>{" "}on Unsplash. Your shop and trucks would live here.
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2 ▸ Trust strip ─────────────────────────────────────────────── -->
+      <section class="sw-trust" aria-label="Trust signals">
+        <div class="sw-container">
+          <ol class="sw-trust-grid">
+            {trust.map((t) => (
+              <li class="sw-trust-item">
+                <p class="sw-trust-stat">
+                  <span class="sw-trust-number">{t.stat}</span>
+                  <span class="sw-trust-unit">{t.statSub}</span>
+                </p>
+                <p class="sw-trust-label">{t.label}</p>
+                <p class="sw-trust-note">{t.note}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <!-- 3 ▸ The story ────────────────────────────────────────────────── -->
+      <section class="sw-story">
+        <div class="sw-container">
+          <div class="sw-story-grid">
+            <p class="sw-section-label">
+              <span class="sw-bullet" aria-hidden="true"></span>
+              the story
+            </p>
+            <div class="sw-story-body">
+              <h2 class="sw-display sw-h2">
+                We size it. We install it. We service it.
+              </h2>
+              <p class="sw-story-text">
+                That's the whole job, and we've been doing it since 1971. No
+                franchise, no national chain, no monthly subscription. When
+                you call, you'll get a person who's been here a while. When
+                we come out, we'll look at your water before we quote anything.
+              </p>
+              <p class="sw-story-text">
+                A softener should last twenty years. We size them to do that.
+                Salt should never run out at the wrong time — we'll set up a
+                delivery so it doesn't. And if anything goes wrong, we'll fix
+                it. Most of the time it's a setting, not a part.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4 ▸ Services ─────────────────────────────────────────────────── -->
+      <section class="sw-services" id="services">
+        <div class="sw-container">
+          <header class="sw-services-header">
+            <p class="sw-section-label">
+              <span class="sw-bullet" aria-hidden="true"></span>
+              what we do
+            </p>
+            <h2 class="sw-display sw-h2">Four things, done well.</h2>
+          </header>
+          <ol class="sw-services-grid">
+            {services.map((s, i) => (
+              <li class="sw-service">
+                <p class="sw-service-num">0{i + 1}</p>
+                <h3 class="sw-display sw-service-title">{s.title}</h3>
+                <p class="sw-service-note">{s.note}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <!-- 5 ▸ The timeline ─────────────────────────────────────────────── -->
+      <section class="sw-timeline">
+        <div class="sw-container">
+          <header class="sw-timeline-header">
+            <p class="sw-section-label sw-section-label-cream">
+              <span class="sw-bullet sw-bullet-copper" aria-hidden="true"></span>
+              the long version
+            </p>
+            <h2 class="sw-display sw-h2 sw-h2-cream">Fifty-five years, end to end.</h2>
+          </header>
+
+          <ol class="sw-timeline-list">
+            {timeline.map((t) => (
+              <li class="sw-timeline-item">
+                <p class="sw-timeline-year">{t.year}</p>
+                <div class="sw-timeline-content">
+                  <h3 class="sw-display sw-timeline-title">{t.title}</h3>
+                  <p class="sw-timeline-note">{t.note}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <!-- 6 ▸ Work order mockup — the bespoke functional artifact ──────── -->
+      <section class="sw-order">
+        <div class="sw-container">
+          <header class="sw-order-header">
+            <p class="sw-section-label">
+              <span class="sw-bullet" aria-hidden="true"></span>
+              request a service call
+            </p>
+            <h2 class="sw-display sw-h2">Tell us what's wrong with the water.</h2>
+            <p class="sw-order-intro">
+              On the real site, this form goes straight to the shop. For now,
+              this is what a service request would look like — the kind of
+              honest-to-goodness work order we'd file the same way we've been
+              filing them since the seventies.
+            </p>
+          </header>
+
+          <article class="sw-work-order" aria-label="Sample work order">
+            <header class="sw-work-order-head">
+              <div>
+                <p class="sw-work-order-brand">Saltworks · Work Order</p>
+                <p class="sw-work-order-sub">Water Conditioning Co. · 518 N Main St · Baltimore, OH</p>
+              </div>
+              <div class="sw-work-order-number">
+                <p class="sw-work-order-num-label">No.</p>
+                <p class="sw-work-order-num">1971.0428</p>
+              </div>
+            </header>
+
+            <dl class="sw-work-order-fields">
+              <div class="sw-field">
+                <dt>Customer</dt>
+                <dd class="sw-script">your name here</dd>
+              </div>
+              <div class="sw-field">
+                <dt>Address</dt>
+                <dd class="sw-script">street, city, ZIP</dd>
+              </div>
+              <div class="sw-field">
+                <dt>Phone</dt>
+                <dd class="sw-script">how we should reach you</dd>
+              </div>
+              <div class="sw-field sw-field-wide">
+                <dt>What's the trouble?</dt>
+                <dd class="sw-script">water tastes salty after the softener regens — likely the brine valve timing, but want a hand to confirm</dd>
+              </div>
+              <div class="sw-field sw-field-options">
+                <dt>Preferred time</dt>
+                <dd>
+                  <ol class="sw-checks">
+                    <li><span class="sw-check sw-check-on" aria-hidden="true">✕</span> Weekday afternoons</li>
+                    <li><span class="sw-check" aria-hidden="true"></span> Weekday mornings</li>
+                    <li><span class="sw-check" aria-hidden="true"></span> Saturday — call first</li>
+                    <li><span class="sw-check" aria-hidden="true"></span> Whenever you can</li>
+                  </ol>
+                </dd>
+              </div>
+            </dl>
+
+            <footer class="sw-work-order-foot">
+              <div class="sw-work-order-sig">
+                <p class="sw-work-order-sig-line"></p>
+                <p class="sw-work-order-sig-label">Saltworks technician</p>
+              </div>
+              <button type="button" class="sw-button-primary" disabled>
+                File this work order
+              </button>
+            </footer>
+
+            <p class="sw-work-order-disclaimer">
+              <strong>Demo only.</strong> Not a real form — this is what
+              submitting a service request would look like on Saltworks'
+              actual site.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- 7 ▸ When we work + find us ───────────────────────────────────── -->
+      <section class="sw-find">
+        <div class="sw-container">
+          <div class="sw-find-grid">
+            <div class="sw-find-col">
+              <p class="sw-section-label">
+                <span class="sw-bullet" aria-hidden="true"></span>
+                when we work
+              </p>
+              <dl class="sw-hours">
+                {(d.hours ?? []).map((row) => (
+                  <div class="sw-hours-row">
+                    <dt>{row.label}</dt>
+                    <dd>{row.value}</dd>
+                  </div>
+                ))}
+              </dl>
+              <p class="sw-find-blurb">
+                For emergencies — burst tank, brine flooding — call any time.
+                The shop number rolls over.
+              </p>
+            </div>
+            <div class="sw-find-col">
+              <p class="sw-section-label">
+                <span class="sw-bullet" aria-hidden="true"></span>
+                find us
+              </p>
+              <p class="sw-display sw-find-street">{d.location.street}</p>
+              <p class="sw-find-city">{d.location.city}, {d.location.state}</p>
+              <p class="sw-find-phone">
+                <a href={telHref}>{d.phone}</a>
+              </p>
+              <p class="sw-find-second">
+                Service yard: 7165 Lancaster Newark Rd NE — for salt pickups
+                and bulk orders.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8 ▸ Mainstay closing — dark navy finale ──────────────────────── -->
+      <section class="sw-close">
+        <div class="sw-container sw-narrow">
+          <p class="sw-section-label sw-section-label-dark">
+            <span class="sw-bullet sw-bullet-copper" aria-hidden="true"></span>
+            from one main street to another
+          </p>
+          <h2 class="sw-display sw-h2 sw-h2-cream">I made this for you.</h2>
+          <p class="sw-close-body">
+            I'm Cory. I run Mainstay — a one-person web shop building real
+            websites for local businesses. Fifty-five years is the only
+            thing money can't buy. Your site should sound like that, not
+            like a directory listing — like a craftsman runs it, with the
+            quote form right there and the phone number obvious from the
+            first second.
+          </p>
+          <p class="sw-close-body">
+            If you'd like a real one, I'd love to build it. The work order
+            would actually file. The phone would be the phone. The
+            timeline would have <em>your</em> names on it.
+          </p>
+          <div class="sw-close-actions">
+            <a class="sw-button-copper" href="https://mainstayshop.studio/#contact">
+              Let's talk <span aria-hidden="true">→</span>
+            </a>
+            <a class="sw-link-cream" href="https://mainstayshop.studio/">
+              See how Mainstay works
+            </a>
+          </div>
+          <p class="sw-close-sign">
+            — Cory ·{" "}
+            <a href="mailto:hello@mainstayshop.studio">hello@mainstayshop.studio</a>
+          </p>
+        </div>
+      </section>
+    </main>
+  </div>
+</DemoShell>
+
+<style is:global>
+  /* ── Saltworks — bespoke trade palette + typography ──────────────── */
+  /* Heirloom trade. Roboto Slab does the structural heavy lifting; no
+   * italic in headlines (italic = decorative; trade = declarative).
+   * Caveat appears in ONE place only: the work-order field values, as
+   * a technician's handwriting. Navy + copper + cream. */
+  .saltworks {
+    --sw-paper:        #f4ede0;
+    --sw-paper-deep:   #e8d9be;
+    --sw-cream:        #ece1c5;
+    --sw-navy:         #1f3b52;
+    --sw-navy-deep:    #11253a;
+    --sw-navy-soft:    #5b7b95;
+    --sw-copper:       #a35a2f;
+    --sw-copper-deep:  #7a3f1f;
+    --sw-copper-soft:  #c8a37b;
+    --sw-ink:          #1c1812;
+    --sw-ink-soft:     #3f372a;
+    --sw-ink-mute:     #695a44;
+    --sw-line:         #cdbb95;
+
+    --sw-display: "Roboto Slab Variable", "Roboto Slab",
+      "Source Serif 4 Variable", Georgia, serif;
+    --sw-body: "Public Sans Variable", "Public Sans", system-ui,
+      -apple-system, sans-serif;
+    --sw-script: "Caveat Variable", "Caveat", "Brush Script MT", cursive;
+
+    color: var(--sw-ink);
+    font-family: var(--sw-body);
+  }
+
+  /* ── Disclosure overrides ────────────────────────────────────────── */
+  .saltworks .sw-disclosure-text {
+    color: var(--sw-ink-soft);
+    text-wrap: pretty;
+  }
+  .saltworks .sw-disclosure-strong {
+    color: var(--sw-ink);
+    font-weight: 600;
+  }
+  .saltworks .sw-disclosure-link {
+    color: var(--sw-navy);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: var(--sw-copper);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+  }
+  .saltworks .sw-disclosure-link:hover {
+    text-decoration-color: var(--sw-navy);
+  }
+
+  /* ── Containers ──────────────────────────────────────────────────── */
+  .sw-container {
+    width: 100%;
+    max-width: 76rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .sw-container { padding-inline: 3rem; }
+  }
+  .sw-narrow { max-width: 48rem; }
+
+  /* ── Typography building blocks ──────────────────────────────────── */
+  .sw-display {
+    font-family: var(--sw-display);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--sw-ink);
+  }
+  .sw-h2 {
+    font-size: clamp(2rem, 4vw, 2.875rem);
+    line-height: 1.1;
+    margin: 0;
+  }
+  .sw-h2-cream { color: var(--sw-paper); }
+
+  .sw-eyebrow {
+    font-family: var(--sw-body);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sw-copper);
+    margin: 0;
+  }
+
+  .sw-section-label {
+    font-family: var(--sw-body);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sw-navy);
+    margin: 0 0 1rem 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .sw-section-label-cream { color: var(--sw-copper-soft); }
+  .sw-section-label-dark { color: var(--sw-copper-soft); }
+  .sw-bullet {
+    display: inline-block;
+    width: 1.5rem;
+    height: 2px;
+    background: var(--sw-copper);
+  }
+  .sw-bullet-copper { background: var(--sw-copper); }
+
+  .sw-script {
+    font-family: var(--sw-script);
+  }
+
+  /* ── Buttons & links ─────────────────────────────────────────────── */
+  .sw-button-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--sw-navy);
+    color: var(--sw-paper);
+    padding: 0.85rem 1.5rem;
+    border-radius: 2px;
+    border: 0;
+    font-family: var(--sw-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 160ms ease;
+  }
+  .sw-button-primary:hover { background: var(--sw-navy-deep); }
+  .sw-button-primary:disabled {
+    cursor: not-allowed;
+    background: var(--sw-navy-soft);
+  }
+  .sw-button-primary:focus-visible {
+    outline: 2px solid var(--sw-navy);
+    outline-offset: 3px;
+  }
+
+  .sw-button-copper {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--sw-copper);
+    color: var(--sw-paper);
+    padding: 0.85rem 1.5rem;
+    border-radius: 2px;
+    font-family: var(--sw-body);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background-color 160ms ease;
+  }
+  .sw-button-copper:hover { background: var(--sw-copper-deep); }
+  .sw-button-copper:focus-visible {
+    outline: 2px solid var(--sw-copper-soft);
+    outline-offset: 3px;
+  }
+
+  .sw-link-quiet {
+    color: var(--sw-ink-soft);
+    font-family: var(--sw-body);
+    font-weight: 500;
+    font-size: 0.95rem;
+    text-decoration: underline;
+    text-decoration-color: var(--sw-line);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+    transition: text-decoration-color 160ms ease;
+  }
+  .sw-link-quiet:hover { text-decoration-color: var(--sw-navy); }
+
+  .sw-link-cream {
+    color: color-mix(in srgb, var(--sw-paper) 80%, var(--sw-navy-deep));
+    font-family: var(--sw-body);
+    font-weight: 500;
+    font-size: 0.95rem;
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--sw-paper) 30%, transparent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+    transition: text-decoration-color 160ms ease, color 160ms ease;
+  }
+  .sw-link-cream:hover {
+    color: var(--sw-paper);
+    text-decoration-color: var(--sw-copper-soft);
+  }
+
+  .sw-meta-link {
+    color: var(--sw-ink);
+    text-decoration: underline;
+    text-decoration-color: var(--sw-copper);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+  .sw-meta-link:hover { text-decoration-color: var(--sw-navy); }
+
+  /* ── Section 1: Hero ─────────────────────────────────────────────── */
+  .sw-hero { padding-block: clamp(3rem, 8vw, 6rem); }
+  .sw-hero-grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: end;
+  }
+  @media (min-width: 900px) {
+    .sw-hero-grid {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      align-items: center;
+    }
+  }
+  .sw-wordmark-block { margin: 1.25rem 0 0; }
+  .sw-wordmark {
+    font-family: var(--sw-display);
+    font-size: clamp(3.5rem, 9vw, 6rem);
+    font-weight: 800;
+    line-height: 0.95;
+    color: var(--sw-navy);
+    margin: 0;
+    letter-spacing: -0.025em;
+  }
+  .sw-wordmark-sub {
+    font-family: var(--sw-display);
+    font-weight: 500;
+    font-size: clamp(1rem, 1.6vw, 1.25rem);
+    color: var(--sw-ink-soft);
+    margin: 0.25rem 0 0;
+    letter-spacing: 0.04em;
+  }
+  .sw-wordmark-est {
+    font-family: var(--sw-display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 0.95rem;
+    color: var(--sw-copper);
+    margin: 0.5rem 0 0;
+    letter-spacing: 0.05em;
+  }
+  .sw-tagline {
+    font-family: var(--sw-display);
+    font-size: clamp(1.25rem, 2.2vw, 1.625rem);
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--sw-ink);
+    margin: 1.75rem 0 0;
+    max-width: 26ch;
+  }
+  .sw-subline {
+    font-size: 1rem;
+    color: var(--sw-ink-soft);
+    margin: 1rem 0 0;
+    max-width: 44ch;
+    line-height: 1.6;
+  }
+  .sw-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+    margin: 2rem 0 0;
+    flex-wrap: wrap;
+  }
+  .sw-meta {
+    font-size: 0.85rem;
+    color: var(--sw-ink-mute);
+    margin: 2.5rem 0 0;
+    letter-spacing: 0.01em;
+  }
+  .sw-hero-figure { margin: 0; }
+  .sw-hero-img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 2px;
+    border: 1px solid var(--sw-line);
+  }
+  .sw-img-caption {
+    margin: 0.75rem 0 0;
+    font-size: 0.75rem;
+    color: var(--sw-ink-mute);
+    font-style: italic;
+  }
+  .sw-img-caption a {
+    color: var(--sw-ink-soft);
+    text-decoration: underline;
+    text-decoration-color: var(--sw-line);
+  }
+
+  /* ── Section 2: Trust strip ──────────────────────────────────────── */
+  .sw-trust {
+    padding-block: clamp(3rem, 6vw, 4.5rem);
+    background: var(--sw-paper-deep);
+    border-block: 1px solid var(--sw-line);
+  }
+  .sw-trust-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: clamp(2rem, 4vw, 3rem);
+  }
+  @media (min-width: 720px) {
+    .sw-trust-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  .sw-trust-item {
+    border-top: 3px solid var(--sw-copper);
+    padding-block-start: 1.25rem;
+  }
+  .sw-trust-stat {
+    margin: 0;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+  }
+  .sw-trust-number {
+    font-family: var(--sw-display);
+    font-weight: 800;
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    line-height: 1;
+    color: var(--sw-navy);
+    letter-spacing: -0.03em;
+  }
+  .sw-trust-unit {
+    font-family: var(--sw-display);
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--sw-copper);
+    letter-spacing: 0.04em;
+    text-transform: lowercase;
+  }
+  .sw-trust-label {
+    font-family: var(--sw-display);
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--sw-ink);
+    margin: 0.5rem 0 0;
+    line-height: 1.3;
+  }
+  .sw-trust-note {
+    font-size: 0.95rem;
+    color: var(--sw-ink-soft);
+    margin: 0.5rem 0 0;
+    line-height: 1.5;
+  }
+
+  /* ── Section 3: The story ────────────────────────────────────────── */
+  .sw-story { padding-block: clamp(4rem, 9vw, 7rem); }
+  .sw-story-grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+  @media (min-width: 800px) {
+    .sw-story-grid {
+      grid-template-columns: minmax(0, 0.35fr) minmax(0, 1fr);
+      align-items: start;
+    }
+  }
+  .sw-story-body {
+    max-width: 56ch;
+  }
+  .sw-story-text {
+    font-size: clamp(1.0625rem, 1.5vw, 1.15rem);
+    line-height: 1.65;
+    color: var(--sw-ink-soft);
+    margin: 1.25rem 0 0;
+    text-wrap: pretty;
+  }
+  .sw-story-text:first-of-type { margin-block-start: 1.5rem; }
+
+  /* ── Section 4: Services ─────────────────────────────────────────── */
+  .sw-services {
+    padding-block: clamp(4rem, 9vw, 7rem);
+    background: var(--sw-paper-deep);
+    border-block: 1px solid var(--sw-line);
+  }
+  .sw-services-header { margin-block-end: clamp(2.5rem, 5vw, 3.5rem); max-width: 44rem; }
+  .sw-services-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: clamp(2rem, 3vw, 2.5rem);
+  }
+  @media (min-width: 700px) {
+    .sw-services-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 1024px) {
+    .sw-services-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+  .sw-service {
+    border-top: 1px solid var(--sw-navy);
+    padding-block-start: 1.25rem;
+  }
+  .sw-service-num {
+    font-family: var(--sw-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--sw-copper);
+    margin: 0;
+    letter-spacing: 0.05em;
+  }
+  .sw-service-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin: 0.4rem 0 0;
+    line-height: 1.25;
+    color: var(--sw-navy);
+  }
+  .sw-service-note {
+    font-size: 0.95rem;
+    color: var(--sw-ink-soft);
+    margin: 0.75rem 0 0;
+    line-height: 1.6;
+  }
+
+  /* ── Section 5: The timeline ─────────────────────────────────────── */
+  .sw-timeline {
+    padding-block: clamp(4rem, 9vw, 7rem);
+    background: var(--sw-navy);
+    color: var(--sw-paper);
+  }
+  .sw-timeline-header {
+    margin-block-end: clamp(2.5rem, 5vw, 4rem);
+    max-width: 44rem;
+  }
+  .sw-timeline-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .sw-timeline-item {
+    display: grid;
+    grid-template-columns: minmax(0, 0.25fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 3vw, 3rem);
+    padding-block: 1.5rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--sw-paper) 18%, transparent);
+    align-items: baseline;
+  }
+  .sw-timeline-item:last-child { border-bottom: 0; }
+  .sw-timeline-year {
+    font-family: var(--sw-display);
+    font-weight: 700;
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    color: var(--sw-copper-soft);
+    margin: 0;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .sw-timeline-title {
+    font-size: clamp(1.15rem, 2vw, 1.4rem);
+    font-weight: 600;
+    margin: 0;
+    color: var(--sw-paper);
+    line-height: 1.3;
+  }
+  .sw-timeline-note {
+    margin: 0.5rem 0 0;
+    font-size: 0.95rem;
+    color: color-mix(in srgb, var(--sw-paper) 80%, var(--sw-navy-deep));
+    line-height: 1.55;
+    max-width: 48ch;
+  }
+
+  /* ── Section 6: Work order mockup ────────────────────────────────── */
+  .sw-order { padding-block: clamp(4rem, 9vw, 7rem); }
+  .sw-order-header {
+    margin-block-end: clamp(2.5rem, 5vw, 3.5rem);
+    max-width: 48rem;
+  }
+  .sw-order-intro {
+    color: var(--sw-ink-soft);
+    margin: 1rem 0 0;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    max-width: 52ch;
+  }
+
+  .sw-work-order {
+    background: var(--sw-paper);
+    border: 2px solid var(--sw-navy);
+    border-radius: 2px;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    max-width: 44rem;
+    box-shadow:
+      0 3px 0 var(--sw-line),
+      0 16px 36px color-mix(in srgb, var(--sw-ink) 18%, transparent);
+    transform: rotate(-0.5deg);
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 2.25rem,
+      color-mix(in srgb, var(--sw-line) 40%, transparent) 2.25rem,
+      color-mix(in srgb, var(--sw-line) 40%, transparent) calc(2.25rem + 1px)
+    );
+  }
+  .sw-work-order-head {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block-end: 1rem;
+    border-bottom: 2px solid var(--sw-navy);
+    margin-block-end: 1.5rem;
+  }
+  .sw-work-order-brand {
+    font-family: var(--sw-display);
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--sw-navy);
+    margin: 0;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .sw-work-order-sub {
+    font-size: 0.75rem;
+    color: var(--sw-ink-mute);
+    margin: 0.25rem 0 0;
+    letter-spacing: 0.04em;
+  }
+  .sw-work-order-number { text-align: end; }
+  .sw-work-order-num-label {
+    font-family: var(--sw-display);
+    font-weight: 500;
+    font-size: 0.65rem;
+    color: var(--sw-ink-mute);
+    margin: 0;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .sw-work-order-num {
+    font-family: var(--sw-display);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--sw-copper);
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+
+  .sw-work-order-fields {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .sw-field {
+    display: grid;
+    grid-template-columns: 9rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: baseline;
+  }
+  .sw-field-wide { grid-template-columns: 9rem minmax(0, 1fr); }
+  .sw-field-options { grid-template-columns: 9rem minmax(0, 1fr); align-items: start; }
+  @media (max-width: 600px) {
+    .sw-field, .sw-field-wide, .sw-field-options {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.4rem;
+    }
+  }
+  .sw-field dt {
+    font-family: var(--sw-display);
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sw-navy);
+  }
+  .sw-field dd {
+    margin: 0;
+    border-bottom: 1px solid var(--sw-line);
+    padding-block-end: 0.35rem;
+    min-height: 1.75rem;
+    color: var(--sw-ink);
+  }
+  .sw-field dd.sw-script {
+    font-size: 1.5rem;
+    line-height: 1.3;
+    color: var(--sw-navy);
+    transform: rotate(-0.5deg);
+    transform-origin: left;
+  }
+
+  .sw-checks {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .sw-checks li {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-size: 0.95rem;
+    color: var(--sw-ink-soft);
+  }
+  .sw-check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.1rem;
+    height: 1.1rem;
+    border: 1.5px solid var(--sw-navy);
+    border-radius: 1px;
+    flex-shrink: 0;
+    font-family: var(--sw-script);
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--sw-copper-deep);
+  }
+  .sw-check-on {
+    background: var(--sw-paper);
+  }
+
+  .sw-work-order-foot {
+    margin: 2rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    align-items: stretch;
+  }
+  @media (min-width: 600px) {
+    .sw-work-order-foot {
+      flex-direction: row;
+      align-items: end;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+  }
+  .sw-work-order-sig {
+    flex-grow: 1;
+    max-width: 18rem;
+  }
+  .sw-work-order-sig-line {
+    border-bottom: 1px solid var(--sw-navy);
+    height: 1.5rem;
+    margin: 0;
+  }
+  .sw-work-order-sig-label {
+    margin: 0.4rem 0 0;
+    font-family: var(--sw-display);
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--sw-ink-mute);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .sw-work-order-disclaimer {
+    margin: 1.5rem 0 0;
+    padding-block-start: 1rem;
+    border-top: 1px dotted var(--sw-line);
+    font-size: 0.75rem;
+    color: var(--sw-ink-mute);
+  }
+  .sw-work-order-disclaimer strong {
+    color: var(--sw-navy);
+    font-weight: 700;
+  }
+
+  /* ── Section 7: When we work + find us ───────────────────────────── */
+  .sw-find {
+    padding-block: clamp(4rem, 9vw, 7rem);
+    background: var(--sw-paper-deep);
+    border-block: 1px solid var(--sw-line);
+  }
+  .sw-find-grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+  @media (min-width: 720px) {
+    .sw-find-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  }
+  .sw-hours {
+    margin: 1rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .sw-hours-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    font-size: 1rem;
+    border-bottom: 1px dotted var(--sw-line);
+    padding-block-end: 0.6rem;
+  }
+  .sw-hours-row:last-child { border-bottom: 0; }
+  .sw-hours-row dt {
+    color: var(--sw-ink);
+    font-weight: 600;
+  }
+  .sw-hours-row dd {
+    color: var(--sw-navy);
+    margin: 0;
+    font-family: var(--sw-display);
+    font-weight: 500;
+  }
+  .sw-find-blurb {
+    margin: 1.25rem 0 0;
+    font-size: 0.95rem;
+    color: var(--sw-ink-soft);
+    line-height: 1.55;
+    max-width: 36ch;
+  }
+  .sw-find-street {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    margin: 0.5rem 0 0;
+    line-height: 1.1;
+    color: var(--sw-navy);
+  }
+  .sw-find-city {
+    color: var(--sw-ink-soft);
+    font-size: 1.1rem;
+    margin: 0.25rem 0 0;
+  }
+  .sw-find-phone { margin: 1rem 0 0; }
+  .sw-find-phone a {
+    color: var(--sw-navy);
+    font-family: var(--sw-display);
+    font-weight: 700;
+    font-size: 1.4rem;
+    text-decoration: underline;
+    text-decoration-color: var(--sw-copper);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+  }
+  .sw-find-second {
+    margin: 1.25rem 0 0;
+    font-size: 0.9rem;
+    color: var(--sw-ink-soft);
+    line-height: 1.55;
+    max-width: 36ch;
+  }
+
+  /* ── Section 8: Mainstay closing — dark navy finale ──────────────── */
+  .sw-close {
+    padding-block: clamp(5rem, 10vw, 8rem);
+    background: var(--sw-navy-deep);
+    color: var(--sw-paper);
+    border-top: 3px solid var(--sw-copper);
+  }
+  .sw-close-body {
+    font-size: clamp(1.0625rem, 1.5vw, 1.2rem);
+    line-height: 1.65;
+    color: color-mix(in srgb, var(--sw-paper) 92%, var(--sw-navy-deep));
+    margin: 1.25rem 0 0;
+    text-wrap: pretty;
+  }
+  .sw-close-body em {
+    font-style: italic;
+    color: var(--sw-copper-soft);
+  }
+  .sw-close-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.75rem;
+    margin: 2rem 0 0;
+    align-items: center;
+  }
+  .sw-close-sign {
+    margin: 2rem 0 0;
+    padding-block-start: 1.5rem;
+    border-top: 1px dotted color-mix(in srgb, var(--sw-paper) 25%, transparent);
+    font-family: var(--sw-display);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--sw-copper-soft);
+  }
+  .sw-close-sign a {
+    color: var(--sw-copper-soft);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--sw-paper) 35%, transparent);
+  }
+  .sw-close-sign a:hover {
+    text-decoration-color: var(--sw-copper-soft);
+  }
+</style>
