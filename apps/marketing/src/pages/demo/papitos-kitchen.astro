@@ -1,0 +1,962 @@
+---
+// Papito's Kitchen — bespoke demo for cold-pitch outreach.
+//
+// Aesthetic: "Gulf Coast porch in Ohio." Restaurant brand with warmth
+// and a little swagger — the story is fresh seafood served two hours
+// from any coast. Fraunces (warm modern serif, SOFT axis) for display,
+// Public Sans for body, Caveat for chalkboard "today's catch" notes.
+//
+// Palette: cream paper, weathered marine, toasted mustard, Cajun
+// brick. Marine is the anchor (deep, weathered porch-paint). Mustard
+// is the sunset highlight. Brick is the spice moment. Lemon is a tiny
+// pop reserved for tiny details. Inverted dark-marine closing.
+//
+// Voice: warm, confident, a little swaggery without bragging.
+// "Pull up a chair." Hero photo leads (the food is the hero); the
+// text follows on the right.
+
+import { getEntry } from "astro:content";
+import { Image } from "astro:assets";
+import "@fontsource-variable/fraunces";
+import "@fontsource-variable/caveat";
+import DemoShell from "../../components/demo/DemoShell.astro";
+import DemoDisclosure from "../../components/demo/DemoDisclosure.astro";
+
+const demo = await getEntry("demos", "papitos-kitchen");
+if (!demo) throw new Error("Demo content for papitos-kitchen not found.");
+const d = demo.data;
+const telHref = `tel:+1${d.phone.replace(/\D/g, "")}`;
+
+// The menu — organized by *how it's cooked*, the way a real seafood
+// kitchen thinks about its line. Each item gets one-line restaurant
+// copy. Prices illustrative.
+type MenuItem = { name: string; note: string; price: string };
+type MenuSection = { label: string; items: MenuItem[] };
+
+const menu: MenuSection[] = [
+  {
+    label: "From the Fryer",
+    items: [
+      {
+        name: "Golden cod platter",
+        note: "Fresh-caught, crisp-battered, with hush puppies",
+        price: "16",
+      },
+      {
+        name: "Catfish, two ways",
+        note: "Fried or grilled — your call",
+        price: "15",
+      },
+      {
+        name: "Calamari, salt-and-pepper",
+        note: "Flash-fried, with pickled-pepper relish",
+        price: "13",
+      },
+      {
+        name: "Walleye, when we have it",
+        note: "Flaky, simple, with lemon",
+        price: "18",
+      },
+    ],
+  },
+  {
+    label: "From the Boil",
+    items: [
+      {
+        name: "Shrimp & andouille",
+        note: "By the pound, Cajun-seasoned, corn and potatoes",
+        price: "22",
+      },
+      {
+        name: "Crawfish boil (Fri & Sat)",
+        note: "When the season's right — call to confirm",
+        price: "MP",
+      },
+      {
+        name: "Snow crab clusters",
+        note: "Two clusters, drawn butter, the works",
+        price: "28",
+      },
+    ],
+  },
+  {
+    label: "The Sandwich Board",
+    items: [
+      {
+        name: "Cod po' boy",
+        note: "Crisp cod, slaw, remoulade, soft roll",
+        price: "13",
+      },
+      {
+        name: "Shrimp po' boy",
+        note: "Same idea, with shrimp",
+        price: "14",
+      },
+      {
+        name: "Catfish sandwich",
+        note: "Plain and perfect",
+        price: "12",
+      },
+    ],
+  },
+  {
+    label: "On the Side",
+    items: [
+      { name: "Hush puppies (4)", note: "Honey butter on the side", price: "5" },
+      { name: "Buttermilk slaw", note: "Crunchy, cold, bright", price: "4" },
+      { name: "Cornbread", note: "Skillet, warm", price: "4" },
+      { name: "Fries", note: "Hand-cut, sea salt", price: "5" },
+    ],
+  },
+];
+
+// "Today's catch" — what the chalkboard at the door would say. Caveat
+// handwriting. Items refresh in real life; this is illustrative.
+const todaysCatch = [
+  "Walleye",
+  "Cod",
+  "Calamari",
+  "Shrimp boil at 6",
+];
+---
+
+<DemoShell
+  title="Papito's Kitchen — Baltimore, Ohio"
+  description="A real website for Papito's Kitchen, made by Mainstay."
+  bodyBackground="#F7EFE1"
+>
+  <div class="papitos">
+    <DemoDisclosure name={d.name} facebook={d.facebook} ctaLabel="Make it real">
+      <p slot="message" class="pk-disclosure-text">
+        <span class="pk-disclosure-strong">Hi, I'm Cory.</span> I made this for
+        you — a website for Papito's, the kind a fresh-seafood place in
+        landlocked Ohio actually deserves. I'm not affiliated. Have a
+        look, and if it feels right,{" "}
+        <a href="https://mainstayshop.studio/#contact" class="pk-disclosure-link">
+          let's make it real.
+        </a>
+      </p>
+    </DemoDisclosure>
+
+    <main id="main">
+      <!-- 1 ▸ Hero — food first (photo left, text right) ─────────────── -->
+      <section class="pk-hero">
+        <div class="pk-container">
+          <div class="pk-hero-grid">
+            <figure class="pk-hero-figure">
+              <Image
+                src="https://images.unsplash.com/photo-1632389879997-330b17bf1923"
+                alt="A white plate of fresh seafood with several varieties."
+                width={1200}
+                height={1500}
+                inferSize={false}
+                loading="eager"
+                class="pk-hero-img"
+              />
+              <figcaption class="pk-img-caption">
+                Sample photo by{" "}
+                <a href="https://unsplash.com/@allered" rel="noopener noreferrer" target="_blank">
+                  Alessandro Rossi
+                </a>{" "}on Unsplash. Your platters would live here.
+              </figcaption>
+            </figure>
+
+            <div class="pk-hero-text">
+              <p class="pk-eyebrow">
+                Baltimore, Ohio · on Basil Street
+              </p>
+              <h1 class="pk-wordmark">Papito<span class="pk-wordmark-apos">'s</span> Kitchen</h1>
+              <p class="pk-tagline">
+                Fresh seafood — two hours from any coast.
+              </p>
+              <p class="pk-subline">
+                Gulf-Coast lean, southern Ohio porch. Cod, catfish, walleye,
+                the occasional crawfish boil. <em>Pull up a chair.</em>
+              </p>
+              <div class="pk-actions">
+                <a class="pk-button-primary" href={telHref}>
+                  Call to order <span aria-hidden="true">→</span>
+                </a>
+                <a class="pk-link-quiet" href="#menu">See the menu</a>
+              </div>
+              <p class="pk-meta">
+                101 N Basil St · Baltimore, OH ·{" "}
+                <a href={telHref} class="pk-meta-link">{d.phone}</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2 ▸ Today's catch — chalkboard band ──────────────────────────── -->
+      <section class="pk-catch" aria-label="Today's catch">
+        <div class="pk-container">
+          <div class="pk-catch-board">
+            <p class="pk-catch-label">
+              <span class="pk-script">today's catch</span>
+            </p>
+            <p class="pk-catch-items">
+              {todaysCatch.map((item, i) => (
+                <>
+                  <span class="pk-script pk-catch-item">{item}</span>
+                  {i < todaysCatch.length - 1 && (
+                    <span class="pk-catch-sep" aria-hidden="true">·</span>
+                  )}
+                </>
+              ))}
+            </p>
+            <p class="pk-catch-note">
+              <em>Ask your server — it changes through the night.</em>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3 ▸ The story — "Ohio not the coast" ─────────────────────────── -->
+      <section class="pk-story">
+        <div class="pk-container">
+          <div class="pk-story-grid">
+            <p class="pk-section-label">
+              <span aria-hidden="true">✻</span> the story
+            </p>
+            <div class="pk-story-body">
+              <h2 class="pk-display pk-h2">
+                Fresh fish in a landlocked town.
+              </h2>
+              <p class="pk-story-text">
+                We know — Baltimore, Ohio is a long way from the Gulf. That's
+                the whole point. We bring it here so you don't have to drive
+                fourteen hours for a proper po' boy. Most of our catch arrives
+                fresh on Wednesday and Friday mornings; what we boil on
+                weekends is whatever the season was kind enough to send.
+              </p>
+              <p class="pk-story-text">
+                The chairs aren't fancy. Neither is the lighting. The fish
+                is — and that's how we like it.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4 ▸ The menu — by cooking method ─────────────────────────────── -->
+      <section class="pk-menu" id="menu">
+        <div class="pk-container">
+          <header class="pk-menu-header">
+            <p class="pk-section-label pk-section-label-cream">
+              <span aria-hidden="true">✻</span> the menu
+            </p>
+            <h2 class="pk-display pk-h2 pk-h2-cream">From the line.</h2>
+            <p class="pk-menu-note">
+              Prices walk a little with the market. Specials change with what
+              came in this week — ask, and we'll tell you.
+            </p>
+          </header>
+
+          <div class="pk-menu-grid">
+            {menu.map((section) => (
+              <article class="pk-menu-section">
+                <h3 class="pk-menu-section-label">{section.label}</h3>
+                <ol class="pk-menu-list">
+                  {section.items.map((item) => (
+                    <li class="pk-menu-row">
+                      <div class="pk-menu-row-top">
+                        <span class="pk-menu-name">{item.name}</span>
+                        <span class="pk-menu-price">${item.price}</span>
+                      </div>
+                      <p class="pk-menu-note-inline">{item.note}</p>
+                    </li>
+                  ))}
+                </ol>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- 5 ▸ When we're open ──────────────────────────────────────────── -->
+      <section class="pk-hours">
+        <div class="pk-container">
+          <div class="pk-hours-grid">
+            <header>
+              <p class="pk-section-label">
+                <span aria-hidden="true">✻</span> when we're open
+              </p>
+              <h2 class="pk-display pk-h2">
+                <em>Tuesday through Saturday, mostly.</em>
+              </h2>
+              <p class="pk-hours-blurb">
+                We close Sundays and Mondays so the kitchen gets a breath.
+                Weekend nights run late.
+              </p>
+            </header>
+            <dl class="pk-hours-list">
+              {(d.hours ?? []).map((row) => (
+                <div class="pk-hours-row">
+                  <dt>{row.label}</dt>
+                  <dd>{row.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6 ▸ Find us ──────────────────────────────────────────────────── -->
+      <section class="pk-find">
+        <div class="pk-container">
+          <div class="pk-find-card">
+            <p class="pk-section-label pk-section-label-brick">
+              <span aria-hidden="true">✻</span> find us
+            </p>
+            <p class="pk-display pk-find-street">{d.location.street}</p>
+            <p class="pk-find-city">{d.location.city}, {d.location.state}</p>
+            <p class="pk-find-phone">
+              <a href={telHref}>{d.phone}</a>
+            </p>
+            <p class="pk-find-blurb">
+              <em>Big parties, call ahead so we can pull tables together.</em>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7 ▸ Mainstay closing — dark marine finale ────────────────────── -->
+      <section class="pk-close">
+        <div class="pk-container pk-narrow">
+          <p class="pk-section-label pk-section-label-mustard">
+            <span aria-hidden="true">✻</span> from one main street to another
+          </p>
+          <h2 class="pk-display pk-h2 pk-h2-cream">
+            <em>I made this for you.</em>
+          </h2>
+          <p class="pk-close-body">
+            I'm Cory. I run Mainstay — a one-person web shop building real
+            websites for local businesses. There's a story buried inside
+            Papito's that the internet hasn't quite caught up with yet: a
+            fresh seafood place, in a landlocked Ohio town, with a Cajun
+            heart. That deserves a site that does it justice — one that
+            stays up, holds the menu well, and looks like a real restaurant
+            instead of a Facebook page.
+          </p>
+          <p class="pk-close-body">
+            If you'd like a real one, I'd love to make it. The phone would
+            still be the phone. The today's-catch board could update from
+            wherever you happen to be. The platters would look like the
+            platters.
+          </p>
+          <div class="pk-close-actions">
+            <a class="pk-button-mustard" href="https://mainstayshop.studio/#contact">
+              Let's talk <span aria-hidden="true">→</span>
+            </a>
+            <a class="pk-link-cream" href="https://mainstayshop.studio/">
+              See how Mainstay works
+            </a>
+          </div>
+          <p class="pk-close-sign">
+            <span class="pk-script pk-close-sign-script">— Cory ·</span>{" "}
+            <a href="mailto:hello@mainstayshop.studio">hello@mainstayshop.studio</a>
+          </p>
+        </div>
+      </section>
+    </main>
+  </div>
+</DemoShell>
+
+<style is:global>
+  /* ── Papito's Kitchen — bespoke restaurant palette ───────────────── */
+  /* Cream paper, weathered marine, toasted mustard, Cajun brick. A
+   * restaurant brand: confident, food-forward, slightly swaggery.
+   * Marine anchors (deep, weathered porch paint). Mustard is the
+   * sunset highlight on cream. Brick is the spice moment. Lemon is a
+   * tiny pop reserved for fine details. Closing inverts to dark marine. */
+  .papitos {
+    --pk-paper:        #f7efe1;
+    --pk-cream:        #f0e3c8;
+    --pk-cream-deep:   #e3d09f;
+    --pk-marine:       #2c5564;
+    --pk-marine-deep:  #1a3741;
+    --pk-marine-soft:  #5e7d8b;
+    --pk-mustard:      #c89327;
+    --pk-mustard-soft: #e3b958;
+    --pk-mustard-pale: #f4d272;
+    --pk-brick:        #a03e2a;
+    --pk-brick-deep:   #7a2d1d;
+    --pk-ink:          #1f1a14;
+    --pk-ink-soft:     #4a3f30;
+    --pk-ink-mute:     #6f614b;
+    --pk-line:         #d8c8a4;
+
+    --pk-display: "Fraunces Variable", "Fraunces",
+      "Source Serif 4 Variable", Georgia, serif;
+    --pk-body: "Public Sans Variable", "Public Sans", system-ui,
+      -apple-system, sans-serif;
+    --pk-script: "Caveat Variable", "Caveat", "Brush Script MT", cursive;
+
+    color: var(--pk-ink);
+    font-family: var(--pk-body);
+  }
+
+  /* ── Disclosure overrides ────────────────────────────────────────── */
+  .papitos .pk-disclosure-text {
+    color: var(--pk-ink-soft);
+    text-wrap: pretty;
+  }
+  .papitos .pk-disclosure-strong {
+    color: var(--pk-ink);
+    font-weight: 500;
+  }
+  .papitos .pk-disclosure-link {
+    color: var(--pk-brick);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: var(--pk-line);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+  }
+  .papitos .pk-disclosure-link:hover {
+    text-decoration-color: var(--pk-brick);
+  }
+
+  /* ── Containers ──────────────────────────────────────────────────── */
+  .pk-container {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .pk-container { padding-inline: 3rem; }
+  }
+  .pk-narrow { max-width: 48rem; }
+
+  /* ── Typography building blocks ──────────────────────────────────── */
+  .pk-display {
+    font-family: var(--pk-display);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: var(--pk-ink);
+    /* Fraunces variable: nudge SOFT axis toward warmer/rounder */
+    font-variation-settings: "SOFT" 50, "WONK" 0;
+  }
+  .pk-h2 {
+    font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+    line-height: 1.05;
+    margin: 0;
+  }
+  .pk-h2-cream { color: var(--pk-paper); }
+
+  .pk-eyebrow {
+    font-family: var(--pk-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--pk-brick);
+    margin: 0;
+  }
+
+  .pk-section-label {
+    font-family: var(--pk-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--pk-brick);
+    margin: 0 0 1rem 0;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+  .pk-section-label span[aria-hidden] {
+    color: var(--pk-mustard);
+    letter-spacing: 0;
+    font-size: 0.95em;
+  }
+  .pk-section-label-cream { color: var(--pk-paper); }
+  .pk-section-label-cream span[aria-hidden] { color: var(--pk-mustard-soft); }
+  .pk-section-label-brick { color: var(--pk-marine); }
+  .pk-section-label-brick span[aria-hidden] { color: var(--pk-brick); }
+  .pk-section-label-mustard { color: var(--pk-mustard-soft); }
+  .pk-section-label-mustard span[aria-hidden] { color: var(--pk-mustard); }
+
+  .pk-script {
+    font-family: var(--pk-script);
+    line-height: 1;
+  }
+
+  /* ── Buttons & links ─────────────────────────────────────────────── */
+  .pk-button-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    background: var(--pk-marine);
+    color: var(--pk-paper);
+    padding: 0.9rem 1.5rem;
+    border-radius: 2px;
+    font-family: var(--pk-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background-color 160ms ease;
+  }
+  .pk-button-primary:hover { background: var(--pk-marine-deep); }
+  .pk-button-primary:focus-visible {
+    outline: 2px solid var(--pk-marine);
+    outline-offset: 3px;
+  }
+
+  .pk-button-mustard {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    background: var(--pk-mustard);
+    color: var(--pk-marine-deep);
+    padding: 0.9rem 1.5rem;
+    border-radius: 2px;
+    font-family: var(--pk-body);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background-color 160ms ease;
+  }
+  .pk-button-mustard:hover { background: var(--pk-mustard-soft); }
+  .pk-button-mustard:focus-visible {
+    outline: 2px solid var(--pk-mustard);
+    outline-offset: 3px;
+  }
+
+  .pk-link-quiet {
+    color: var(--pk-ink-soft);
+    font-family: var(--pk-display);
+    font-style: italic;
+    font-size: 1.15rem;
+    text-decoration: underline;
+    text-decoration-color: var(--pk-line);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+    transition: text-decoration-color 160ms ease;
+  }
+  .pk-link-quiet:hover { text-decoration-color: var(--pk-brick); }
+
+  .pk-link-cream {
+    color: color-mix(in srgb, var(--pk-paper) 80%, var(--pk-marine-deep));
+    font-family: var(--pk-display);
+    font-style: italic;
+    font-size: 1.15rem;
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--pk-paper) 30%, transparent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+    transition: text-decoration-color 160ms ease, color 160ms ease;
+  }
+  .pk-link-cream:hover {
+    color: var(--pk-paper);
+    text-decoration-color: var(--pk-mustard-soft);
+  }
+
+  .pk-meta-link {
+    color: var(--pk-ink);
+    text-decoration: underline;
+    text-decoration-color: var(--pk-mustard);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+  .pk-meta-link:hover { text-decoration-color: var(--pk-brick); }
+
+  /* ── Section 1: Hero (photo left, text right) ────────────────────── */
+  .pk-hero { padding-block: clamp(3rem, 8vw, 6rem); }
+  .pk-hero-grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .pk-hero-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    }
+  }
+  .pk-hero-figure { margin: 0; }
+  .pk-hero-img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 2px;
+    border: 1px solid var(--pk-mustard);
+    padding: 6px;
+    background: var(--pk-paper);
+    box-shadow:
+      0 1px 0 var(--pk-mustard-soft) inset,
+      8px 10px 0 var(--pk-cream),
+      8px 10px 28px color-mix(in srgb, var(--pk-ink) 18%, transparent);
+  }
+  .pk-img-caption {
+    margin: 0.75rem 0 0;
+    font-size: 0.75rem;
+    color: var(--pk-ink-mute);
+    font-family: var(--pk-display);
+    font-style: italic;
+  }
+  .pk-img-caption a {
+    color: var(--pk-ink-soft);
+    text-decoration: underline;
+    text-decoration-color: var(--pk-line);
+  }
+  .pk-wordmark {
+    font-family: var(--pk-display);
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    line-height: 0.95;
+    color: var(--pk-marine);
+    margin: 1.25rem 0 0;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    font-variation-settings: "SOFT" 100, "WONK" 0;
+  }
+  .pk-wordmark-apos {
+    font-style: italic;
+    color: var(--pk-brick);
+    font-weight: 400;
+    font-variation-settings: "SOFT" 100, "WONK" 1;
+  }
+  .pk-tagline {
+    font-family: var(--pk-display);
+    font-style: italic;
+    font-size: clamp(1.375rem, 2.5vw, 1.875rem);
+    line-height: 1.3;
+    color: var(--pk-ink);
+    margin: 1.5rem 0 0;
+    max-width: 24ch;
+    font-weight: 400;
+  }
+  .pk-subline {
+    font-size: 1rem;
+    color: var(--pk-ink-soft);
+    margin: 1rem 0 0;
+    max-width: 40ch;
+    line-height: 1.6;
+  }
+  .pk-subline em {
+    font-family: var(--pk-display);
+    font-style: italic;
+    color: var(--pk-brick);
+    font-size: 1.05em;
+  }
+  .pk-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+    margin: 2rem 0 0;
+    flex-wrap: wrap;
+  }
+  .pk-meta {
+    font-size: 0.85rem;
+    color: var(--pk-ink-mute);
+    margin: 2.5rem 0 0;
+    letter-spacing: 0.01em;
+  }
+
+  /* ── Section 2: Today's catch — chalkboard band ──────────────────── */
+  .pk-catch {
+    padding-block: clamp(2.5rem, 5vw, 4rem);
+    background: var(--pk-mustard);
+    border-block: 3px solid var(--pk-brick);
+  }
+  .pk-catch-board {
+    text-align: center;
+    color: var(--pk-marine-deep);
+  }
+  .pk-catch-label {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    color: var(--pk-brick-deep);
+  }
+  .pk-catch-items {
+    margin: 0.75rem 0 0;
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    color: var(--pk-marine-deep);
+    line-height: 1.1;
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    gap: 0.25rem 0.75rem;
+  }
+  .pk-catch-item {
+    transform: rotate(-1.5deg);
+    display: inline-block;
+  }
+  .pk-catch-item:nth-child(3) { transform: rotate(1deg); }
+  .pk-catch-item:nth-child(5) { transform: rotate(-0.5deg); }
+  .pk-catch-item:nth-child(7) { transform: rotate(0.8deg); }
+  .pk-catch-sep {
+    color: var(--pk-brick);
+    font-size: 0.6em;
+    align-self: center;
+  }
+  .pk-catch-note {
+    margin: 1rem 0 0;
+    font-family: var(--pk-body);
+    font-size: 0.85rem;
+    color: var(--pk-marine-deep);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .pk-catch-note em { font-style: italic; text-transform: none; letter-spacing: 0; font-weight: 400; }
+
+  /* ── Section 3: The story ────────────────────────────────────────── */
+  .pk-story { padding-block: clamp(4rem, 9vw, 7rem); }
+  .pk-story-grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+  @media (min-width: 800px) {
+    .pk-story-grid {
+      grid-template-columns: minmax(0, 0.4fr) minmax(0, 1fr);
+      align-items: start;
+    }
+  }
+  .pk-story-body {
+    border-top: 4px solid var(--pk-brick);
+    padding-block-start: 1.5rem;
+    max-width: 56ch;
+  }
+  .pk-story-text {
+    font-family: var(--pk-display);
+    font-size: clamp(1.125rem, 1.9vw, 1.375rem);
+    line-height: 1.5;
+    color: var(--pk-ink-soft);
+    margin: 1.25rem 0 0;
+    text-wrap: pretty;
+  }
+  .pk-story-text:first-of-type { margin-block-start: 1.5rem; }
+
+  /* ── Section 4: The menu ─────────────────────────────────────────── */
+  .pk-menu {
+    padding-block: clamp(4rem, 9vw, 7rem);
+    background: var(--pk-marine);
+    color: var(--pk-paper);
+  }
+  .pk-menu-header {
+    margin-block-end: clamp(2.5rem, 5vw, 4rem);
+    max-width: 44rem;
+  }
+  .pk-menu-note {
+    color: color-mix(in srgb, var(--pk-paper) 85%, var(--pk-marine-deep));
+    margin: 1.25rem 0 0;
+    font-family: var(--pk-display);
+    font-style: italic;
+    font-size: 1.125rem;
+    line-height: 1.5;
+    max-width: 44ch;
+  }
+  .pk-menu-grid {
+    display: grid;
+    gap: clamp(2.5rem, 5vw, 4rem);
+  }
+  @media (min-width: 800px) {
+    .pk-menu-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  .pk-menu-section {
+    border-top: 2px solid var(--pk-mustard);
+    padding-block-start: 1.25rem;
+  }
+  .pk-menu-section-label {
+    font-family: var(--pk-body);
+    font-size: 0.8rem;
+    color: var(--pk-mustard-soft);
+    margin: 0 0 1.5rem 0;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .pk-menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .pk-menu-row {}
+  .pk-menu-row-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .pk-menu-name {
+    font-family: var(--pk-display);
+    font-size: clamp(1.125rem, 2vw, 1.375rem);
+    font-weight: 500;
+    color: var(--pk-paper);
+    line-height: 1.2;
+    font-variation-settings: "SOFT" 50;
+  }
+  .pk-menu-price {
+    font-family: var(--pk-display);
+    font-style: italic;
+    color: var(--pk-mustard-soft);
+    font-size: 1.25rem;
+    white-space: nowrap;
+  }
+  .pk-menu-note-inline {
+    margin: 0.4rem 0 0;
+    font-size: 0.9rem;
+    color: color-mix(in srgb, var(--pk-paper) 78%, var(--pk-marine-deep));
+    font-style: italic;
+    line-height: 1.5;
+    max-width: 44ch;
+  }
+
+  /* ── Section 5: Hours ────────────────────────────────────────────── */
+  .pk-hours { padding-block: clamp(4rem, 9vw, 7rem); }
+  .pk-hours-grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+  @media (min-width: 800px) {
+    .pk-hours-grid {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      align-items: center;
+    }
+  }
+  .pk-hours-blurb {
+    font-family: var(--pk-display);
+    font-size: 1.15rem;
+    color: var(--pk-ink-soft);
+    margin: 1rem 0 0;
+    line-height: 1.5;
+    max-width: 36ch;
+    font-style: italic;
+  }
+  .pk-hours-list {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .pk-hours-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    font-family: var(--pk-display);
+    font-size: 1.2rem;
+    border-bottom: 1px dotted var(--pk-line);
+    padding-block-end: 0.6rem;
+  }
+  .pk-hours-row:last-child { border-bottom: 0; }
+  .pk-hours-row dt {
+    color: var(--pk-ink);
+    font-weight: 500;
+  }
+  .pk-hours-row dd {
+    color: var(--pk-brick);
+    margin: 0;
+    font-style: italic;
+  }
+
+  /* ── Section 6: Find us ──────────────────────────────────────────── */
+  .pk-find {
+    padding-block: clamp(4rem, 9vw, 7rem);
+    background: var(--pk-cream);
+    border-block: 1px solid var(--pk-cream-deep);
+  }
+  .pk-find-card {
+    background: var(--pk-paper);
+    border: 1px solid var(--pk-mustard);
+    border-top: 6px solid var(--pk-brick);
+    border-radius: 2px;
+    padding: clamp(2rem, 4vw, 3rem);
+    max-width: 32rem;
+    box-shadow:
+      0 1px 0 var(--pk-mustard-soft) inset,
+      0 12px 32px color-mix(in srgb, var(--pk-ink) 12%, transparent);
+  }
+  .pk-find-street {
+    font-size: clamp(1.875rem, 3vw, 2.25rem);
+    margin: 0.5rem 0 0;
+    line-height: 1.1;
+    color: var(--pk-ink);
+  }
+  .pk-find-city {
+    color: var(--pk-ink-soft);
+    font-family: var(--pk-display);
+    font-style: italic;
+    font-size: 1.25rem;
+    margin: 0.25rem 0 0;
+  }
+  .pk-find-phone { margin: 1rem 0 0; }
+  .pk-find-phone a {
+    color: var(--pk-marine);
+    font-family: var(--pk-display);
+    font-size: 1.35rem;
+    text-decoration: underline;
+    text-decoration-color: var(--pk-mustard);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+    font-weight: 500;
+  }
+  .pk-find-blurb {
+    margin: 1.25rem 0 0;
+    font-family: var(--pk-display);
+    color: var(--pk-ink-soft);
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+  .pk-find-blurb em { color: var(--pk-brick); font-style: italic; }
+
+  /* ── Section 7: Mainstay closing — dark marine ───────────────────── */
+  .pk-close {
+    padding-block: clamp(5rem, 10vw, 8rem);
+    background: var(--pk-marine-deep);
+    color: var(--pk-paper);
+    border-top: 3px solid var(--pk-mustard);
+  }
+  .pk-close-body {
+    font-family: var(--pk-display);
+    font-size: clamp(1.125rem, 1.9vw, 1.4rem);
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--pk-paper) 92%, var(--pk-marine-deep));
+    margin: 1.25rem 0 0;
+    text-wrap: pretty;
+  }
+  .pk-close-body em {
+    font-style: italic;
+    color: var(--pk-mustard-soft);
+  }
+  .pk-close-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.75rem;
+    margin: 2rem 0 0;
+    align-items: center;
+  }
+  .pk-close-sign {
+    margin: 2rem 0 0;
+    padding-block-start: 1.5rem;
+    border-top: 1px dotted color-mix(in srgb, var(--pk-paper) 25%, transparent);
+    font-family: var(--pk-display);
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--pk-mustard-soft);
+  }
+  .pk-close-sign-script {
+    font-family: var(--pk-script);
+    font-style: normal;
+    font-size: 1.5rem;
+    color: var(--pk-mustard-soft);
+  }
+  .pk-close-sign a {
+    color: var(--pk-mustard-soft);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--pk-paper) 35%, transparent);
+  }
+  .pk-close-sign a:hover {
+    text-decoration-color: var(--pk-mustard-soft);
+  }
+</style>
