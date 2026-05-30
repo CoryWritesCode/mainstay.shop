@@ -20,7 +20,6 @@
 import { getEntry } from "astro:content";
 import { Image } from "astro:assets";
 import "@fontsource-variable/roboto-slab";
-import "@fontsource-variable/caveat";
 import DemoShell from "../../components/demo/DemoShell.astro";
 import DemoDisclosure from "../../components/demo/DemoDisclosure.astro";
 
@@ -267,63 +266,118 @@ const timeline = [
             </p>
           </header>
 
-          <article class="sw-work-order" aria-label="Sample work order">
+          <article class="sw-work-order" aria-label="Service request form">
             <header class="sw-work-order-head">
               <div>
-                <p class="sw-work-order-brand">Saltworks · Work Order</p>
-                <p class="sw-work-order-sub">Water Conditioning Co. · 518 N Main St · Baltimore, OH</p>
+                <p class="sw-work-order-brand">Saltworks · Service Request</p>
+                <p class="sw-work-order-sub">
+                  We'll get back to you within a day, usually the same day.
+                </p>
               </div>
-              <div class="sw-work-order-number">
-                <p class="sw-work-order-num-label">No.</p>
+              <div class="sw-work-order-number" aria-hidden="true">
+                <p class="sw-work-order-num-label">Order No.</p>
                 <p class="sw-work-order-num">1971.0428</p>
               </div>
             </header>
 
-            <dl class="sw-work-order-fields">
-              <div class="sw-field">
-                <dt>Customer</dt>
-                <dd class="sw-script">your name here</dd>
+            <form class="sw-form" onsubmit="return false">
+              <div class="sw-form-row">
+                <label for="sw-name" class="sw-form-label">Your name</label>
+                <input
+                  id="sw-name"
+                  name="name"
+                  type="text"
+                  class="sw-form-input"
+                  placeholder="First and last"
+                  autocomplete="name"
+                />
               </div>
-              <div class="sw-field">
-                <dt>Address</dt>
-                <dd class="sw-script">street, city, ZIP</dd>
-              </div>
-              <div class="sw-field">
-                <dt>Phone</dt>
-                <dd class="sw-script">how we should reach you</dd>
-              </div>
-              <div class="sw-field sw-field-wide">
-                <dt>What's the trouble?</dt>
-                <dd class="sw-script">water tastes salty after the softener regens — likely the brine valve timing, but want a hand to confirm</dd>
-              </div>
-              <div class="sw-field sw-field-options">
-                <dt>Preferred time</dt>
-                <dd>
-                  <ol class="sw-checks">
-                    <li><span class="sw-check sw-check-on" aria-hidden="true">✕</span> Weekday afternoons</li>
-                    <li><span class="sw-check" aria-hidden="true"></span> Weekday mornings</li>
-                    <li><span class="sw-check" aria-hidden="true"></span> Saturday — call first</li>
-                    <li><span class="sw-check" aria-hidden="true"></span> Whenever you can</li>
-                  </ol>
-                </dd>
-              </div>
-            </dl>
 
-            <footer class="sw-work-order-foot">
-              <div class="sw-work-order-sig">
-                <p class="sw-work-order-sig-line"></p>
-                <p class="sw-work-order-sig-label">Saltworks technician</p>
+              <div class="sw-form-row sw-form-row-split">
+                <div>
+                  <label for="sw-phone" class="sw-form-label">Phone</label>
+                  <input
+                    id="sw-phone"
+                    name="phone"
+                    type="tel"
+                    class="sw-form-input"
+                    placeholder="(740) 000-0000"
+                    autocomplete="tel"
+                  />
+                </div>
+                <div>
+                  <label for="sw-email" class="sw-form-label">
+                    Email <span class="sw-form-optional">(optional)</span>
+                  </label>
+                  <input
+                    id="sw-email"
+                    name="email"
+                    type="email"
+                    class="sw-form-input"
+                    placeholder="you@example.com"
+                    autocomplete="email"
+                  />
+                </div>
               </div>
-              <button type="button" class="sw-button-primary" disabled>
-                File this work order
-              </button>
-            </footer>
 
-            <p class="sw-work-order-disclaimer">
-              <strong>Demo only.</strong> Not a real form — this is what
-              submitting a service request would look like on Saltworks'
-              actual site.
-            </p>
+              <div class="sw-form-row">
+                <label for="sw-address" class="sw-form-label">Address</label>
+                <input
+                  id="sw-address"
+                  name="address"
+                  type="text"
+                  class="sw-form-input"
+                  placeholder="Street, city"
+                  autocomplete="street-address"
+                />
+                <p class="sw-form-hint">
+                  Just so we know how far the drive is.
+                </p>
+              </div>
+
+              <div class="sw-form-row">
+                <label for="sw-trouble" class="sw-form-label">
+                  What's wrong with the water?
+                </label>
+                <textarea
+                  id="sw-trouble"
+                  name="trouble"
+                  class="sw-form-input sw-form-textarea"
+                  rows="4"
+                  placeholder="Salty taste, low pressure, brown tint — anything you've noticed."
+                ></textarea>
+                <p class="sw-form-hint">
+                  A short note is fine. We'll call to ask more.
+                </p>
+              </div>
+
+              <div class="sw-form-row">
+                <label for="sw-time" class="sw-form-label">
+                  When works for a service call?
+                </label>
+                <select
+                  id="sw-time"
+                  name="preferred_time"
+                  class="sw-form-input sw-form-select"
+                >
+                  <option>Weekday afternoons</option>
+                  <option>Weekday mornings</option>
+                  <option>Saturdays (call first)</option>
+                  <option>Whenever you can — surprise me</option>
+                </select>
+              </div>
+
+              <div class="sw-form-actions">
+                <button type="submit" class="sw-button-primary" disabled>
+                  Request a service call
+                </button>
+                <p class="sw-work-order-disclaimer">
+                  <strong>Demo only.</strong> Submitting doesn't go anywhere
+                  yet — this is what the real form would look like on
+                  Saltworks' site.
+                </p>
+              </div>
+            </form>
           </article>
         </div>
       </section>
@@ -433,7 +487,6 @@ const timeline = [
       "Source Serif 4 Variable", Georgia, serif;
     --sw-body: "Public Sans Variable", "Public Sans", system-ui,
       -apple-system, sans-serif;
-    --sw-script: "Caveat Variable", "Caveat", "Brush Script MT", cursive;
 
     color: var(--sw-ink);
     font-family: var(--sw-body);
@@ -517,10 +570,6 @@ const timeline = [
     background: var(--sw-copper);
   }
   .sw-bullet-copper { background: var(--sw-copper); }
-
-  .sw-script {
-    font-family: var(--sw-script);
-  }
 
   /* ── Buttons & links ─────────────────────────────────────────────── */
   .sw-button-primary {
@@ -894,45 +943,37 @@ const timeline = [
 
   .sw-work-order {
     background: var(--sw-paper);
-    border: 2px solid var(--sw-navy);
+    border: 1px solid var(--sw-line);
+    border-top: 6px solid var(--sw-navy);
     border-radius: 2px;
     padding: clamp(1.5rem, 3vw, 2.5rem);
     max-width: 44rem;
     box-shadow:
-      0 3px 0 var(--sw-line),
-      0 16px 36px color-mix(in srgb, var(--sw-ink) 18%, transparent);
-    transform: rotate(-0.5deg);
-    background-image: repeating-linear-gradient(
-      to bottom,
-      transparent 0,
-      transparent 2.25rem,
-      color-mix(in srgb, var(--sw-line) 40%, transparent) 2.25rem,
-      color-mix(in srgb, var(--sw-line) 40%, transparent) calc(2.25rem + 1px)
-    );
+      0 2px 0 var(--sw-line),
+      0 12px 32px color-mix(in srgb, var(--sw-ink) 12%, transparent);
   }
   .sw-work-order-head {
     display: flex;
     align-items: start;
     justify-content: space-between;
     gap: 1rem;
-    padding-block-end: 1rem;
-    border-bottom: 2px solid var(--sw-navy);
-    margin-block-end: 1.5rem;
+    padding-block-end: 1.25rem;
+    border-bottom: 1px solid var(--sw-line);
+    margin-block-end: 1.75rem;
   }
   .sw-work-order-brand {
     font-family: var(--sw-display);
-    font-weight: 800;
-    font-size: 1.1rem;
+    font-weight: 700;
+    font-size: 1.15rem;
     color: var(--sw-navy);
     margin: 0;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    letter-spacing: 0.02em;
   }
   .sw-work-order-sub {
-    font-size: 0.75rem;
-    color: var(--sw-ink-mute);
-    margin: 0.25rem 0 0;
-    letter-spacing: 0.04em;
+    font-size: 0.875rem;
+    color: var(--sw-ink-soft);
+    margin: 0.35rem 0 0;
+    line-height: 1.5;
   }
   .sw-work-order-number { text-align: end; }
   .sw-work-order-num-label {
@@ -947,128 +988,112 @@ const timeline = [
   .sw-work-order-num {
     font-family: var(--sw-display);
     font-weight: 700;
-    font-size: 1.5rem;
+    font-size: 1.05rem;
     color: var(--sw-copper);
     margin: 0;
-    letter-spacing: -0.02em;
+    letter-spacing: 0.02em;
   }
 
-  .sw-work-order-fields {
-    margin: 0;
+  /* The form — straightforward, recognizable, no clever flourishes. */
+  .sw-form {
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
   }
-  .sw-field {
-    display: grid;
-    grid-template-columns: 9rem minmax(0, 1fr);
-    gap: 1rem;
-    align-items: baseline;
-  }
-  .sw-field-wide { grid-template-columns: 9rem minmax(0, 1fr); }
-  .sw-field-options { grid-template-columns: 9rem minmax(0, 1fr); align-items: start; }
-  @media (max-width: 600px) {
-    .sw-field, .sw-field-wide, .sw-field-options {
-      grid-template-columns: minmax(0, 1fr);
-      gap: 0.4rem;
-    }
-  }
-  .sw-field dt {
-    font-family: var(--sw-display);
-    font-weight: 600;
-    font-size: 0.75rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--sw-navy);
-  }
-  .sw-field dd {
-    margin: 0;
-    border-bottom: 1px solid var(--sw-line);
-    padding-block-end: 0.35rem;
-    min-height: 1.75rem;
-    color: var(--sw-ink);
-  }
-  .sw-field dd.sw-script {
-    font-size: 1.5rem;
-    line-height: 1.3;
-    color: var(--sw-navy);
-    transform: rotate(-0.5deg);
-    transform-origin: left;
-  }
-
-  .sw-checks {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  .sw-form-row {
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
   }
-  .sw-checks li {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-    font-size: 0.95rem;
-    color: var(--sw-ink-soft);
+  .sw-form-row-split {
+    display: grid;
+    gap: 1.25rem;
   }
-  .sw-check {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.1rem;
-    height: 1.1rem;
-    border: 1.5px solid var(--sw-navy);
-    border-radius: 1px;
-    flex-shrink: 0;
-    font-family: var(--sw-script);
-    font-size: 1.5rem;
-    line-height: 1;
-    color: var(--sw-copper-deep);
+  @media (min-width: 560px) {
+    .sw-form-row-split { grid-template-columns: 1fr 1fr; }
   }
-  .sw-check-on {
+  .sw-form-label {
+    font-family: var(--sw-body);
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--sw-ink);
+    letter-spacing: 0.01em;
+  }
+  .sw-form-optional {
+    color: var(--sw-ink-mute);
+    font-weight: 400;
+    font-size: 0.825rem;
+  }
+  .sw-form-input {
+    width: 100%;
     background: var(--sw-paper);
+    border: 1.5px solid var(--sw-line);
+    border-radius: 2px;
+    padding: 0.6rem 0.75rem;
+    font-family: var(--sw-body);
+    font-size: 1rem;
+    color: var(--sw-ink);
+    line-height: 1.4;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
   }
-
-  .sw-work-order-foot {
-    margin: 2rem 0 0;
+  .sw-form-input::placeholder {
+    color: var(--sw-ink-mute);
+  }
+  .sw-form-input:hover {
+    border-color: var(--sw-navy-soft);
+  }
+  .sw-form-input:focus-visible {
+    outline: 0;
+    border-color: var(--sw-navy);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--sw-navy) 18%, transparent);
+  }
+  .sw-form-textarea {
+    resize: vertical;
+    min-height: 5.5rem;
+    font-family: var(--sw-body);
+  }
+  .sw-form-select {
+    appearance: none;
+    padding-inline-end: 2.5rem;
+    background-image: linear-gradient(45deg, transparent 50%, var(--sw-navy) 50%),
+      linear-gradient(135deg, var(--sw-navy) 50%, transparent 50%);
+    background-position:
+      right 1rem center,
+      right 0.6rem center;
+    background-size: 6px 6px;
+    background-repeat: no-repeat;
+  }
+  .sw-form-hint {
+    font-size: 0.8125rem;
+    color: var(--sw-ink-mute);
+    margin: 0.1rem 0 0;
+    line-height: 1.5;
+  }
+  .sw-form-actions {
+    margin-block-start: 0.75rem;
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
-    align-items: stretch;
+    gap: 1rem;
+    align-items: flex-start;
   }
-  @media (min-width: 600px) {
-    .sw-work-order-foot {
-      flex-direction: row;
-      align-items: end;
-      justify-content: space-between;
-      gap: 2rem;
+  .sw-form-actions .sw-button-primary {
+    width: 100%;
+    justify-content: center;
+    padding-block: 1rem;
+  }
+  @media (min-width: 560px) {
+    .sw-form-actions .sw-button-primary {
+      width: auto;
     }
   }
-  .sw-work-order-sig {
-    flex-grow: 1;
-    max-width: 18rem;
-  }
-  .sw-work-order-sig-line {
-    border-bottom: 1px solid var(--sw-navy);
-    height: 1.5rem;
-    margin: 0;
-  }
-  .sw-work-order-sig-label {
-    margin: 0.4rem 0 0;
-    font-family: var(--sw-display);
-    font-size: 0.7rem;
-    font-weight: 500;
-    color: var(--sw-ink-mute);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
-
   .sw-work-order-disclaimer {
-    margin: 1.5rem 0 0;
+    margin: 0;
     padding-block-start: 1rem;
     border-top: 1px dotted var(--sw-line);
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     color: var(--sw-ink-mute);
+    line-height: 1.55;
+    width: 100%;
   }
   .sw-work-order-disclaimer strong {
     color: var(--sw-navy);
