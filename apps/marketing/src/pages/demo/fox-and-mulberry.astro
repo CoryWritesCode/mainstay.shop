@@ -118,6 +118,7 @@ const ethos = [
               <p class="fm-eyebrow">
                 Baltimore, Ohio · 114 W Mulberry St
               </p>
+              <div class="fm-logo-mark" aria-hidden="true"></div>
               <h1 class="fm-wordmark">
                 <span class="fm-wordmark-italic">Fox</span>
                 <span class="fm-wordmark-plus" aria-hidden="true">+</span>
@@ -596,6 +597,22 @@ const ethos = [
       grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
       align-items: center;
     }
+  }
+  /* The fox + mulberry line-art mark — small ink stamp between the
+   * location eyebrow and the typeset wordmark below. The source PNG is
+   * white lines on transparent, so we use it as a CSS mask and paint
+   * the shape in mulberry — same color as the wordmark below, so the
+   * mark and the typeset name read as one brand stamp. */
+  .fm-logo-mark {
+    display: block;
+    width: clamp(4.5rem, 8vw, 6.5rem);
+    aspect-ratio: 784 / 804;
+    margin: 1.25rem 0 0;
+    background-color: var(--fm-mulberry);
+    -webkit-mask: url('/demos/fox-and-mulberry/logo-mark.png')
+                  center / contain no-repeat;
+            mask: url('/demos/fox-and-mulberry/logo-mark.png')
+                  center / contain no-repeat;
   }
   .fm-wordmark {
     font-family: var(--fm-display);
