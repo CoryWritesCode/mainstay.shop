@@ -1,0 +1,161 @@
+---
+// Request-a-change form — posts to Web3Forms (same pattern as the marketing
+// site's ContactForm), landing in Cory's inbox tagged with the store name.
+// No backend needed.
+interface Props {
+  clientName: string;
+  clientSlug: string;
+}
+const { clientName, clientSlug } = Astro.props;
+
+const WEB3FORMS_ACCESS_KEY =
+  import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ?? "REPLACE_WITH_YOUR_WEB3FORMS_KEY";
+---
+
+<section class="cr" aria-labelledby="cr-h">
+  <h2 id="cr-h" class="cr-title">Want something changed?</h2>
+  <p class="cr-lede">
+    New hours, a fresh photo, a price update, a note for the season — tell me
+    what you'd like and I'll take care of it. No form is too small.
+  </p>
+
+  <form id="cr-form" class="cr-form">
+    <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
+    <input type="hidden" name="subject" value={`Change request — ${clientName}`} />
+    <input type="hidden" name="from_name" value="Mainstay admin" />
+    <input type="hidden" name="site" value={clientSlug} />
+    <input
+      type="checkbox"
+      name="botcheck"
+      tabindex="-1"
+      autocomplete="off"
+      style="position:absolute;left:-9999px;width:0;height:0;opacity:0"
+      aria-hidden="true"
+    />
+
+    <label for="cr-message">What would you like changed?</label>
+    <textarea
+      id="cr-message"
+      class="field"
+      name="message"
+      rows="4"
+      required
+      placeholder="e.g. Please update our Saturday hours to 9–1, and swap the hero photo for the new storefront picture I'll email over."
+    ></textarea>
+
+    <p id="cr-error" class="cr-error" hidden role="alert"></p>
+
+    <button type="submit" class="btn cr-submit">Send it to Cory</button>
+  </form>
+
+  <div id="cr-success" class="cr-success" hidden role="status" aria-live="polite">
+    <p>Got it — I'll take a look and follow up, usually the same day.</p>
+    <button type="button" id="cr-another" class="btn-text">Send another</button>
+  </div>
+</section>
+
+<style>
+  .cr {
+    border-top: 1px solid var(--color-line);
+    padding-top: 2.5rem;
+    margin-top: 3rem;
+  }
+  .cr-title {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem;
+  }
+  .cr-lede {
+    color: var(--color-ink-soft);
+    line-height: 1.6;
+    margin: 0 0 1.5rem;
+    max-width: 48ch;
+  }
+  .cr-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 40rem;
+  }
+  label {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  .cr-submit {
+    align-self: flex-start;
+    margin-top: 0.5rem;
+  }
+  .cr-error {
+    color: var(--color-accent-deep);
+    background: var(--color-accent-soft);
+    border-radius: var(--radius-button);
+    padding: 0.6rem 0.75rem;
+    margin: 0;
+    font-size: 0.9rem;
+  }
+  .cr-success {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    padding: 1.25rem 1.5rem;
+    max-width: 40rem;
+  }
+  .cr-success p {
+    margin: 0 0 0.5rem;
+  }
+</style>
+
+<script>
+  const form = document.getElementById("cr-form") as HTMLFormElement | null;
+  const success = document.getElementById("cr-success");
+  const errorEl = document.getElementById("cr-error");
+  const another = document.getElementById("cr-another");
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (errorEl) errorEl.hidden = true;
+    const btn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const label = btn?.textContent ?? "Send it to Cory";
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = "Sending…";
+    }
+    try {
+      const payload: Record<string, FormDataEntryValue> = {};
+      new FormData(form).forEach((v, k) => (payload[k] = v));
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "content-type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const result = (await res.json()) as { success?: boolean; message?: string };
+      if (res.ok && result.success) {
+        form.reset();
+        form.hidden = true;
+        if (success) success.hidden = false;
+      } else {
+        throw new Error(result.message ?? "send failed");
+      }
+    } catch {
+      if (errorEl) {
+        errorEl.textContent =
+          "Couldn't send just now. Please try again, or email hello@mainstayshop.studio.";
+        errorEl.hidden = false;
+      }
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = label;
+      }
+    }
+  });
+
+  another?.addEventListener("click", () => {
+    if (success) success.hidden = true;
+    if (form) {
+      form.hidden = false;
+      // Return keyboard focus to the field instead of dropping it on <body>.
+      form.querySelector<HTMLTextAreaElement>("#cr-message")?.focus();
+    }
+  });
+</script>

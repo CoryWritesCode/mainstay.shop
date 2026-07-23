@@ -1,0 +1,485 @@
+---
+// /admin/<slug> — a client's dashboard. Calm, plain-English one-pager (the
+// marketing promise: "who's visiting, what's working… no dashboards to learn").
+// Middleware guarantees the viewer owns this slug (or is super-admin).
+export const prerender = false;
+
+import AdminLayout from "../../layouts/AdminLayout.astro";
+import ChangeRequestForm from "../../components/ChangeRequestForm.astro";
+import { getClient } from "../../lib/roster";
+import { getAnalytics } from "../../lib/analytics";
+
+const slug = Astro.params.slug;
+if (!slug) return Astro.redirect("/admin");
+
+const env = Astro.locals.runtime.env;
+const user = Astro.locals.user;
+if (!user) return Astro.redirect("/");
+
+const client = await getClient(env.CLIENTS, slug);
+if (!client) return new Response("Not found", { status: 404 });
+
+const a = await getAnalytics(env, client.analytics, 30);
+
+// ── Turn numbers into plain English ──────────────────────────────
+const pct =
+  a.prevVisits > 0
+    ? Math.round(((a.visits - a.prevVisits) / a.prevVisits) * 100)
+    : null;
+const dir = pct === null ? "flat" : pct > 2 ? "up" : pct < -2 ? "down" : "flat";
+
+const REF_NAMES: Record<string, string> = {
+  "facebook.com": "Facebook",
+  "m.facebook.com": "Facebook",
+  "l.facebook.com": "Facebook",
+  "instagram.com": "Instagram",
+  "l.instagram.com": "Instagram",
+  "google.com": "Google",
+  "www.google.com": "Google",
+  "bing.com": "Bing",
+};
+function refLabel(host: string): string {
+  if (!host || host === "(direct)" || host === "—") return "directly";
+  return REF_NAMES[host] ?? host.replace(/^www\./, "");
+}
+const topRef = a.referrers[0];
+
+let read = "";
+if (a.hasData) {
+  const trend =
+    dir === "up"
+      ? ` — up ${pct}% from the month before`
+      : dir === "down"
+        ? ` — down ${Math.abs(pct as number)}% from the month before`
+        : pct !== null
+          ? ", about the same as the month before"
+          : "";
+  const via = topRef
+    ? refLabel(topRef.label) === "directly"
+      ? " Most people came straight to your site."
+      : ` Most people found you from ${refLabel(topRef.label)}.`
+    : "";
+  read = `About ${a.visits.toLocaleString()} ${a.visits === 1 ? "person" : "people"} visited in the last 30 days${trend}.${via}`;
+}
+
+// Busiest day of the week.
+let busiest: string | null = null;
+if (a.series.length) {
+  const top = [...a.series].sort((x, y) => y.visits - x.visits)[0];
+  if (top && top.visits > 0 && /^\d{4}-\d{2}-\d{2}$/.test(top.date)) {
+    busiest = new Date(`${top.date}T00:00:00Z`).toLocaleDateString("en-US", {
+      weekday: "long",
+      timeZone: "UTC",
+    });
+  }
+}
+
+// Sparkline geometry for the daily series.
+const SPARK_W = 640;
+const SPARK_H = 120;
+function sparkline(series: { visits: number }[]): { line: string; area: string } {
+  if (series.length < 2) return { line: "", area: "" };
+  const max = Math.max(...series.map((p) => p.visits), 1);
+  const step = SPARK_W / (series.length - 1);
+  const pts = series.map(
+    (p, i) =>
+      `${(i * step).toFixed(1)},${(SPARK_H - (p.visits / max) * (SPARK_H - 8) - 4).toFixed(1)}`
+  );
+  return {
+    line: pts.join(" "),
+    area: `0,${SPARK_H} ${pts.join(" ")} ${SPARK_W},${SPARK_H}`,
+  };
+}
+const spark = sparkline(a.series);
+---
+
+<AdminLayout title={`${client.displayName} — Mainstay`} accent={client.accent}>
+  <div class="page">
+    <header class="bar">
+      <p class="wordmark">Mainstay</p>
+      <form method="POST" action="/api/auth/logout">
+        <button type="submit" class="btn-text">Sign out</button>
+      </form>
+    </header>
+
+    <section class="hero">
+      <h1>Here's how {client.displayName} did this month.</h1>
+      {a.hasData && <p class="read">{read}</p>}
+      {
+        client.siteUrl && (
+          <p class="siteurl">
+            <a href={client.siteUrl} class="textlink" target="_blank" rel="noopener">
+              Visit your site&nbsp;↗
+            </a>
+          </p>
+        )
+      }
+    </section>
+
+    {
+      a.error ? (
+        <section class="empty">
+          <p class="empty-title">We couldn't load your numbers just now.</p>
+          <p class="empty-body">
+            This one's on our end, not yours — the analytics service didn't
+            answer. Try refreshing in a little while; if it keeps happening,
+            email hello@mainstayshop.studio and I'll sort it out.
+          </p>
+        </section>
+      ) : !a.hasData ? (
+        <section class="empty">
+          <p class="empty-title">We're just starting to count.</p>
+          <p class="empty-body">
+            Your site is being watched quietly in the background. Once a few
+            neighbors have stopped by, their visits will show up here — usually
+            within a day or two. Check back soon.
+          </p>
+        </section>
+      ) : (
+        <>
+          <section class="figure">
+            <div class="figure-head">
+              <p class="figure-num">{a.visits.toLocaleString()}</p>
+              <div class="figure-meta">
+                <p class="figure-label">
+                  {a.visits === 1 ? "visitor" : "visitors"} in the last 30 days
+                </p>
+                {pct !== null && (
+                  <p class={`trend trend-${dir}`}>
+                    <span aria-hidden="true">
+                      {dir === "up" ? "▲" : dir === "down" ? "▼" : "→"}
+                    </span>
+                    {dir === "flat"
+                      ? "about the same as last month"
+                      : `${Math.abs(pct)}% ${dir === "up" ? "more" : "fewer"} than last month`}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {spark.line && (
+              <figure class="chart">
+                <svg
+                  viewBox={`0 0 ${SPARK_W} ${SPARK_H}`}
+                  preserveAspectRatio="none"
+                  class="spark"
+                  role="img"
+                  aria-label="Daily visits over the last 30 days"
+                >
+                  <polygon points={spark.area} class="spark-area" />
+                  <polyline points={spark.line} class="spark-line" />
+                </svg>
+                <figcaption>Daily visits, last 30 days</figcaption>
+              </figure>
+            )}
+
+            <p class="facts">
+              About {a.pageviews.toLocaleString()} pages viewed
+              {busiest && (
+                <>
+                  {" · "}
+                  busiest day was <strong>{busiest}</strong>
+                </>
+              )}
+            </p>
+          </section>
+
+          <section class="lists">
+            <div class="list-col">
+              <h2>Where people came from</h2>
+              <ul>
+                {a.referrers.length === 0 && (
+                  <li class="muted">Mostly direct visits.</li>
+                )}
+                {a.referrers.map((r) => (
+                  <li>
+                    <span>{refLabel(r.label)}</span>
+                    <span class="count">{r.visits.toLocaleString()}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div class="list-col">
+              <h2>Most-visited pages</h2>
+              <ul>
+                {a.topPages.length === 0 && <li class="muted">No page data yet.</li>}
+                {a.topPages.map((p) => (
+                  <li>
+                    <span class="path">{p.label}</span>
+                    <span class="count">{p.visits.toLocaleString()}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        </>
+      )
+    }
+
+    <!-- Social analytics teaser — the visible hook for the next feature. -->
+    <section class="teaser" aria-labelledby="teaser-h">
+      <p class="teaser-tag">Coming soon</p>
+      <h2 id="teaser-h">Your social reach, in the same place</h2>
+      <p class="teaser-body">
+        Soon you'll see how your Facebook, Instagram, and Google Business
+        listing are doing right here — reach, new followers, and which posts
+        brought people to your door — without logging into three different apps.
+      </p>
+      <ul class="teaser-chips">
+        <li>Facebook</li>
+        <li>Instagram</li>
+        <li>Google Business</li>
+      </ul>
+    </section>
+
+    <ChangeRequestForm clientName={client.displayName} clientSlug={client.slug} />
+  </div>
+</AdminLayout>
+
+<style>
+  .page {
+    max-width: var(--container-narrow);
+    margin-inline: auto;
+    padding: 2.5rem 1.5rem 5rem;
+  }
+  @media (min-width: 768px) {
+    .page {
+      padding: 3.5rem 2.5rem 6rem;
+    }
+  }
+
+  .bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3.5rem;
+  }
+  .wordmark {
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  .hero h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    margin: 0 0 0.9rem;
+    max-width: 18ch;
+    text-wrap: balance;
+  }
+  .read {
+    font-size: var(--text-lede);
+    line-height: 1.55;
+    color: var(--color-ink-soft);
+    margin: 0;
+    max-width: 52ch;
+    text-wrap: pretty;
+  }
+  .siteurl {
+    margin: 1.1rem 0 0;
+    font-size: 0.95rem;
+  }
+
+  /* Empty state */
+  .empty {
+    margin-top: 2.5rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    padding: 2rem;
+  }
+  .empty-title {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    margin: 0 0 0.5rem;
+  }
+  .empty-body {
+    color: var(--color-ink-soft);
+    line-height: 1.6;
+    margin: 0;
+    max-width: 52ch;
+  }
+
+  /* The figure — one hero number, warm, not a KPI card row */
+  .figure {
+    margin-top: 3rem;
+  }
+  .figure-head {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.35rem 1.25rem;
+  }
+  .figure-num {
+    font-family: var(--font-serif);
+    font-size: clamp(3.5rem, 12vw, 5.5rem);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    margin: 0;
+    color: var(--color-ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .figure-label {
+    margin: 0;
+    font-size: 1.05rem;
+    color: var(--color-ink-soft);
+  }
+  .trend {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0.25rem 0 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .trend span {
+    font-size: 0.7em;
+  }
+  .trend-up {
+    color: var(--color-leaf);
+  }
+  .trend-down {
+    color: var(--color-accent-deep);
+  }
+  .trend-flat {
+    color: var(--color-ink-mute);
+  }
+
+  .chart {
+    margin: 1.75rem 0 0;
+  }
+  .spark {
+    width: 100%;
+    height: clamp(64px, 14vw, 120px);
+    display: block;
+  }
+  .spark-line {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2.5;
+    vector-effect: non-scaling-stroke;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+  }
+  .spark-area {
+    fill: color-mix(in srgb, var(--accent) 12%, transparent);
+    stroke: none;
+  }
+  .chart figcaption {
+    color: var(--color-ink-mute);
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+  }
+
+  .facts {
+    margin: 1.5rem 0 0;
+    color: var(--color-ink-soft);
+    font-size: 0.95rem;
+  }
+  .facts strong {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+
+  /* Lists — hairline rows, not cards */
+  .lists {
+    display: grid;
+    gap: 2.5rem;
+    margin-top: 3.5rem;
+  }
+  @media (min-width: 640px) {
+    .lists {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .list-col h2 {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-ink-mute);
+    margin: 0 0 1rem;
+  }
+  .list-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .list-col li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--color-line);
+    font-size: 0.98rem;
+  }
+  .list-col li:last-child {
+    border-bottom: 0;
+  }
+  .count {
+    color: var(--color-ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  .path {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 24ch;
+  }
+  .muted {
+    color: var(--color-ink-mute);
+    border-bottom: 0 !important;
+  }
+
+  /* Social teaser */
+  .teaser {
+    margin-top: 3.5rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    padding: 2rem;
+  }
+  .teaser-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--color-ink);
+    background: var(--color-surface-deep);
+    border-radius: var(--radius-pill);
+    padding: 0.25rem 0.7rem;
+    margin: 0 0 1rem;
+  }
+  .teaser h2 {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem;
+  }
+  .teaser-body {
+    color: var(--color-ink-soft);
+    line-height: 1.6;
+    margin: 0 0 1.25rem;
+    max-width: 54ch;
+  }
+  .teaser-chips {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0;
+    margin: 0;
+  }
+  .teaser-chips li {
+    background: var(--color-paper);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-pill);
+    padding: 0.35rem 0.85rem;
+    font-size: 0.85rem;
+    color: var(--color-ink-soft);
+  }
+</style>

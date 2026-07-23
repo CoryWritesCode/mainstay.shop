@@ -8,6 +8,7 @@
 // DemoLayout.astro instead.
 
 import "../../styles/global.css";
+import Analytics from "../Analytics.astro";
 
 interface Props {
   title: string;
@@ -39,6 +40,7 @@ const computedBodyStyle = [
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content={bodyBackground ?? "#FBF7F1"} />
+    <Analytics />
   </head>
   <body
     class="text-ink antialiased"

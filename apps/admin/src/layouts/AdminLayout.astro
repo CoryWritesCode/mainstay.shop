@@ -1,0 +1,54 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  /** Optional accent override (a client's brand color) for scoped tinting. */
+  accent?: string;
+}
+
+const { title = "Mainstay", accent } = Astro.props;
+
+// Choose button text that stays legible on an arbitrary client accent (WCAG AA),
+// and derive a hover shade so hover states don't revert to Mainstay terracotta.
+function accentInk(hex: string): string {
+  const m = /^#([0-9a-fA-F]{6})$/.exec(hex);
+  if (!m || !m[1]) return "var(--color-paper)";
+  const n = parseInt(m[1], 16);
+  const chan = (c: number) => {
+    const s = c / 255;
+    return s <= 0.04045 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+  };
+  const L =
+    0.2126 * chan((n >> 16) & 255) +
+    0.7152 * chan((n >> 8) & 255) +
+    0.0722 * chan(n & 255);
+  return L > 0.4 ? "var(--color-ink)" : "var(--color-paper)";
+}
+
+const bodyStyle = accent
+  ? [
+      `--accent: ${accent}`,
+      `--accent-deep: color-mix(in srgb, ${accent} 82%, #000)`,
+      `--accent-ink: ${accentInk(accent)}`,
+    ].join("; ")
+  : undefined;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{title}</title>
+    <meta name="theme-color" content="#FBF7F1" />
+  </head>
+  <body class="bg-paper text-ink antialiased" style={bodyStyle}>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <main id="main">
+      <slot />
+    </main>
+  </body>
+</html>

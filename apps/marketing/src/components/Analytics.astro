@@ -1,0 +1,27 @@
+---
+// Analytics — Cloudflare Web Analytics beacon.
+//
+// Cookieless, privacy-first, no consent banner needed. One lightweight beacon
+// covers every page it's dropped into (marketing home, the demo gallery, and
+// the per-store demos/storefronts). Data is read back out in the admin app via
+// Cloudflare's GraphQL Analytics API, filtered per client by URL path.
+//
+// The token is public (it ships in the page), so it lives in PUBLIC_CF_BEACON_TOKEN
+// — set it locally in apps/marketing/.env and in the production Cloudflare env.
+// Get it from the Cloudflare dashboard → Web Analytics → your site.
+//
+// Gated to production builds so local dev traffic never pollutes the numbers.
+const token = import.meta.env.PUBLIC_CF_BEACON_TOKEN;
+const enabled = import.meta.env.PROD && !!token;
+---
+
+{
+  enabled && (
+    <script
+      is:inline
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon={JSON.stringify({ token })}
+    />
+  )
+}
