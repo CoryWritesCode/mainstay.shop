@@ -1,0 +1,5 @@
+# Keep the SSR Worker entry and its route manifest out of the static-asset
+# upload. Copied to dist/ on build (public/ is emitted verbatim) so
+# `wrangler deploy` serves them via the Worker, not as public assets.
+_worker.js
+_routes.json

@@ -48,6 +48,11 @@ export const POST: APIRoute = async ({ request, locals, url }) => {
       // Log for the operator, but keep the client response neutral.
       console.error("[auth] magic-link send failed:", err);
     }
+    // Dev convenience: print the link to the terminal so you can sign in
+    // locally without a real email provider. Never runs in a production build.
+    if (import.meta.env.DEV) {
+      console.log(`\n[auth] DEV magic link for ${email}:\n${link}\n`);
+    }
   }
 
   return neutral();
