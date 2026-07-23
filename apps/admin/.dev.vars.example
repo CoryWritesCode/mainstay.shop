@@ -1,0 +1,18 @@
+# Copy to `.dev.vars` (gitignored) for local `astro dev` / `wrangler dev`.
+# In production these are set with `wrangler secret put <NAME>`.
+
+# Random 32+ byte string used to HMAC-sign magic-link tokens and sessions.
+AUTH_SECRET="change-me-to-a-long-random-string"
+
+# Cloudflare API token scoped to "Account Analytics: Read", + your account id.
+CF_ANALYTICS_TOKEN="your-cloudflare-api-token"
+CF_ACCOUNT_ID="your-cloudflare-account-id"
+
+# Web Analytics site tag for mainstayshop.studio (scopes subpath clients).
+MAINSTAY_SITE_TAG="your-mainstay-site-tag"
+
+# Resend API key for sending magic-link email.
+RESEND_API_KEY="re_your_resend_key"
+
+# Comma-separated owner (super-admin) email(s).
+SUPER_ADMINS="cory@mainstayshop.studio"

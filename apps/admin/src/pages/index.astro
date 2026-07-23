@@ -1,0 +1,144 @@
+---
+// Sign-in — enter your email, get a magic link. Invite-only: unknown emails
+// get the same neutral confirmation but no link.
+export const prerender = false;
+
+import AdminLayout from "../layouts/AdminLayout.astro";
+
+// If already signed in, send them onward.
+if (Astro.locals.user) return Astro.redirect("/admin");
+
+const err = Astro.url.searchParams.get("error");
+const notice =
+  err === "link"
+    ? "That link didn't work — it may have expired or already been used. Enter your email for a fresh one."
+    : err === "noaccess"
+      ? "You're signed in, but no site is linked to your email yet. Reach out and I'll get that sorted."
+      : null;
+---
+
+<AdminLayout title="Sign in — Mainstay">
+  <section class="wrap">
+    <p class="wordmark">Mainstay</p>
+    <h1>Your shop's dashboard</h1>
+    <p class="lede">
+      Enter your email and I'll send a one-time link to sign you in. No password
+      to remember.
+    </p>
+
+    {notice && <p class="notice" role="alert">{notice}</p>}
+
+    <form id="signin" class="form">
+      <label for="email">Email</label>
+      <input
+        id="email"
+        class="field"
+        name="email"
+        type="email"
+        required
+        autocomplete="email"
+        placeholder="you@yourshop.com"
+      />
+      <button type="submit" class="btn">Send me a link</button>
+    </form>
+
+    <p id="sent" class="sent" hidden role="status" aria-live="polite">
+      <strong>Check your email.</strong> If that address is set up, a sign-in
+      link is on its way — it's good for 15 minutes.
+    </p>
+
+    <p class="help">
+      Trouble getting in? Email
+      <a class="textlink" href="mailto:hello@mainstayshop.studio">hello@mainstayshop.studio</a>.
+    </p>
+  </section>
+</AdminLayout>
+
+<style>
+  .wrap {
+    max-width: 30rem;
+    margin-inline: auto;
+    padding: clamp(4rem, 12vh, 8rem) 1.5rem 4rem;
+  }
+  .wordmark {
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--color-ink-soft);
+    margin: 0 0 2rem;
+  }
+  h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.9rem, 5vw, 2.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    margin: 0 0 0.75rem;
+  }
+  .lede {
+    color: var(--color-ink-soft);
+    line-height: 1.6;
+    margin: 0 0 2rem;
+    max-width: 40ch;
+  }
+  .notice {
+    background: var(--color-accent-soft);
+    color: var(--color-accent-deep);
+    border-radius: var(--radius-button);
+    padding: 0.75rem 0.9rem;
+    margin: 0 0 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  label {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .form .btn {
+    margin-top: 0.4rem;
+    align-self: flex-start;
+  }
+  .sent {
+    margin-top: 1.75rem;
+    color: var(--color-ink);
+    line-height: 1.55;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    padding: 1rem 1.25rem;
+  }
+  .help {
+    margin-top: 2rem;
+    color: var(--color-ink-mute);
+    font-size: 0.9rem;
+  }
+</style>
+
+<script>
+  const form = document.getElementById("signin") as HTMLFormElement | null;
+  const sent = document.getElementById("sent");
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = new FormData(form).get("email");
+    const btn = form.querySelector("button");
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = "Sending…";
+    }
+    try {
+      await fetch("/api/auth/request", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+    } catch {
+      // Swallow — the neutral confirmation shows regardless, so we never
+      // reveal whether an address is registered.
+    }
+    form.hidden = true;
+    if (sent) sent.hidden = false;
+  });
+</script>

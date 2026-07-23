@@ -1,0 +1,37 @@
+# Cloudflare Worker config for the Mainstay admin app (SSR via @astrojs/cloudflare).
+# `astro build` emits the Worker to ./dist/_worker.js/ and client assets to ./dist.
+#
+# Secrets are NOT set here — add them with `wrangler secret put <NAME>`:
+#   AUTH_SECRET         random 32+ byte string for HMAC signing
+#   CF_ANALYTICS_TOKEN  Cloudflare API token, scoped to Account Analytics: Read
+#   CF_ACCOUNT_ID       your Cloudflare account id
+#   RESEND_API_KEY      Resend API key for magic-link email
+#   SUPER_ADMINS        comma-separated owner email(s), e.g. cory@mainstayshop.studio
+# For local dev, put the same keys in apps/admin/.dev.vars (gitignored).
+
+name = "mainstay-admin"
+compatibility_date = "2026-05-20"
+compatibility_flags = ["nodejs_compat"]
+main = "./dist/_worker.js/index.js"
+workers_dev = true
+
+[assets]
+binding = "ASSETS"
+directory = "./dist"
+
+[vars]
+# Web Analytics site tag for mainstayshop.studio (not secret). Used to scope
+# analytics for clients whose sites live on a subpath of the main domain.
+MAINSTAY_SITE_TAG = "REPLACE_WITH_MAINSTAY_SITE_TAG"
+
+# Client roster: one record per site + owner-email → slugs index.
+# Create with: wrangler kv namespace create CLIENTS
+# then paste the returned id below.
+[[kv_namespaces]]
+binding = "CLIENTS"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+
+# Custom domain route (configure the DNS/route in the Cloudflare dashboard).
+# [[routes]]
+# pattern = "admin.mainstayshop.studio"
+# custom_domain = true

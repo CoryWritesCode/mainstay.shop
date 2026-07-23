@@ -1,0 +1,78 @@
+---
+// /admin — routes a signed-in user onward:
+//   super-admin           → Manage clients
+//   client, one site      → that site's dashboard
+//   client, many sites    → a small picker
+// (Middleware guarantees a valid session before we get here.)
+export const prerender = false;
+
+import AdminLayout from "../../layouts/AdminLayout.astro";
+import { slugsForEmail, getClient } from "../../lib/roster";
+
+const user = Astro.locals.user;
+if (!user) return Astro.redirect("/");
+
+const env = Astro.locals.runtime.env;
+
+if (user.isSuperAdmin) return Astro.redirect("/admin/manage");
+
+const slugs = await slugsForEmail(env.CLIENTS, user.email);
+if (slugs.length === 0) return Astro.redirect("/?error=noaccess");
+if (slugs.length === 1 && slugs[0]) return Astro.redirect(`/admin/${slugs[0]}`);
+
+const clients = (
+  await Promise.all(slugs.map((s) => getClient(env.CLIENTS, s)))
+).filter((c): c is NonNullable<typeof c> => c !== null);
+---
+
+<AdminLayout title="Your sites — Mainstay">
+  <section class="wrap">
+    <h1>Your sites</h1>
+    <ul class="list">
+      {
+        clients.map((c) => (
+          <li>
+            <a href={`/admin/${c.slug}`}>{c.displayName}</a>
+          </li>
+        ))
+      }
+    </ul>
+    <form method="POST" action="/api/auth/logout">
+      <button type="submit" class="btn-text">Sign out</button>
+    </form>
+  </section>
+</AdminLayout>
+
+<style>
+  .wrap {
+    max-width: var(--container-prose);
+    margin-inline: auto;
+    padding: 5rem 1.5rem;
+  }
+  h1 {
+    font-family: var(--font-serif);
+    font-size: var(--text-section);
+    margin: 0 0 1.5rem;
+  }
+  .list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .list a {
+    display: block;
+    padding: 1rem 1.25rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    text-decoration: none;
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+  .list a:hover {
+    border-color: var(--color-accent);
+  }
+</style>
