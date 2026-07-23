@@ -11,6 +11,7 @@ import {
   signToken,
   buildSessionCookie,
   SESSION_TTL_SECONDS,
+  MAGIC_LINK_TTL_SECONDS,
 } from "../../../lib/auth";
 
 export const GET: APIRoute = async ({ url, locals }) => {
@@ -22,6 +23,20 @@ export const GET: APIRoute = async ({ url, locals }) => {
     return new Response(null, {
       status: 302,
       headers: { Location: "/?error=link" },
+    });
+  }
+
+  // Single-use: reject a link whose id has already been consumed, then mark it.
+  if (payload.jti) {
+    const usedKey = `used:${payload.jti}`;
+    if (await env.CLIENTS.get(usedKey)) {
+      return new Response(null, {
+        status: 302,
+        headers: { Location: "/?error=link" },
+      });
+    }
+    await env.CLIENTS.put(usedKey, "1", {
+      expirationTtl: MAGIC_LINK_TTL_SECONDS,
     });
   }
 

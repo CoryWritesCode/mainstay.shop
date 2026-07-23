@@ -152,6 +152,10 @@ const WEB3FORMS_ACCESS_KEY =
 
   another?.addEventListener("click", () => {
     if (success) success.hidden = true;
-    if (form) form.hidden = false;
+    if (form) {
+      form.hidden = false;
+      // Return keyboard focus to the field instead of dropping it on <body>.
+      form.querySelector<HTMLTextAreaElement>("#cr-message")?.focus();
+    }
   });
 </script>

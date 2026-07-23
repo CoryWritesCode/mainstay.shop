@@ -50,9 +50,14 @@ export function parseClient(data: unknown): ParseResult {
   const kind = String(d.analyticsKind ?? "").trim();
   let analytics: AnalyticsKey;
   if (kind === "path") {
-    const pathPrefix = String(d.pathPrefix ?? "").trim();
-    if (!pathPrefix.startsWith("/")) {
-      return { ok: false, error: "Path prefix must start with '/' (e.g. /demo/saltworks)." };
+    // Normalize away trailing slashes; the analytics filter re-adds the
+    // boundary. Reject "/" (would match the whole site) and wildcard chars.
+    const pathPrefix = String(d.pathPrefix ?? "").trim().replace(/\/+$/, "");
+    if (!pathPrefix.startsWith("/") || pathPrefix.length < 2) {
+      return { ok: false, error: "Path prefix must be a real path, e.g. /demo/saltworks." };
+    }
+    if (/[%_*?#\s]/.test(pathPrefix)) {
+      return { ok: false, error: "Path prefix can't contain spaces or the characters % _ * ? #." };
     }
     analytics = { kind: "path", pathPrefix };
   } else if (kind === "siteTag") {

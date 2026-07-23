@@ -30,8 +30,10 @@ export interface AnalyticsSummary {
   referrers: MetricRow[];
   countries: MetricRow[];
   devices: MetricRow[];
-  /** True when data is present; false means "nothing collected yet / query failed". */
+  /** True when data is present; false means nothing collected yet. */
   hasData: boolean;
+  /** True when the query itself failed — distinct from a genuine "no data yet". */
+  error: boolean;
 }
 
 interface Env {
@@ -46,7 +48,7 @@ function isoDay(offsetDays: number): string {
   return d.toISOString().slice(0, 10);
 }
 
-function emptySummary(days: number): AnalyticsSummary {
+function emptySummary(days: number, error = false): AnalyticsSummary {
   return {
     rangeDays: days,
     visits: 0,
@@ -58,6 +60,7 @@ function emptySummary(days: number): AnalyticsSummary {
     countries: [],
     devices: [],
     hasData: false,
+    error,
   };
 }
 
@@ -118,7 +121,11 @@ function baseFilter(
     siteTag,
   };
   if (analytics.kind === "path") {
-    filter.requestPath_like = `${analytics.pathPrefix}%`;
+    // Bound the match to the page itself OR its subtree, so `/demo/salt`
+    // can't absorb `/demo/saltworks`. (pathPrefix is normalized without a
+    // trailing slash in validate.ts.)
+    const p = analytics.pathPrefix;
+    filter.OR = [{ requestPath: p }, { requestPath_like: `${p}/%` }];
   }
   return filter;
 }
@@ -134,10 +141,12 @@ export async function getAnalytics(
   analytics: AnalyticsKey,
   days = 30
 ): Promise<AnalyticsSummary> {
+  // Two equal-length, inclusive windows (date_geq/date_leq are inclusive), so
+  // the month-over-month trend compares like with like.
   const end = isoDay(0);
-  const start = isoDay(-days);
-  const prevStart = isoDay(-days * 2);
-  const prevEnd = isoDay(-days - 1);
+  const start = isoDay(-(days - 1));
+  const prevEnd = isoDay(-days);
+  const prevStart = isoDay(-(2 * days - 1));
 
   const cur = baseFilter(analytics, env, start, end);
   const prev = baseFilter(analytics, env, prevStart, prevEnd);
@@ -190,15 +199,15 @@ export async function getAnalytics(
     json = await res.json();
     if (!res.ok || json?.errors) {
       console.error("[analytics] GraphQL error:", JSON.stringify(json?.errors ?? res.status));
-      return emptySummary(days);
+      return emptySummary(days, true);
     }
   } catch (err) {
     console.error("[analytics] fetch failed:", err);
-    return emptySummary(days);
+    return emptySummary(days, true);
   }
 
   const account = json?.data?.viewer?.accounts?.[0];
-  if (!account) return emptySummary(days);
+  if (!account) return emptySummary(days, true);
 
   const byDate: Group[] = account.byDate ?? [];
   const previous: Group[] = account.previous ?? [];
@@ -219,5 +228,6 @@ export async function getAnalytics(
     countries: rollup(account.countries ?? [], "countryName"),
     devices: rollup(account.devices ?? [], "deviceType"),
     hasData: byDate.length > 0 || estVisits(byDate) > 0,
+    error: false,
   };
 }

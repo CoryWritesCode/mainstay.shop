@@ -18,6 +18,8 @@ export interface TokenPayload {
   exp: number;
   /** What the token is for — a login link vs an active session. */
   purpose: "login" | "session";
+  /** Unique id — set on login tokens so they can be consumed (single-use). */
+  jti?: string;
 }
 
 function b64urlEncode(bytes: Uint8Array): string {

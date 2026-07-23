@@ -15,6 +15,7 @@
 :root {
   --accent: var(--color-accent);
   --accent-deep: var(--color-accent-deep);
+  --accent-ink: var(--color-paper); /* readable text on the accent; overridden per-client */
 }
 
 body {
@@ -38,7 +39,7 @@ body {
   justify-content: center;
   gap: 0.5rem;
   background: var(--_bg);
-  color: var(--color-paper);
+  color: var(--accent-ink);
   border: 0;
   border-radius: var(--radius-button);
   padding: 0.7rem 1.25rem;

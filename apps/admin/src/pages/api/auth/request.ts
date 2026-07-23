@@ -36,6 +36,7 @@ export const POST: APIRoute = async ({ request, locals, url }) => {
       email,
       exp,
       purpose: "login",
+      jti: crypto.randomUUID(), // consumed on first use so the link is single-use
     });
     const link = new URL(
       `/api/auth/callback?token=${encodeURIComponent(token)}`,

@@ -77,7 +77,8 @@ pnpm --filter admin deploy     # astro build && wrangler deploy
 3. **Vars:** set `MAINSTAY_SITE_TAG` (the Web Analytics site tag for mainstayshop.studio) in `wrangler.toml`.
 4. **Resend:** verify `mainstayshop.studio` in [Resend](https://resend.com) (SPF/DKIM DNS records) so magic-link email delivers.
 5. **Route:** point `admin.mainstayshop.studio` at the Worker (uncomment the route block in `wrangler.toml` / configure in the dashboard).
-6. **Local dev:** copy `apps/admin/.dev.vars.example` → `.dev.vars` and fill in values.
+6. **Web3Forms:** set `PUBLIC_WEB3FORMS_ACCESS_KEY` (build-time; same key as the marketing site) so the dashboard's "request a change" form works — copy `apps/admin/.env.example` → `.env` locally, and set it in the Worker's build env in production.
+7. **Local dev:** copy `apps/admin/.dev.vars.example` → `.dev.vars` and fill in values.
 
 > The Cloudflare GraphQL query in `apps/admin/src/lib/analytics.ts` is written defensively (a schema mismatch degrades to an empty dashboard, never a crash). Validate the exact dataset field/filter names once against the live API with a real token — see the comment at the top of that file.
 

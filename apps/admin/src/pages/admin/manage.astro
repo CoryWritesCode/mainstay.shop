@@ -162,6 +162,11 @@ const clients = await listClients(Astro.locals.runtime.env.CLIENTS);
       const c = JSON.parse(li.dataset.client!);
       set("displayName", c.displayName);
       set("slug", c.slug);
+      // Slug is the record key — lock it on edit so saving can't fork a
+      // duplicate. To rename, remove the client and add it again.
+      const slugInput = form.elements.namedItem("slug") as HTMLInputElement;
+      slugInput.readOnly = true;
+      slugInput.title = "To rename, remove this client and add it again.";
       set("accent", c.accent);
       set("siteUrl", c.siteUrl ?? "");
       set("owners", c.owners.join("\n"));
@@ -169,7 +174,8 @@ const clients = await listClients(Astro.locals.runtime.env.CLIENTS);
       form.querySelector<HTMLInputElement>(`input[name="analyticsKind"][value="${kind}"]`)!.checked = true;
       set("pathPrefix", kind === "path" ? c.analytics.pathPrefix : "");
       set("siteTag", kind === "siteTag" ? c.analytics.siteTag : "");
-      form.scrollIntoView({ behavior: "smooth" });
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      form.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
     });
   });
 
@@ -186,6 +192,9 @@ const clients = await listClients(Astro.locals.runtime.env.CLIENTS);
 
   document.getElementById("reset-btn")!.addEventListener("click", () => {
     form.reset();
+    const slugInput = form.elements.namedItem("slug") as HTMLInputElement;
+    slugInput.readOnly = false;
+    slugInput.removeAttribute("title");
     errorEl.hidden = true;
   });
 

@@ -39,7 +39,7 @@ const REF_NAMES: Record<string, string> = {
   "bing.com": "Bing",
 };
 function refLabel(host: string): string {
-  if (!host || host === "(direct)") return "directly";
+  if (!host || host === "(direct)" || host === "—") return "directly";
   return REF_NAMES[host] ?? host.replace(/^www\./, "");
 }
 const topRef = a.referrers[0];
@@ -66,7 +66,7 @@ if (a.hasData) {
 let busiest: string | null = null;
 if (a.series.length) {
   const top = [...a.series].sort((x, y) => y.visits - x.visits)[0];
-  if (top && top.visits > 0) {
+  if (top && top.visits > 0 && /^\d{4}-\d{2}-\d{2}$/.test(top.date)) {
     busiest = new Date(`${top.date}T00:00:00Z`).toLocaleDateString("en-US", {
       weekday: "long",
       timeZone: "UTC",
@@ -117,7 +117,16 @@ const spark = sparkline(a.series);
     </section>
 
     {
-      !a.hasData ? (
+      a.error ? (
+        <section class="empty">
+          <p class="empty-title">We couldn't load your numbers just now.</p>
+          <p class="empty-body">
+            This one's on our end, not yours — the analytics service didn't
+            answer. Try refreshing in a little while; if it keeps happening,
+            email hello@mainstayshop.studio and I'll sort it out.
+          </p>
+        </section>
+      ) : !a.hasData ? (
         <section class="empty">
           <p class="empty-title">We're just starting to count.</p>
           <p class="empty-body">
