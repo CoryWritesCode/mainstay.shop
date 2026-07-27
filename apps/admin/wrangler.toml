@@ -22,14 +22,14 @@ directory = "./dist"
 [vars]
 # Web Analytics site tag for mainstayshop.studio (not secret). Used to scope
 # analytics for clients whose sites live on a subpath of the main domain.
-MAINSTAY_SITE_TAG = "REPLACE_WITH_MAINSTAY_SITE_TAG"
+MAINSTAY_SITE_TAG = "25eac9b74a97454185666c50af70e1ba"
 
 # Client roster: one record per site + owner-email → slugs index.
 # Create with: wrangler kv namespace create CLIENTS
 # then paste the returned id below.
 [[kv_namespaces]]
 binding = "CLIENTS"
-id = "REPLACE_WITH_KV_NAMESPACE_ID"
+id = "08a6bfbbbd914d4d9887d9581e505f11"
 
 # Custom domain. `custom_domain = true` tells Cloudflare to provision the DNS
 # record + route for this hostname automatically on `wrangler deploy` (the zone
