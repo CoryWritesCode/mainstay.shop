@@ -67,7 +67,7 @@ The token is public by design (it ships in the page). The beacon only loads in *
 
 ```bash
 pnpm --filter admin dev        # local dev (reads apps/admin/.dev.vars, simulated KV)
-pnpm --filter admin deploy     # astro build && wrangler deploy
+pnpm --filter admin run deploy # astro build && wrangler deploy (note: `run` — `pnpm deploy` is a built-in)
 ```
 
 ### One-time setup
