@@ -6,6 +6,10 @@ Web services for local stores. Two-sided product:
 
 Greenfield repo — no stack chosen yet. When introducing one, prefer choices that keep the storefront fast and the owner tools approachable for non-technical users.
 
+## Git
+
+- Committing and pushing directly to `main` is allowed in this repo; a feature branch + PR is optional. (Overrides the global "never push to main" rule.)
+
 ## Design Context
 
 ### Users
